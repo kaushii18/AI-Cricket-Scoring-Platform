@@ -1,4 +1,4 @@
-```html
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -8,7 +8,6 @@
 
     <title>CricPulse | Real-Time Cricket Platform</title>
 
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
@@ -21,15 +20,12 @@
 
 <body>
 
-    <!-- Skip Link -->
     <a href="#main-content" class="skip-link">
         Skip to main content
     </a>
 
 
-    <!-- =========================
-         HEADER
-    ========================== -->
+    <!-- ================= HEADER ================= -->
 
     <header class="top-header">
 
@@ -49,37 +45,24 @@
 
         <nav class="nav-links">
 
-            <a href="#hero">
-                Live
-            </a>
+            <a href="#hero">Live</a>
 
-            <a href="#tournaments">
-                Tournaments
-            </a>
+            <a href="#tournaments">Tournaments</a>
 
-            <a href="#features">
-                Features
-            </a>
+            <a href="#features">Features</a>
 
         </nav>
 
 
         <div class="header-actions">
 
-            <div
-                class="live-status"
-                aria-label="Status: Live Ready">
-
+            <div class="live-status">
                 <span class="status-dot"></span>
-
-                <span class="status-text">
-                    Live Ready
-                </span>
-
+                <span>Live Ready</span>
             </div>
 
-
             <button
+                type="button"
                 class="primary-button compact-btn"
                 onclick="openMatchModal()">
 
@@ -92,24 +75,14 @@
     </header>
 
 
+    <!-- ================= MAIN ================= -->
 
-    <!-- =========================
-         MAIN
-    ========================== -->
-
-    <main
-        id="main-content"
-        class="main-content">
+    <main id="main-content" class="main-content">
 
 
-        <!-- =========================
-             HERO
-        ========================== -->
+        <!-- ================= HERO ================= -->
 
-        <section
-            id="hero"
-            class="hero-section">
-
+        <section id="hero" class="hero-section">
 
             <div class="hero-content">
 
@@ -126,9 +99,9 @@
 
 
                 <p>
-                    CricPulse brings live cricket scoring,
-                    tournaments, teams, and player statistics
-                    together in one seamless, accessible platform.
+                    Create matches, manage live scores,
+                    track tournaments and follow cricket
+                    performance in real time.
                 </p>
 
 
@@ -136,6 +109,7 @@
 
                     <button
                         id="startButton"
+                        type="button"
                         class="primary-button"
                         onclick="openMatchModal()">
 
@@ -157,16 +131,12 @@
             </div>
 
 
-
-            <!-- =========================
-                 LIVE SCORE PREVIEW
-            ========================== -->
+            <!-- LIVE SCORE PREVIEW -->
 
             <div
                 class="score-preview"
                 role="region"
                 aria-label="Live Match Scorecard">
-
 
                 <div class="score-header">
 
@@ -183,27 +153,19 @@
 
                 <div class="teams">
 
-
                     <div class="team">
 
-                        <div
-                            class="team-logo"
-                            aria-hidden="true">
-
+                        <div class="team-logo">
                             🔵
-
                         </div>
 
-
-                        <h3>
+                        <h3 id="previewTeam1">
                             Blue Warriors
                         </h3>
-
 
                         <strong id="team1Score">
                             128/4
                         </strong>
-
 
                         <small id="team1Overs">
                             15.2 Overs
@@ -212,44 +174,32 @@
                     </div>
 
 
-
                     <div class="vs-container">
 
                         <div class="vs">
                             VS
                         </div>
 
-
                         <span class="target-badge">
-
                             Target: 129
-
                         </span>
 
                     </div>
 
 
-
                     <div class="team">
 
-                        <div
-                            class="team-logo"
-                            aria-hidden="true">
-
+                        <div class="team-logo">
                             🟠
-
                         </div>
 
-
-                        <h3>
+                        <h3 id="previewTeam2">
                             Orange Kings
                         </h3>
-
 
                         <strong id="team2Score">
                             Yet to Bat
                         </strong>
-
 
                         <small>
                             Inning 2 Pending
@@ -260,35 +210,20 @@
                 </div>
 
 
-
                 <div class="match-info">
 
                     <span>
-
                         🏏 Current Run Rate:
-
-                        <b id="crrVal">
-                            8.35
-                        </b>
-
+                        <b id="crrVal">8.35</b>
                     </span>
 
-
                     <span>
-
                         🎯 Required Rate:
-
-                        <b id="rrrVal">
-                            8.92
-                        </b>
-
+                        <b id="rrrVal">8.92</b>
                     </span>
 
                 </div>
 
-
-
-                <!-- Recent Balls -->
 
                 <div class="ball-feed-container">
 
@@ -296,32 +231,14 @@
                         Recent Balls:
                     </span>
 
-
                     <div class="ball-pills">
 
-                        <span class="ball-pill dot">
-                            0
-                        </span>
-
-                        <span class="ball-pill">
-                            1
-                        </span>
-
-                        <span class="ball-pill four">
-                            4
-                        </span>
-
-                        <span class="ball-pill">
-                            2
-                        </span>
-
-                        <span class="ball-pill six">
-                            6
-                        </span>
-
-                        <span class="ball-pill Wicket">
-                            W
-                        </span>
+                        <span class="ball-pill">0</span>
+                        <span class="ball-pill">1</span>
+                        <span class="ball-pill four">4</span>
+                        <span class="ball-pill">2</span>
+                        <span class="ball-pill six">6</span>
+                        <span class="ball-pill Wicket">W</span>
 
                     </div>
 
@@ -332,15 +249,11 @@
         </section>
 
 
-
-        <!-- =========================
-             TOURNAMENTS
-        ========================== -->
+        <!-- ================= TOURNAMENTS ================= -->
 
         <section
             id="tournaments"
             class="tournaments-section">
-
 
             <div class="section-heading">
 
@@ -349,18 +262,16 @@
                 </span>
 
                 <h2>
-                    Active & Upcoming Tournaments
+                    Cricket Tournaments
                 </h2>
 
             </div>
 
 
-            <div
-                class="tournament-tabs"
-                role="tablist">
-
+            <div class="tournament-tabs">
 
                 <button
+                    type="button"
                     class="tab-btn active"
                     role="tab"
                     aria-selected="true"
@@ -372,6 +283,7 @@
 
 
                 <button
+                    type="button"
                     class="tab-btn"
                     role="tab"
                     aria-selected="false"
@@ -384,13 +296,11 @@
             </div>
 
 
-
-            <!-- Active -->
+            <!-- ACTIVE TOURNAMENTS -->
 
             <div
                 id="active-t"
                 class="tab-content active">
-
 
                 <div class="tournament-grid">
 
@@ -400,7 +310,7 @@
                         <div class="t-card-header">
 
                             <span class="t-badge live">
-                                In Progress
+                                LIVE
                             </span>
 
                             <span class="t-teams-count">
@@ -411,12 +321,12 @@
 
 
                         <h3>
-                            Premier T20 League 2026
+                            Premier T20 League
                         </h3>
 
 
                         <p>
-                            Match 14 of 28 • Wankhede Stadium
+                            Live tournament
                         </p>
 
 
@@ -433,15 +343,15 @@
                         <div class="t-footer">
 
                             <small>
-                                Leader:
-                                <b>
-                                    Blue Warriors (10 pts)
-                                </b>
+                                Matches in progress
                             </small>
 
+                            <button
+                                type="button"
+                                class="text-btn">
 
-                            <button class="text-btn">
                                 View Table →
+
                             </button>
 
                         </div>
@@ -449,13 +359,12 @@
                     </div>
 
 
-
                     <div class="tournament-card">
 
                         <div class="t-card-header">
 
                             <span class="t-badge live">
-                                Knockouts
+                                ACTIVE
                             </span>
 
                             <span class="t-teams-count">
@@ -471,7 +380,7 @@
 
 
                         <p>
-                            Semi Finals • Green Park Oval
+                            Knockout tournament
                         </p>
 
 
@@ -488,15 +397,15 @@
                         <div class="t-footer">
 
                             <small>
-                                Next Match:
-                                <b>
-                                    Tomorrow, 4:00 PM
-                                </b>
+                                Semi Finals
                             </small>
 
+                            <button
+                                type="button"
+                                class="text-btn">
 
-                            <button class="text-btn">
-                                View Fixtures →
+                                Fixtures →
+
                             </button>
 
                         </div>
@@ -508,23 +417,20 @@
             </div>
 
 
-
-            <!-- Upcoming -->
+            <!-- UPCOMING TOURNAMENTS -->
 
             <div
                 id="upcoming-t"
                 class="tab-content">
 
-
                 <div class="tournament-grid">
-
 
                     <div class="tournament-card">
 
                         <div class="t-card-header">
 
                             <span class="t-badge upcoming">
-                                Starts Oct 10
+                                UPCOMING
                             </span>
 
                             <span class="t-teams-count">
@@ -540,23 +446,18 @@
 
 
                         <p>
-                            Registration Open • Weekend League
+                            Registration open
                         </p>
 
 
-                        <div
-                            class="t-footer"
-                            style="margin-top: 20px;">
+                        <div class="t-footer">
 
                             <small>
-                                Prize Pool:
-                                <b>
-                                    $5,000
-                                </b>
+                                Tournament starting soon
                             </small>
 
-
                             <button
+                                type="button"
                                 class="primary-button compact-btn">
 
                                 Register Team
@@ -574,15 +475,11 @@
         </section>
 
 
-
-        <!-- =========================
-             FEATURES
-        ========================== -->
+        <!-- ================= FEATURES ================= -->
 
         <section
             id="features"
             class="features-section">
-
 
             <div class="section-heading">
 
@@ -600,110 +497,73 @@
             <div class="feature-grid">
 
 
-                <div
-                    class="feature-card"
-                    tabindex="0">
+                <div class="feature-card">
 
-                    <div
-                        class="feature-icon"
-                        aria-hidden="true">
-
+                    <div class="feature-icon">
                         🔴
-
                     </div>
-
 
                     <h3>
                         Live Ball-by-Ball Scoring
                     </h3>
 
-
                     <p>
-                        Update scores on the fly with instant
-                        public web broadcast and real-time syncing.
+                        Record every ball and update
+                        match scores in real time.
                     </p>
 
                 </div>
 
 
+                <div class="feature-card">
 
-                <div
-                    class="feature-card"
-                    tabindex="0">
-
-                    <div
-                        class="feature-icon"
-                        aria-hidden="true">
-
+                    <div class="feature-icon">
                         🏆
-
                     </div>
-
 
                     <h3>
                         Tournament Management
                     </h3>
 
-
                     <p>
-                        Effortlessly organize leagues,
-                        calculate NRR, and update live standings.
+                        Create tournaments, manage teams,
+                        fixtures and standings.
                     </p>
 
                 </div>
 
 
+                <div class="feature-card">
 
-                <div
-                    class="feature-card"
-                    tabindex="0">
-
-                    <div
-                        class="feature-icon"
-                        aria-hidden="true">
-
+                    <div class="feature-icon">
                         📊
-
                     </div>
-
 
                     <h3>
-                        Player Deep Stats
+                        Player Statistics
                     </h3>
 
-
                     <p>
-                        Track batting strike rates,
-                        bowling spell averages,
-                        wagon wheels, and performance trends.
+                        Track runs, wickets, strike rates,
+                        averages and match performance.
                     </p>
 
                 </div>
 
 
+                <div class="feature-card">
 
-                <div
-                    class="feature-card"
-                    tabindex="0">
-
-                    <div
-                        class="feature-icon"
-                        aria-hidden="true">
-
+                    <div class="feature-icon">
                         🤖
-
                     </div>
-
 
                     <h3>
                         AI Match Insights
                     </h3>
 
-
                     <p>
-                        Smart win predictions,
-                        projection graphs,
-                        and automated match summaries.
+                        Generate useful match insights
+                        from live scoring data.
                     </p>
 
                 </div>
@@ -713,10 +573,7 @@
         </section>
 
 
-
-        <!-- =========================
-             CALL TO ACTION
-        ========================== -->
+        <!-- ================= CTA ================= -->
 
         <section class="cta-section">
 
@@ -724,15 +581,14 @@
                 Ready to Start the Match?
             </h2>
 
-
             <p>
-                Create your first match and experience
-                real-time cricket scoring with CricPulse today.
+                Create a match and start live scoring.
             </p>
 
 
             <button
                 id="ctaStartButton"
+                type="button"
                 class="primary-button"
                 onclick="openMatchModal()">
 
@@ -745,24 +601,17 @@
     </main>
 
 
-
-    <!-- =========================
-         FOOTER
-    ========================== -->
+    <!-- ================= FOOTER ================= -->
 
     <footer>
 
         <div class="footer-brand">
-
             🏏 <strong>CricPulse</strong>
-
         </div>
-
 
         <p>
             Real-Time Cricket Scoring & Tournament Platform
         </p>
-
 
         <small>
             © 2026 CricPulse • Built as a Final-Year Engineering Project
@@ -771,10 +620,9 @@
     </footer>
 
 
-
-    <!-- =========================
-         MATCH SETUP MODAL
-    ========================== -->
+    <!-- =====================================================
+         QUICK MATCH SETUP MODAL
+    ====================================================== -->
 
     <div
         id="matchModal"
@@ -782,7 +630,6 @@
         aria-hidden="true"
         role="dialog"
         aria-labelledby="modalTitle">
-
 
         <div class="modal-card">
 
@@ -795,9 +642,10 @@
 
 
                 <button
+                    type="button"
                     class="close-btn"
                     onclick="closeMatchModal()"
-                    aria-label="Close modal">
+                    aria-label="Close">
 
                     &times;
 
@@ -806,13 +654,12 @@
             </div>
 
 
-
             <form
                 id="matchForm"
                 onsubmit="handleMatchSubmit(event)">
 
 
-                <!-- Team Names -->
+                <!-- TEAM NAMES -->
 
                 <div class="form-group-row">
 
@@ -823,16 +670,14 @@
                             Team 1 Name
                         </label>
 
-
                         <input
                             type="text"
                             id="team1"
-                            required
-                            placeholder="e.g. CSK"
-                            value="CSK">
+                            name="team1"
+                            placeholder="e.g. Mumbai Indians"
+                            required>
 
                     </div>
-
 
 
                     <div class="form-group">
@@ -841,21 +686,19 @@
                             Team 2 Name
                         </label>
 
-
                         <input
                             type="text"
                             id="team2"
-                            required
-                            placeholder="e.g. MI"
-                            value="MI">
+                            name="team2"
+                            placeholder="e.g. Chennai Super Kings"
+                            required>
 
                     </div>
 
                 </div>
 
 
-
-                <!-- Overs + Toss -->
+                <!-- OVERS + TOSS -->
 
                 <div class="form-group-row">
 
@@ -867,7 +710,10 @@
                         </label>
 
 
-                        <select id="overs">
+                        <select
+                            id="overs"
+                            name="overs"
+                            required>
 
                             <option value="5">
                                 5 Overs
@@ -894,7 +740,6 @@
                     </div>
 
 
-
                     <div class="form-group">
 
                         <label for="toss">
@@ -902,7 +747,10 @@
                         </label>
 
 
-                        <select id="toss">
+                        <select
+                            id="toss"
+                            name="toss"
+                            required>
 
                             <option value="team1">
                                 Team 1
@@ -919,8 +767,7 @@
                 </div>
 
 
-
-                <!-- Toss Decision -->
+                <!-- TOSS DECISION -->
 
                 <div class="form-group">
 
@@ -929,7 +776,10 @@
                     </label>
 
 
-                    <select id="tossDecision">
+                    <select
+                        id="tossDecision"
+                        name="tossDecision"
+                        required>
 
                         <option value="bat">
                             Bat First
@@ -944,11 +794,9 @@
                 </div>
 
 
-
-                <!-- Buttons -->
+                <!-- ACTION BUTTONS -->
 
                 <div class="modal-actions">
-
 
                     <button
                         type="button"
@@ -977,14 +825,9 @@
     </div>
 
 
+    <!-- JAVASCRIPT -->
 
-    <!-- =========================
-         JAVASCRIPT
-    ========================== -->
-
-    <script src="script.js"></script>
+    <script src="./script.js"></script>
 
 </body>
-
 </html>
-```
