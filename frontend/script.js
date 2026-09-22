@@ -1,4 +1,3 @@
-javascript
 // ==========================================
 // CRICPULSE - MAIN JAVASCRIPT
 // Dynamic Match Management
@@ -42,7 +41,7 @@ function closeMatchModal() {
 // CREATE NEW MATCH
 // ==========================================
 
-function handleMatchSubmit(event) {
+async function handleMatchSubmit(event) {
     event.preventDefault();
 
     const team1Input = document.getElementById("team1");
@@ -200,19 +199,37 @@ function handleMatchSubmit(event) {
     };
 
 
-    // ==========================================
-    // SAVE MATCH
-    // ==========================================
-
     try {
+        const response = await fetch("/api/matches", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                team1,
+                team2,
+                overs,
+                tossWinner,
+                tossDecision
+            })
+        });
+
+        const savedMatch = await response.json();
+
+        if (!response.ok) {
+            throw new Error(savedMatch.message || "Unable to create the match.");
+        }
+
+        // The scorer will use this temporary copy until its data flow is
+        // upgraded to load and save balls through the API in the next phase.
         localStorage.setItem(
             "cricPulseMatch",
-            JSON.stringify(matchData)
+            JSON.stringify(savedMatch)
         );
     } catch (error) {
-        console.error("Unable to save match:", error);
+        console.error("Unable to create match:", error);
 
-        alert("Unable to save match data.");
+        alert(error.message || "Unable to create the match. Please try again.");
         return;
     }
 
