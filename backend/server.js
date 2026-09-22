@@ -13,43 +13,67 @@ const MATCHES_FILE = path.join(DATA_DIRECTORY, "matches.json");
 
 const VALID_OVERS = new Set([5, 10, 20, 50]);
 
+app.use(express.json({ limit: "20kb" }));
+
+// ==========================================
+// MATCH DATA
+// ==========================================
+
 function readMatches() {
     try {
-        const contents = fs.readFileSync(MATCHES_FILE, "utf8");
+        if (!fs.existsSync(MATCHES_FILE)) {
+            return [];
+        }
+
+        const contents = fs.readFileSync(
+            MATCHES_FILE,
+            "utf8"
+        );
+
         const matches = JSON.parse(contents);
 
         return Array.isArray(matches) ? matches : [];
     } catch (error) {
-        if (error.code !== "ENOENT") {
-            console.error("Unable to read match data:", error);
-        }
+        console.error(
+            "Unable to read match data:",
+            error
+        );
 
         return [];
     }
 }
 
-function saveMatches(matches) {
-    fs.mkdirSync(DATA_DIRECTORY, { recursive: true });
 
-    const temporaryFile = `${MATCHES_FILE}.tmp`;
+function saveMatches(matches) {
+    fs.mkdirSync(DATA_DIRECTORY, {
+        recursive: true
+    });
 
     fs.writeFileSync(
-        temporaryFile,
-        JSON.stringify(matches, null, 2)
+        MATCHES_FILE,
+        JSON.stringify(matches, null, 2),
+        "utf8"
     );
-
-    fs.renameSync(temporaryFile, MATCHES_FILE);
 }
 
-function createMatch({
-    team1,
-    team2,
-    overs,
-    tossWinner,
-    tossDecision
-}) {
+
+// ==========================================
+// CREATE MATCH
+// ==========================================
+
+function createMatch(data) {
+    const {
+        team1,
+        team2,
+        overs,
+        tossWinner,
+        tossDecision
+    } = data;
+
     const tossWinnerName =
-        tossWinner === "team1" ? team1 : team2;
+        tossWinner === "team1"
+            ? team1
+            : team2;
 
     const battingTeam =
         tossDecision === "bat"
@@ -59,18 +83,26 @@ function createMatch({
                 : team1;
 
     const bowlingTeam =
-        battingTeam === team1 ? team2 : team1;
+        battingTeam === team1
+            ? team2
+            : team1;
+
+    const now = new Date().toISOString();
 
     return {
         id: randomUUID(),
+
         team1,
         team2,
         overs,
+
         tossWinner,
         tossWinnerName,
         tossDecision,
+
         battingTeam,
         bowlingTeam,
+
         currentInnings: 1,
         status: "LIVE",
 
@@ -92,12 +124,19 @@ function createMatch({
 
         balls: [],
         recentBalls: [],
+
         target: null,
         result: null,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString()
+
+        createdAt: now,
+        updatedAt: now
     };
 }
+
+
+// ==========================================
+// VALIDATE MATCH
+// ==========================================
 
 function validateMatchInput(body) {
     const team1 =
@@ -121,7 +160,10 @@ function validateMatchInput(body) {
         };
     }
 
-    if (team1.toLowerCase() === team2.toLowerCase()) {
+    if (
+        team1.toLowerCase() ===
+        team2.toLowerCase()
+    ) {
         return {
             error: "The two teams must be different."
         };
@@ -129,7 +171,8 @@ function validateMatchInput(body) {
 
     if (!VALID_OVERS.has(overs)) {
         return {
-            error: "Overs must be 5, 10, 20, or 50."
+            error:
+                "Overs must be 5, 10, 20, or 50."
         };
     }
 
@@ -147,7 +190,8 @@ function validateMatchInput(body) {
         tossDecision !== "bowl"
     ) {
         return {
-            error: "Choose whether the toss winner bats or bowls."
+            error:
+                "Choose whether the toss winner bats or bowls."
         };
     }
 
@@ -162,11 +206,10 @@ function validateMatchInput(body) {
     };
 }
 
-app.use(express.json({ limit: "20kb" }));
 
-// ----------------------------------------
-// HEALTH CHECK
-// ----------------------------------------
+// ==========================================
+// HEALTH
+// ==========================================
 
 app.get("/api/health", (request, response) => {
     response.json({
@@ -174,95 +217,125 @@ app.get("/api/health", (request, response) => {
     });
 });
 
-// ----------------------------------------
-// TEAMS - SUPABASE
-// ----------------------------------------
+
+// ==========================================
+// TEAMS
+// ==========================================
 
 app.get("/api/teams", async (request, response) => {
     try {
-        const { data, error } = await supabase
+        const result = await supabase
             .from("teams")
             .select("*")
-            .order("id", {
+            .order("created_at", {
                 ascending: true
             });
 
-        if (error) {
-            console.error("Supabase teams error:", error);
+        if (result.error) {
+            console.error(
+                "Supabase teams error:",
+                result.error
+            );
 
             return response.status(500).json({
-                message: "Unable to load teams."
+                message: "Unable to load teams.",
+                error: result.error.message
             });
         }
 
-        response.json(data);
+        return response.json(
+            result.data || []
+        );
     } catch (error) {
-        console.error("Teams API error:", error);
+        console.error(
+            "Teams API error:",
+            error
+        );
 
-        response.status(500).json({
-            message: "Something went wrong while loading teams."
+        return response.status(500).json({
+            message: "Unable to load teams.",
+            error: error.message
         });
     }
 });
 
+
 app.post("/api/teams", async (request, response) => {
     try {
+        const body = request.body || {};
+
         const name =
-            typeof request.body.name === "string"
-                ? request.body.name.trim()
+            typeof body.name === "string"
+                ? body.name.trim()
                 : "";
 
         const shortName =
-            typeof request.body.short_name === "string"
-                ? request.body.short_name.trim()
+            typeof body.short_name === "string"
+                ? body.short_name.trim()
                 : "";
 
         if (!name || !shortName) {
             return response.status(400).json({
-                message: "Team name and short name are required."
+                message:
+                    "Team name and short name are required."
             });
         }
 
-        const { data, error } = await supabase
+        const result = await supabase
             .from("teams")
-            .insert([
-                {
-                    name,
-                    short_name: shortName
-                }
-            ])
-            .select()
+            .insert({
+                name,
+                short_name: shortName
+            })
+            .select("*")
             .single();
 
-        if (error) {
-            console.error("Supabase create team error:", error);
+        if (result.error) {
+            console.error(
+                "Supabase create team error:",
+                result.error
+            );
 
             return response.status(500).json({
-                message: "Unable to create team."
+                message: "Unable to create team.",
+                error: result.error.message
             });
         }
 
-        response.status(201).json(data);
+        return response.status(201).json(
+            result.data
+        );
     } catch (error) {
-        console.error("Create team API error:", error);
+        console.error(
+            "Create team API error:",
+            error
+        );
 
-        response.status(500).json({
-            message: "Something went wrong while creating the team."
+        return response.status(500).json({
+            message: "Unable to create team.",
+            error: error.message
         });
     }
 });
 
-// ----------------------------------------
-// EXISTING MATCH SYSTEM
-// ----------------------------------------
+
+// ==========================================
+// MATCHES
+// ==========================================
 
 app.get("/api/matches", (request, response) => {
-    response.json(readMatches());
+    const matches = readMatches();
+
+    response.json(matches);
 });
 
+
 app.get("/api/matches/:id", (request, response) => {
-    const match = readMatches().find(
-        (item) => item.id === request.params.id
+    const matches = readMatches();
+
+    const match = matches.find(
+        (item) =>
+            item.id === request.params.id
     );
 
     if (!match) {
@@ -274,10 +347,12 @@ app.get("/api/matches/:id", (request, response) => {
     response.json(match);
 });
 
+
 app.post("/api/matches", (request, response) => {
-    const validation = validateMatchInput(
-        request.body || {}
-    );
+    const validation =
+        validateMatchInput(
+            request.body || {}
+        );
 
     if (validation.error) {
         return response.status(400).json({
@@ -287,9 +362,8 @@ app.post("/api/matches", (request, response) => {
 
     const matches = readMatches();
 
-    const match = createMatch(
-        validation.value
-    );
+    const match =
+        createMatch(validation.value);
 
     matches.unshift(match);
 
@@ -298,11 +372,201 @@ app.post("/api/matches", (request, response) => {
     response.status(201).json(match);
 });
 
-// ----------------------------------------
-// FRONTEND
-// ----------------------------------------
 
-app.use(express.static(FRONTEND_DIRECTORY));
+// ==========================================
+// RECORD BALL
+// ==========================================
+
+app.post(
+    "/api/matches/:id/balls",
+    (request, response) => {
+
+        const matches = readMatches();
+
+        const match = matches.find(
+            (item) =>
+                item.id === request.params.id
+        );
+
+        if (!match) {
+            return response.status(404).json({
+                message: "Match not found."
+            });
+        }
+
+
+        if (match.status !== "LIVE") {
+            return response.status(400).json({
+                message: "This match is not live."
+            });
+        }
+
+
+        const runs = Number(request.body.runs);
+        const wickets = Number(request.body.wickets);
+
+
+        if (
+            !Number.isInteger(runs) ||
+            runs < 0 ||
+            !Number.isInteger(wickets) ||
+            wickets < 0
+        ) {
+            return response.status(400).json({
+                message: "Invalid ball data."
+            });
+        }
+
+
+        if (wickets > 1) {
+            return response.status(400).json({
+                message: "Only one wicket can be recorded per ball."
+            });
+        }
+
+
+        const battingTeam =
+            match.battingTeam === match.team1
+                ? match.teams.team1
+                : match.teams.team2;
+
+
+        const maximumBalls =
+            match.overs * 6;
+
+
+        if (battingTeam.balls >= maximumBalls) {
+            return response.status(400).json({
+                message: "Maximum overs completed."
+            });
+        }
+
+
+        if (battingTeam.wickets >= 10) {
+            return response.status(400).json({
+                message: "All wickets are down."
+            });
+        }
+
+
+        // Update score
+
+        battingTeam.runs += runs;
+
+        battingTeam.wickets += wickets;
+
+        battingTeam.balls += 1;
+
+
+        // Create ball record
+
+        const ball = {
+            number: match.balls.length + 1,
+            runs: runs,
+            wickets: wickets,
+            display:
+                typeof request.body.display === "string"
+                    ? request.body.display
+                    : wickets > 0
+                        ? "W"
+                        : String(runs),
+            timestamp: new Date().toISOString()
+        };
+
+
+        match.balls.push(ball);
+
+
+        // Keep only recent 12 balls
+
+        match.recentBalls =
+            match.balls.slice(-12);
+
+
+        match.updatedAt =
+            new Date().toISOString();
+
+
+        // Check innings completion
+
+        if (
+            battingTeam.balls >= maximumBalls ||
+            battingTeam.wickets >= 10
+        ) {
+            match.status = "COMPLETED";
+        }
+
+
+        saveMatches(matches);
+
+
+        return response.json(match);
+    }
+);
+
+
+// ==========================================
+// RESET MATCH
+// ==========================================
+
+app.post(
+    "/api/matches/:id/reset",
+    (request, response) => {
+
+        const matches = readMatches();
+
+        const match = matches.find(
+            (item) =>
+                item.id === request.params.id
+        );
+
+        if (!match) {
+            return response.status(404).json({
+                message: "Match not found."
+            });
+        }
+
+
+        match.teams.team1.runs = 0;
+        match.teams.team1.wickets = 0;
+        match.teams.team1.balls = 0;
+
+
+        match.teams.team2.runs = 0;
+        match.teams.team2.wickets = 0;
+        match.teams.team2.balls = 0;
+
+
+        match.balls = [];
+        match.recentBalls = [];
+
+
+        match.currentInnings = 1;
+        match.status = "LIVE";
+        match.target = null;
+        match.result = null;
+
+
+        match.updatedAt =
+            new Date().toISOString();
+
+
+        saveMatches(matches);
+
+
+        return response.json(match);
+    }
+);
+
+
+// ==========================================
+// FRONTEND
+// ==========================================
+
+app.use(
+    express.static(FRONTEND_DIRECTORY)
+);
+
 
 app.get("/", (request, response) => {
     response.sendFile(
@@ -313,9 +577,10 @@ app.get("/", (request, response) => {
     );
 });
 
-// ----------------------------------------
+
+// ==========================================
 // ERROR HANDLER
-// ----------------------------------------
+// ==========================================
 
 app.use(
     (
@@ -324,6 +589,13 @@ app.use(
         response,
         next
     ) => {
+
+        console.error(
+            "Unexpected server error:",
+            error
+        );
+
+
         if (
             error instanceof SyntaxError &&
             "body" in error
@@ -334,10 +606,6 @@ app.use(
             });
         }
 
-        console.error(
-            "Unexpected server error:",
-            error
-        );
 
         response.status(500).json({
             message:
@@ -346,9 +614,10 @@ app.use(
     }
 );
 
-// ----------------------------------------
+
+// ==========================================
 // START SERVER
-// ----------------------------------------
+// ==========================================
 
 app.listen(PORT, () => {
     console.log(
