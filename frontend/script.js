@@ -1,7 +1,9 @@
 // ==========================================
 // CRICPULSE - MAIN JAVASCRIPT
-// Dynamic Match Management
+// MATCH CREATION + PLAYER SETUP
 // ==========================================
+
+let playerSetupMode = false;
 
 
 // ==========================================
@@ -9,6 +11,7 @@
 // ==========================================
 
 function openMatchModal() {
+
     const modal = document.getElementById("matchModal");
 
     if (!modal) {
@@ -24,6 +27,7 @@ function openMatchModal() {
 
 
 function closeMatchModal() {
+
     const modal = document.getElementById("matchModal");
 
     if (!modal) {
@@ -42,13 +46,24 @@ function closeMatchModal() {
 // ==========================================
 
 async function handleMatchSubmit(event) {
+
     event.preventDefault();
 
-    const team1Input = document.getElementById("team1");
-    const team2Input = document.getElementById("team2");
-    const oversInput = document.getElementById("overs");
-    const tossInput = document.getElementById("toss");
-    const tossDecisionInput = document.getElementById("tossDecision");
+    const team1Input =
+        document.getElementById("team1");
+
+    const team2Input =
+        document.getElementById("team2");
+
+    const oversInput =
+        document.getElementById("overs");
+
+    const tossInput =
+        document.getElementById("toss");
+
+    const tossDecisionInput =
+        document.getElementById("tossDecision");
+
 
     if (
         !team1Input ||
@@ -57,179 +72,364 @@ async function handleMatchSubmit(event) {
         !tossInput ||
         !tossDecisionInput
     ) {
+
         alert("Match setup form could not be loaded.");
+
         return;
     }
 
 
     // ==========================================
-    // GET USER INPUT
+    // GET INPUT
     // ==========================================
 
-    const team1 = team1Input.value.trim();
-    const team2 = team2Input.value.trim();
+    const team1 =
+        team1Input.value.trim();
 
-    const overs = Number(oversInput.value);
+    const team2 =
+        team2Input.value.trim();
 
-    const tossWinner = tossInput.value;
-    const tossDecision = tossDecisionInput.value;
+    const overs =
+        Number(oversInput.value);
+
+    const tossWinner =
+        tossInput.value;
+
+    const tossDecision =
+        tossDecisionInput.value;
 
 
     // ==========================================
     // VALIDATION
     // ==========================================
 
-    if (team1 === "" || team2 === "") {
+    if (!team1 || !team2) {
+
         alert("Please enter both team names.");
+
         return;
     }
 
 
-    if (team1.toLowerCase() === team2.toLowerCase()) {
-        alert("Team 1 and Team 2 must be different.");
+    if (
+        team1.toLowerCase() ===
+        team2.toLowerCase()
+    ) {
+
+        alert(
+            "Team 1 and Team 2 must be different."
+        );
+
         return;
     }
 
 
     if (![5, 10, 20, 50].includes(overs)) {
-        alert("Please select a valid number of overs.");
+
+        alert(
+            "Please select a valid number of overs."
+        );
+
         return;
     }
 
 
-    if (tossWinner !== "team1" && tossWinner !== "team2") {
-        alert("Please select the toss winner.");
+    if (
+        tossWinner !== "team1" &&
+        tossWinner !== "team2"
+    ) {
+
+        alert(
+            "Please select the toss winner."
+        );
+
         return;
     }
 
 
-    if (tossDecision !== "bat" && tossDecision !== "bowl") {
-        alert("Please select the toss decision.");
+    if (
+        tossDecision !== "bat" &&
+        tossDecision !== "bowl"
+    ) {
+
+        alert(
+            "Please select the toss decision."
+        );
+
         return;
     }
 
 
     // ==========================================
-    // FIND TOSS WINNER NAME
+    // TOSS
     // ==========================================
 
     const tossWinnerName =
-        tossWinner === "team1" ? team1 : team2;
+        tossWinner === "team1"
+            ? team1
+            : team2;
 
 
-    // ==========================================
-    // FIND BATTING TEAM
-    // ==========================================
+    const battingTeam =
+        tossDecision === "bat"
+            ? tossWinnerName
+            : tossWinner === "team1"
+                ? team2
+                : team1;
 
-    let battingTeam;
-
-    if (tossDecision === "bat") {
-        battingTeam = tossWinnerName;
-    } else {
-        battingTeam =
-            tossWinner === "team1" ? team2 : team1;
-    }
-
-
-    // ==========================================
-    // FIND BOWLING TEAM
-    // ==========================================
 
     const bowlingTeam =
-        battingTeam === team1 ? team2 : team1;
+        battingTeam === team1
+            ? team2
+            : team1;
 
 
     // ==========================================
-    // INITIAL TEAM DATA
+    // DEFAULT PLAYERS
+    //
+    // We create 11 player slots for each team.
+    // Names will be editable in the scorer.
     // ==========================================
 
-    const team1Data = {
-        name: team1,
-        runs: 0,
-        wickets: 0,
-        balls: 0
-    };
+    const team1Players =
+        createDefaultPlayers(team1);
 
-
-    const team2Data = {
-        name: team2,
-        runs: 0,
-        wickets: 0,
-        balls: 0
-    };
+    const team2Players =
+        createDefaultPlayers(team2);
 
 
     // ==========================================
-    // CREATE MATCH OBJECT
+    // MATCH DATA
     // ==========================================
 
     const matchData = {
-        id: Date.now(),
 
-        team1: team1,
-        team2: team2,
+        team1,
 
-        overs: overs,
+        team2,
 
-        tossWinner: tossWinner,
-        tossWinnerName: tossWinnerName,
-        tossDecision: tossDecision,
+        overs,
 
-        battingTeam: battingTeam,
-        bowlingTeam: bowlingTeam,
+        tossWinner,
+
+        tossWinnerName,
+
+        tossDecision,
+
+        battingTeam,
+
+        bowlingTeam,
 
         currentInnings: 1,
 
         status: "LIVE",
 
+        target: null,
+
+        result: null,
+
+
+        // ======================================
+        // TEAM DATA
+        // ======================================
+
         teams: {
-            team1: team1Data,
-            team2: team2Data
+
+            team1: {
+
+                name: team1,
+
+                runs: 0,
+
+                wickets: 0,
+
+                balls: 0,
+
+                players: team1Players
+
+            },
+
+
+            team2: {
+
+                name: team2,
+
+                runs: 0,
+
+                wickets: 0,
+
+                balls: 0,
+
+                players: team2Players
+
+            }
+
         },
+
+
+        // ======================================
+        // SCORECARD DATA
+        // ======================================
+
+        scorecard: {
+
+            currentBatters: [],
+
+            currentBowler: null,
+
+            innings: {
+
+                first: {
+
+                    battingTeam: battingTeam,
+
+                    runs: 0,
+
+                    wickets: 0,
+
+                    balls: 0,
+
+                    overs: overs,
+
+                    completed: false
+
+                },
+
+                second: {
+
+                    battingTeam: bowlingTeam,
+
+                    runs: 0,
+
+                    wickets: 0,
+
+                    balls: 0,
+
+                    overs: overs,
+
+                    completed: false
+
+                }
+
+            }
+
+        },
+
+
+        // ======================================
+        // BALL DATA
+        // ======================================
 
         balls: [],
 
         recentBalls: [],
 
-        target: null,
 
-        result: null,
+        createdAt:
+            new Date().toISOString(),
 
-        createdAt: new Date().toISOString()
+        updatedAt:
+            new Date().toISOString()
+
     };
 
 
-    try {
-        const response = await fetch("/api/matches", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                team1,
-                team2,
-                overs,
-                tossWinner,
-                tossDecision
-            })
-        });
+    // ==========================================
+    // SEND TO BACKEND
+    // ==========================================
 
-        const savedMatch = await response.json();
+    try {
+
+        const response =
+            await fetch(
+                "/api/matches",
+                {
+
+                    method: "POST",
+
+                    headers: {
+
+                        "Content-Type":
+                            "application/json"
+
+                    },
+
+                    body:
+                        JSON.stringify({
+
+                            team1,
+
+                            team2,
+
+                            overs,
+
+                            tossWinner,
+
+                            tossDecision,
+
+                            team1Players,
+
+                            team2Players
+
+                        })
+
+                }
+            );
+
+
+        const savedMatch =
+            await response.json();
+
 
         if (!response.ok) {
-            throw new Error(savedMatch.message || "Unable to create the match.");
+
+            throw new Error(
+                savedMatch.message ||
+                "Unable to create the match."
+            );
+
         }
 
-        // The scorer will use this temporary copy until its data flow is
-        // upgraded to load and save balls through the API in the next phase.
+
+        // ======================================
+        // SAVE REAL BACKEND MATCH
+        // ======================================
+
         localStorage.setItem(
             "cricPulseMatch",
             JSON.stringify(savedMatch)
         );
-    } catch (error) {
-        console.error("Unable to create match:", error);
 
-        alert(error.message || "Unable to create the match. Please try again.");
+
+        // ======================================
+        // SAVE PLAYER SETUP TEMPORARILY
+        // ======================================
+
+        localStorage.setItem(
+            "cricPulsePlayers",
+            JSON.stringify({
+
+                team1: team1Players,
+
+                team2: team2Players
+
+            })
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "Unable to create match:",
+            error
+        );
+
+
+        alert(
+            error.message ||
+            "Unable to create the match. Please try again."
+        );
+
         return;
     }
 
@@ -245,7 +445,91 @@ async function handleMatchSubmit(event) {
     // OPEN SCORER
     // ==========================================
 
-    window.location.href = "scorer.html";
+    window.location.href =
+        "scorer.html";
+}
+
+
+// ==========================================
+// CREATE 11 PLAYERS
+// ==========================================
+
+function createDefaultPlayers(teamName) {
+
+    const players = [];
+
+
+    for (let i = 1; i <= 11; i++) {
+
+        players.push({
+
+            id:
+                `${teamName
+                    .toLowerCase()
+                    .replace(/[^a-z0-9]+/g, "-")
+                }-player-${i}`,
+
+            name:
+                `${teamName} Player ${i}`,
+
+            number:
+                i,
+
+            role:
+                i === 1
+                    ? "Batsman"
+                    : i === 2
+                        ? "Batsman"
+                        : i >= 8
+                            ? "Bowler"
+                            : "All-Rounder",
+
+
+            // ==================================
+            // BATTING STATISTICS
+            // ==================================
+
+            batting: {
+
+                runs: 0,
+
+                balls: 0,
+
+                fours: 0,
+
+                sixes: 0,
+
+                out: false,
+
+                dismissal: null
+
+            },
+
+
+            // ==================================
+            // BOWLING STATISTICS
+            // ==================================
+
+            bowling: {
+
+                balls: 0,
+
+                runs: 0,
+
+                wickets: 0,
+
+                wides: 0,
+
+                noBalls: 0
+
+            }
+
+        });
+
+    }
+
+
+    return players;
 }
 
 
@@ -254,16 +538,28 @@ async function handleMatchSubmit(event) {
 // ==========================================
 
 function getCurrentMatch() {
+
     const savedMatch =
-        localStorage.getItem("cricPulseMatch");
+        localStorage.getItem(
+            "cricPulseMatch"
+        );
+
 
     if (!savedMatch) {
+
         return null;
+
     }
 
+
     try {
-        return JSON.parse(savedMatch);
+
+        return JSON.parse(
+            savedMatch
+        );
+
     } catch (error) {
+
         console.error(
             "Unable to read saved match:",
             error
@@ -279,18 +575,25 @@ function getCurrentMatch() {
 // ==========================================
 
 function saveCurrentMatch(matchData) {
+
     if (!matchData) {
+
         return false;
+
     }
 
+
     try {
+
         localStorage.setItem(
             "cricPulseMatch",
             JSON.stringify(matchData)
         );
 
         return true;
+
     } catch (error) {
+
         console.error(
             "Unable to save current match:",
             error
@@ -306,7 +609,85 @@ function saveCurrentMatch(matchData) {
 // ==========================================
 
 function clearCurrentMatch() {
-    localStorage.removeItem("cricPulseMatch");
+
+    localStorage.removeItem(
+        "cricPulseMatch"
+    );
+
+    localStorage.removeItem(
+        "cricPulsePlayers"
+    );
+}
+
+
+// ==========================================
+// GET PLAYERS
+// ==========================================
+
+function getCurrentPlayers() {
+
+    const savedPlayers =
+        localStorage.getItem(
+            "cricPulsePlayers"
+        );
+
+
+    if (!savedPlayers) {
+
+        return null;
+
+    }
+
+
+    try {
+
+        return JSON.parse(
+            savedPlayers
+        );
+
+    } catch (error) {
+
+        console.error(
+            "Unable to read player data:",
+            error
+        );
+
+        return null;
+    }
+}
+
+
+// ==========================================
+// SAVE PLAYERS
+// ==========================================
+
+function saveCurrentPlayers(players) {
+
+    if (!players) {
+
+        return false;
+
+    }
+
+
+    try {
+
+        localStorage.setItem(
+            "cricPulsePlayers",
+            JSON.stringify(players)
+        );
+
+        return true;
+
+    } catch (error) {
+
+        console.error(
+            "Unable to save player data:",
+            error
+        );
+
+        return false;
+    }
 }
 
 
@@ -314,67 +695,120 @@ function clearCurrentMatch() {
 // TOURNAMENT TABS
 // ==========================================
 
-function switchTab(button, contentId) {
+function switchTab(
+    button,
+    contentId
+) {
+
     if (!button) {
+
         return;
+
     }
 
 
-    // Remove active state from all tabs
+    document
+        .querySelectorAll(".tab-btn")
+        .forEach(
+            function (btn) {
 
-    document.querySelectorAll(".tab-btn").forEach(function (btn) {
-        btn.classList.remove("active");
-        btn.setAttribute("aria-selected", "false");
-    });
+                btn.classList.remove(
+                    "active"
+                );
 
+                btn.setAttribute(
+                    "aria-selected",
+                    "false"
+                );
 
-    // Hide all tab content
-
-    document.querySelectorAll(".tab-content").forEach(function (content) {
-        content.classList.remove("active");
-    });
-
-
-    // Activate selected tab
-
-    button.classList.add("active");
-    button.setAttribute("aria-selected", "true");
+            }
+        );
 
 
-    // Show selected content
+    document
+        .querySelectorAll(".tab-content")
+        .forEach(
+            function (content) {
+
+                content.classList.remove(
+                    "active"
+                );
+
+            }
+        );
+
+
+    button.classList.add(
+        "active"
+    );
+
+
+    button.setAttribute(
+        "aria-selected",
+        "true"
+    );
+
 
     const selectedContent =
-        document.getElementById(contentId);
+        document.getElementById(
+            contentId
+        );
+
 
     if (selectedContent) {
-        selectedContent.classList.add("active");
+
+        selectedContent.classList.add(
+            "active"
+        );
+
     }
 }
 
 
 // ==========================================
-// CLOSE MODAL WITH ESCAPE KEY
+// ESCAPE KEY
 // ==========================================
 
-document.addEventListener("keydown", function (event) {
-    if (event.key === "Escape") {
-        closeMatchModal();
+document.addEventListener(
+    "keydown",
+    function (event) {
+
+        if (event.key === "Escape") {
+
+            closeMatchModal();
+
+        }
+
     }
-});
+);
 
 
 // ==========================================
-// CLOSE MODAL WHEN CLICKING OUTSIDE
+// CLICK OUTSIDE MODAL
 // ==========================================
 
-document.addEventListener("click", function (event) {
-    const modal = document.getElementById("matchModal");
+document.addEventListener(
+    "click",
+    function (event) {
 
-    if (!modal) {
-        return;
-    }
+        const modal =
+            document.getElementById(
+                "matchModal"
+            );
 
-    if (event.target === modal) {
-        closeMatchModal();
+
+        if (!modal) {
+
+            return;
+
+        }
+
+
+        if (event.target === modal) {
+
+            closeMatchModal();
+
+        }
+
     }
-});
+);
