@@ -90,6 +90,33 @@
 
         <div class="hero-content">
 
+            <div class="player-selection-panel">
+
+                <div class="selection-header">
+                    <span>Team Roles</span>
+                </div>
+
+                <div class="selection-grid">
+
+                    <label>
+                        <span>Striker</span>
+                        <select id="strikerSelect"></select>
+                    </label>
+
+                    <label>
+                        <span>Non-Striker</span>
+                        <select id="nonStrikerSelect"></select>
+                    </label>
+
+                    <label>
+                        <span>Bowler</span>
+                        <select id="bowlerSelect"></select>
+                    </label>
+
+                </div>
+
+            </div>
+
             <span class="hero-badge">
                 🔴 LIVE MATCH
             </span>
@@ -468,6 +495,124 @@
 
 
     // ==========================================
+    // PLAYER SELECTION
+    // ==========================================
+
+    function getSelectablePlayers(teamKey) {
+
+        const team = matchData?.teams?.[teamKey];
+
+        if (!team || !Array.isArray(team.players)) {
+            return [];
+        }
+
+        return team.players;
+    }
+
+    function getBowlingTeamData() {
+
+        if (matchData.bowlingTeam === matchData.team1) {
+            return matchData.teams.team1;
+        }
+
+        return matchData.teams.team2;
+    }
+
+    function populatePlayerSelectors() {
+
+        const battingTeam = getBattingTeamData();
+        const bowlingTeam = getBowlingTeamData();
+
+        const strikerSelect = document.getElementById("strikerSelect");
+        const nonStrikerSelect = document.getElementById("nonStrikerSelect");
+        const bowlerSelect = document.getElementById("bowlerSelect");
+
+        if (!strikerSelect || !nonStrikerSelect || !bowlerSelect) {
+            return;
+        }
+
+        const batterOptions = (battingTeam?.players || [])
+            .map((player) => {
+                return `<option value="${player.id}">${player.name}</option>`;
+            })
+            .join("");
+
+        const bowlerOptions = (bowlingTeam?.players || [])
+            .map((player) => {
+                return `<option value="${player.id}">${player.name}</option>`;
+            })
+            .join("");
+
+        strikerSelect.innerHTML = batterOptions;
+        nonStrikerSelect.innerHTML = batterOptions;
+        bowlerSelect.innerHTML = bowlerOptions;
+
+        const activePlayers = matchData.activePlayers || {};
+
+        strikerSelect.value = activePlayers.strikerId || battingTeam?.players?.[0]?.id || "";
+        nonStrikerSelect.value = activePlayers.nonStrikerId || battingTeam?.players?.[1]?.id || "";
+        bowlerSelect.value = activePlayers.bowlerId || bowlingTeam?.players?.[0]?.id || "";
+
+    }
+
+    async function updateActivePlayers() {
+
+        const strikerSelect = document.getElementById("strikerSelect");
+        const nonStrikerSelect = document.getElementById("nonStrikerSelect");
+        const bowlerSelect = document.getElementById("bowlerSelect");
+
+        if (!strikerSelect || !nonStrikerSelect || !bowlerSelect) {
+            return;
+        }
+
+        try {
+
+            const response = await fetch(
+                "/api/matches/" +
+                    encodeURIComponent(matchData.id) +
+                    "/players",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        strikerId: strikerSelect.value,
+                        nonStrikerId: nonStrikerSelect.value,
+                        bowlerId: bowlerSelect.value
+                    })
+                }
+            );
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.message || "Unable to update players.");
+            }
+
+            matchData = data;
+            localStorage.setItem("cricPulseMatch", JSON.stringify(matchData));
+
+        } catch (error) {
+            console.error("Unable to update active players:", error);
+            alert(error.message || "Unable to update active players.");
+        }
+
+    }
+
+    document.addEventListener("change", function (event) {
+        if (
+            event.target && (
+                event.target.id === "strikerSelect" ||
+                event.target.id === "nonStrikerSelect" ||
+                event.target.id === "bowlerSelect"
+            )
+        ) {
+            updateActivePlayers();
+        }
+    });
+
+    // ==========================================
     // LOAD MATCH FROM BACKEND
     // ==========================================
 
@@ -505,6 +650,7 @@
             );
 
 
+            populatePlayerSelectors();
             updateMatchInformation();
 
             updateScore();

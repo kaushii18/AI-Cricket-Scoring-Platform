@@ -165,9 +165,18 @@ function preparePlayers(players) {
     return players
         .map((player) => {
 
-            return typeof player === "string"
-                ? player.trim()
-                : "";
+            if (typeof player === "string") {
+                return player.trim();
+            }
+
+            if (
+                player &&
+                typeof player.name === "string"
+            ) {
+                return player.name.trim();
+            }
+
+            return "";
 
         })
         .filter(Boolean)
