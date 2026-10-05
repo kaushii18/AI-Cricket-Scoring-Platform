@@ -2399,7 +2399,24 @@ h3,
     border-color: var(--border);
 }
 
-@media (max-width: 760px) {
+@media (min-width: 641px) and (max-width: 900px) {
+    .dashboard-hero {
+        grid-template-columns: minmax(0, 1fr) minmax(235px, 0.78fr);
+        gap: 28px;
+        min-height: 340px;
+        padding: 42px 0;
+    }
+
+    .dashboard-hero h1 {
+        font-size: clamp(42px, 6vw, 56px);
+    }
+
+    .setup-board {
+        padding: 20px;
+    }
+}
+
+@media (max-width: 640px) {
     .dashboard-hero {
         grid-template-columns: 1fr;
         gap: 30px;
@@ -2498,5 +2515,218 @@ h3,
 
     .player-list-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+.setup-board {
+    position: relative;
+    align-self: center;
+    padding: 25px;
+    overflow: hidden;
+    border: 1px solid rgba(178, 236, 191, 0.2);
+    border-radius: 16px;
+    background:
+        linear-gradient(135deg, rgba(31, 60, 40, 0.88), rgba(14, 25, 18, 0.97) 70%),
+        #111a14;
+    box-shadow: 0 22px 58px rgba(0, 0, 0, 0.28);
+}
+
+.setup-board::after {
+    position: absolute;
+    right: -35px;
+    bottom: -52px;
+    width: 155px;
+    height: 155px;
+    border: 1px solid rgba(176, 239, 193, 0.09);
+    border-radius: 50%;
+    content: "";
+    pointer-events: none;
+}
+
+.setup-board-head,
+.setup-team-row,
+.setup-board-foot {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+}
+
+.setup-board-head {
+    justify-content: space-between;
+    margin-bottom: 27px;
+}
+
+.setup-board-head .section-kicker {
+    margin: 0;
+    color: #a2d9ae;
+}
+
+.setup-board-mark {
+    display: grid;
+    width: 35px;
+    aspect-ratio: 1;
+    place-items: center;
+    border: 1px solid rgba(191, 238, 201, 0.22);
+    border-radius: 10px;
+    color: #c6f1ce;
+    font-size: 17px;
+    font-weight: 800;
+}
+
+.setup-team-row {
+    gap: 13px;
+    min-height: 72px;
+    border-top: 1px solid rgba(221, 239, 225, 0.1);
+}
+
+.setup-team-code {
+    color: #87b894;
+    font-size: 12px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+}
+
+.setup-team-row strong {
+    flex: 1;
+    color: #edf6ee;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.setup-team-status {
+    color: #9fd8ac;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+}
+
+.setup-board-foot {
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 11px;
+    padding-top: 18px;
+    border-top: 1px solid rgba(221, 239, 225, 0.1);
+}
+
+.setup-board-foot span {
+    color: #91a398;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+}
+
+.setup-board-foot strong {
+    color: #edf6ee;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.dashboard-hero .hero-cta {
+    min-height: 54px;
+    gap: 11px;
+    padding: 14px 21px;
+    font-size: 15px;
+}
+
+.player-team-grid {
+    gap: 16px;
+}
+
+.player-team-header h3 {
+    color: #edf6ee;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.player-team-header span {
+    color: #a2b4a5;
+    font-size: 9px;
+}
+
+.player-list-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    max-height: 372px;
+    gap: 9px;
+}
+
+.player-name-input {
+    min-height: 52px;
+    padding: 12px 13px;
+    border-color: rgba(201, 227, 205, 0.2);
+    background: #101a14;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.player-name-input::placeholder {
+    color: #9eafa2;
+    font-size: 13px;
+    font-weight: 500;
+    opacity: 1;
+}
+
+.player-name-input:focus {
+    border-color: #8be5a7;
+    background: #14251a;
+    box-shadow: 0 0 0 3px rgba(139, 229, 167, 0.13);
+}
+
+.selection-grid label {
+    color: #d0ddd2;
+    font-size: 14px;
+}
+
+.selection-grid select {
+    width: 100%;
+    min-height: 52px;
+    padding: 10px 12px;
+    border: 1px solid rgba(201, 227, 205, 0.2);
+    border-radius: var(--radius-md);
+    color: #f0f6f1;
+    background: #101a14;
+    font: 600 15px "DM Sans", sans-serif;
+}
+
+@media (max-width: 760px) {
+    .setup-board {
+        width: 100%;
+    }
+}
+
+@media (max-width: 560px) {
+    .setup-board {
+        padding: 19px;
+    }
+
+    .setup-team-row {
+        min-height: 62px;
+    }
+
+    .setup-team-row strong {
+        font-size: 14px;
+    }
+
+    .setup-board-foot {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .player-team-grid {
+        gap: 12px;
+    }
+
+    .player-list-grid {
+        max-height: 330px;
+    }
+
+    .player-name-input {
+        min-height: 50px;
+        padding: 10px;
+        font-size: 15px;
+    }
+
+    .player-name-input::placeholder {
+        font-size: 11px;
     }
 }

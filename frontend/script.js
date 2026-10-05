@@ -78,17 +78,13 @@ function buildPlayerNameInputs(teamKey, teamName) {
     for (let index = 0; index < 11; index += 1) {
 
         const input = document.createElement("input");
+        const playerNumber = String(index + 1).padStart(2, "0");
         input.type = "text";
         input.maxLength = 50;
         input.autocomplete = "off";
         input.className = `${teamKey}-player-input player-name-input`;
         input.setAttribute("aria-label", `${teamName} player ${index + 1}`);
-        input.dataset.defaultName = `${teamName} Player ${index + 1}`;
-        input.value = input.dataset.defaultName;
-
-        input.addEventListener("input", function () {
-            input.dataset.customized = "true";
-        });
+        input.placeholder = `${playerNumber}  Enter player name`;
 
         inputs.push(input);
 
@@ -129,19 +125,11 @@ function syncDefaultPlayerNames() {
     }
 
     Array.from(document.querySelectorAll(".team1-player-input")).forEach((input, index) => {
-        if (!input.dataset.customized) {
-            input.value = `${team1Name} Player ${index + 1}`;
-            input.dataset.defaultName = input.value;
-            input.setAttribute("aria-label", `${team1Name} player ${index + 1}`);
-        }
+        input.setAttribute("aria-label", `${team1Name} player ${index + 1}`);
     });
 
     Array.from(document.querySelectorAll(".team2-player-input")).forEach((input, index) => {
-        if (!input.dataset.customized) {
-            input.value = `${team2Name} Player ${index + 1}`;
-            input.dataset.defaultName = input.value;
-            input.setAttribute("aria-label", `${team2Name} player ${index + 1}`);
-        }
+        input.setAttribute("aria-label", `${team2Name} player ${index + 1}`);
     });
 
 }

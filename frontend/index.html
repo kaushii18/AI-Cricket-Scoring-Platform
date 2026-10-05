@@ -39,49 +39,34 @@
     <main id="main-content" class="main-content">
         <section class="dashboard-hero">
             <div class="hero-content">
-                <span class="hero-badge"><span class="eyebrow-mark"></span> YOUR MATCH CENTRE</span>
-                <h1>Cricket, <span>in real time.</span></h1>
-                <p>Every delivery, every score, one live view. Start a match or jump back into the action.</p>
+                <span class="hero-badge"><span class="eyebrow-mark"></span> CRICPULSE MATCH DESK</span>
+                <h1>Make this match <span>yours.</span></h1>
+                <p>Set your teams, add the players by name, and move straight into live scoring.</p>
                 <button type="button" class="primary-button hero-cta" onclick="openMatchModal()">
-                    Set up a match <span aria-hidden="true">↗</span>
+                    <span aria-hidden="true">+</span> Start a new match <span aria-hidden="true">↗</span>
                 </button>
             </div>
 
-            <aside class="dashboard-summary" aria-label="Live match summary">
-                <div class="summary-topline">
-                    <span class="summary-icon" aria-hidden="true">◎</span>
-                    <span>LIVE CENTRE</span>
-                    <span class="summary-indicator"><i></i> UPDATING</span>
+            <aside class="setup-board" aria-label="New match overview">
+                <div class="setup-board-head">
+                    <span class="section-kicker">FRESH FIXTURE</span>
+                    <span class="setup-board-mark" aria-hidden="true">C</span>
                 </div>
-                <div class="summary-number" id="liveMatchCount">—</div>
-                <p id="liveMatchLabel">Checking live matches</p>
-                <div class="summary-divider"></div>
-                <p class="summary-note">Live scores refresh automatically as deliveries are recorded.</p>
+                <div class="setup-team-row">
+                    <span class="setup-team-code">01</span>
+                    <strong>Your first team</strong>
+                    <span class="setup-team-status">READY</span>
+                </div>
+                <div class="setup-team-row">
+                    <span class="setup-team-code">02</span>
+                    <strong>Your second team</strong>
+                    <span class="setup-team-status">READY</span>
+                </div>
+                <div class="setup-board-foot">
+                    <span>TEAM LINEUPS</span>
+                    <strong>Up to 11 players each</strong>
+                </div>
             </aside>
-        </section>
-
-        <section class="matches-section" aria-labelledby="matchesHeading">
-            <div class="section-heading">
-                <div>
-                    <span class="section-kicker">ON THE FIELD</span>
-                    <h2 id="matchesHeading">Live matches</h2>
-                </div>
-                <span id="matchUpdatedAt" class="updated-label">Waiting for score data</span>
-            </div>
-
-            <div id="matchList" class="live-match-list" aria-live="polite" aria-busy="true">
-                <div class="match-state-card">
-                    <span class="loading-spinner" aria-hidden="true"></span>
-                    <p>Loading live matches…</p>
-                </div>
-            </div>
-            <p id="matchLoadError" class="inline-error" role="alert" hidden></p>
-        </section>
-
-        <section class="dashboard-note">
-            <span class="note-mark" aria-hidden="true">✳</span>
-            <p><strong>Ready when you are.</strong> Match data is stored locally by this app. Create a match to begin live scoring.</p>
-            <button type="button" class="text-action" onclick="openMatchModal()">Create match <span aria-hidden="true">→</span></button>
         </section>
     </main>
 
@@ -167,3 +152,4 @@
 </body>
 
 </html>
+npm start

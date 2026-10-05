@@ -89,6 +89,117 @@
             border: 1px solid rgba(255,255,255,0.10);
         }
 
+        .batting-card {
+            margin: 18px 0;
+            padding: 22px;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.10);
+            border-radius: 18px;
+            background: rgba(255,255,255,0.035);
+        }
+
+        .batting-card-header {
+            display: flex;
+            align-items: end;
+            justify-content: space-between;
+            gap: 16px;
+            margin-bottom: 15px;
+        }
+
+        .batting-card-header h2 {
+            margin: 0;
+            font-size: 20px;
+        }
+
+        .batting-card-header p {
+            margin: 5px 0 0;
+            color: #9ca89f;
+            font-size: 13px;
+        }
+
+        .batting-card-team {
+            color: #a5eabd;
+            font-size: 13px;
+            font-weight: 700;
+            text-align: right;
+        }
+
+        .batting-table-wrap {
+            overflow-x: auto;
+        }
+
+        .batting-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: right;
+            white-space: nowrap;
+        }
+
+        .batting-table th,
+        .batting-table td {
+            padding: 12px 10px;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            font-variant-numeric: tabular-nums;
+        }
+
+        .batting-table th {
+            color: #aab6ac;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+        }
+
+        .batting-table th:first-child,
+        .batting-table td:first-child {
+            text-align: left;
+        }
+
+        .batting-table tbody tr:last-child td {
+            border-bottom: 0;
+        }
+
+        .batter-name-cell {
+            min-width: 150px;
+            color: #f0f6f1;
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        .batter-name-line {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .batter-status {
+            display: block;
+            margin-top: 3px;
+            color: #8d9b90;
+            font-size: 11px;
+            font-weight: 500;
+        }
+
+        .batter-status.active {
+            color: #a5eabd;
+        }
+
+        .batter-status.out {
+            color: #f0a899;
+        }
+
+        .batter-runs {
+            color: #f5f7f2;
+            font-size: 19px;
+            font-weight: 800;
+        }
+
+        .batting-empty {
+            padding: 17px 10px;
+            color: #9ca89f;
+            text-align: left;
+        }
+
         .score-team {
             text-align: center;
         }
@@ -337,41 +448,457 @@
             border-color: rgba(255,80,80,0.45);
         }
 
-        @media (max-width: 700px) {
+        .score-page {
+            width: min(1160px, 94%);
+            max-width: none;
+            padding: 24px 0 48px;
+        }
 
+        .match-overview {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) minmax(220px, 0.45fr);
+            align-items: center;
+            gap: 28px;
+            margin-bottom: 18px;
+            padding: 18px 22px;
+            border: 1px solid rgba(221, 239, 225, 0.1);
+            border-radius: 14px;
+            background: rgba(18, 31, 24, 0.88);
+        }
+
+        .match-identity h2 {
+            margin: 0 0 6px;
+            color: #f1f5f0;
+            font-size: clamp(22px, 3vw, 30px);
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        .match-identity p {
+            color: #aab7ad;
+            font-size: 13px;
+        }
+
+        .match-overview .status-card {
+            margin: 0;
+            padding: 0 0 0 20px;
+            border: 0;
+            border-left: 1px solid rgba(221, 239, 225, 0.12);
+            border-radius: 0;
+            background: transparent;
+        }
+
+        .match-overview .status-label {
+            margin: 0 0 4px;
+            color: #9fe8b4;
+            font-size: 10px;
+        }
+
+        .match-overview .status-title {
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        .match-overview .status-subtitle {
+            margin-top: 2px;
+            color: #96a499;
+            font-size: 11px;
+        }
+
+        .match-overview .hero-badge {
+            display: none;
+        }
+
+        .scoreboard {
+            min-height: 220px;
+            border-color: rgba(156, 242, 191, 0.2);
+            border-radius: 14px;
+            background: linear-gradient(110deg, #12251a, #0d1a13 55%, #122019);
+        }
+
+        .score-team.active {
+            transform: none;
+        }
+
+        .score-team:first-child .main-score {
+            color: #b5f2c5;
+            font-size: clamp(54px, 8vw, 78px);
+            font-variant-numeric: tabular-nums;
+        }
+
+        .vs-circle {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            color: #bac8bc;
+            font-size: 12px;
+        }
+
+        .vs-area {
+            min-width: 78px;
+        }
+
+        .match-metrics {
+            display: grid;
+            grid-template-columns: minmax(190px, 0.72fr) minmax(0, 2fr);
+            align-items: stretch;
+            gap: 12px;
+            margin: 12px 0 18px;
+        }
+
+        .match-metrics .target-box {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            min-width: 0;
+            margin: 0;
+            padding: 12px 16px;
+            border-color: rgba(245, 196, 81, 0.22);
+            border-radius: 10px;
+            text-align: left;
+            background: rgba(245, 196, 81, 0.055);
+        }
+
+        .match-metrics .target-label {
+            font-size: 10px;
+        }
+
+        .match-metrics .target-number {
+            margin: 0;
+            font-size: 26px;
+        }
+
+        .match-metrics .runs-needed {
+            max-width: 120px;
+            color: #c7c7b0;
+            font-size: 10px;
+            text-align: right;
+        }
+
+        .info-grid {
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 0;
+            margin: 0;
+            padding: 6px 0;
+            border: 1px solid rgba(221, 239, 225, 0.1);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.025);
+        }
+
+        .info-box {
+            padding: 8px 10px;
+            border: 0;
+            border-right: 1px solid rgba(221, 239, 225, 0.1);
+            border-radius: 0;
+            background: transparent;
+        }
+
+        .info-box:last-child {
+            border-right: 0;
+        }
+
+        .info-label {
+            font-size: 9px;
+            letter-spacing: 0.04em;
+        }
+
+        .info-value {
+            font-size: 18px;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .innings-banner {
+            margin: 0 0 16px;
+            padding: 10px 14px;
+            border-radius: 8px;
+            color: #b8e9c4;
+            font-size: 12px;
+        }
+
+        .batting-card,
+        .scoring-card,
+        .history-card,
+        .controls-card {
+            margin: 0;
+            padding: 18px;
+            border: 1px solid rgba(221, 239, 225, 0.1);
+            border-radius: 12px;
+            background: rgba(18, 31, 24, 0.78);
+        }
+
+        .batting-card {
+            margin-bottom: 18px;
+        }
+
+        .batting-card-header {
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .batting-table th,
+        .batting-table td {
+            padding: 10px 12px;
+        }
+
+        .batting-table tbody tr:nth-child(even) {
+            background: rgba(255, 255, 255, 0.018);
+        }
+
+        .live-action-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1.15fr) minmax(300px, 0.85fr);
+            align-items: start;
+            gap: 14px;
+        }
+
+        .scoring-card {
+            grid-column: 1;
+            grid-row: 1 / span 2;
+        }
+
+        .history-card {
+            grid-column: 2;
+            grid-row: 1;
+        }
+
+        .controls-card {
+            grid-column: 2;
+            grid-row: 2;
+        }
+
+        .scoring-heading {
+            margin-bottom: 12px;
+        }
+
+        .scoring-heading h2,
+        .history-card h2,
+        .controls-card h2 {
+            color: #f1f5f0;
+            font-size: 17px;
+        }
+
+        .score-buttons {
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 8px;
+        }
+
+        .score-button {
+            min-height: 54px;
+            border-radius: 9px;
+            background: #1a2a20;
+            font-size: 18px;
+        }
+
+        .history-card .status-subtitle {
+            margin: 4px 0 12px;
+            font-size: 12px;
+        }
+
+        .history-ball {
+            min-width: 38px;
+            height: 38px;
+            border-radius: 9px;
+            font-size: 13px;
+        }
+
+        .controls-card {
+            text-align: left;
+        }
+
+        .controls-card > p {
+            margin: 4px 0 12px;
+            font-size: 12px;
+        }
+
+        .controls-card .player-selection-panel {
+            margin: 0 0 14px;
+            padding: 0;
+            background: transparent;
+            border: 0;
+        }
+
+        .controls-card .selection-header {
+            margin-bottom: 5px;
+        }
+
+        .controls-card .selection-header span {
+            font-size: 10px;
+        }
+
+        .controls-card .selection-grid {
+            grid-template-columns: 1fr;
+            gap: 9px;
+        }
+
+        .controls-card .selection-grid label {
+            gap: 4px;
+            font-size: 11px;
+        }
+
+        .controls-card .selection-grid select {
+            min-height: 42px;
+            font-size: 13px;
+        }
+
+        .controls-card .secondary-button {
+            min-height: 40px;
+            padding: 9px 13px;
+            border-radius: 8px;
+            font-size: 12px;
+        }
+
+        .result-box {
+            margin: 0 0 18px;
+        }
+
+        @media (max-width: 820px) {
             .score-page {
-                padding: 14px;
+                width: min(100% - 32px, 700px);
+                padding-top: 18px;
+            }
+
+            .match-overview {
+                grid-template-columns: minmax(0, 1fr) minmax(190px, 0.55fr);
+                gap: 16px;
+                padding: 16px;
+            }
+
+            .live-action-grid {
+                grid-template-columns: minmax(0, 1fr) minmax(250px, 0.8fr);
+            }
+        }
+
+        @media (max-width: 640px) {
+            .score-page {
+                width: calc(100% - 24px);
+                padding: 12px 0 32px;
+            }
+
+            .match-overview {
+                grid-template-columns: 1fr;
+                gap: 12px;
+                padding: 15px;
+            }
+
+            .match-overview .status-card {
+                padding: 10px 0 0;
+                border-top: 1px solid rgba(221, 239, 225, 0.12);
+                border-left: 0;
             }
 
             .scoreboard {
-                grid-template-columns: 1fr;
-                padding: 20px;
+                grid-template-columns: minmax(0, 1fr) 45px minmax(0, 1fr);
+                gap: 7px;
+                min-height: 0;
+                padding: 16px 10px;
+                border-radius: 12px;
+            }
+
+            .score-team:first-child,
+            .score-team:last-child,
+            .vs-area {
+                order: initial;
+            }
+
+            .team-name {
+                overflow-wrap: anywhere;
+                font-size: 17px;
+            }
+
+            .team-label {
+                font-size: 9px;
+            }
+
+            .score-team:first-child .main-score,
+            .main-score {
+                font-size: clamp(34px, 10vw, 48px);
+            }
+
+            .overs-display {
+                font-size: 10px;
             }
 
             .vs-area {
-                order: 2;
+                min-width: 0;
             }
 
-            .score-team:first-child {
-                order: 1;
+            .vs-circle {
+                width: 34px;
+                height: 34px;
+                margin-bottom: 7px;
+                font-size: 10px;
             }
 
-            .score-team:last-child {
-                order: 3;
+            #inningsStatus {
+                font-size: 8px;
             }
 
-            .info-grid {
-                grid-template-columns: repeat(2, 1fr);
+            .match-metrics {
+                grid-template-columns: 1fr;
+                gap: 8px;
+                margin: 8px 0 14px;
+            }
+
+            .info-box {
+                padding: 8px 4px;
+            }
+
+            .info-label {
+                font-size: 8px;
+            }
+
+            .info-value {
+                font-size: 16px;
+            }
+
+            .live-action-grid {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+
+            .scoring-card,
+            .history-card,
+            .controls-card {
+                grid-column: 1;
+                grid-row: auto;
+            }
+
+            .batting-card,
+            .scoring-card,
+            .history-card,
+            .controls-card {
+                padding: 14px;
+            }
+
+            .batting-card-header h2 {
+                font-size: 17px;
+            }
+
+            .batting-card-header p {
+                font-size: 11px;
+            }
+
+            .batting-table th,
+            .batting-table td {
+                padding: 9px 7px;
+            }
+
+            .batter-name-cell {
+                min-width: 125px;
+                font-size: 13px;
             }
 
             .score-buttons {
-                grid-template-columns: repeat(4, 1fr);
+                grid-template-columns: repeat(4, minmax(0, 1fr));
             }
 
-            .score-button {
-                min-height: 54px;
+            .live-connection {
+                right: 10px;
+                bottom: 10px;
+                padding: 7px 10px;
+                font-size: 10px;
             }
-
         }
 
     </style>
@@ -436,69 +963,21 @@
 <main class="score-page">
 
 
-    <!-- MATCH STATUS -->
-
-    <section
-        id="statusCard"
-        class="status-card live">
-
-        <div class="status-label">
-
-            <span class="dot"></span>
-
-            <span id="statusLabel">
-                LIVE MATCH
-            </span>
-
+    <section class="match-overview" aria-label="Match information">
+        <div class="match-identity">
+            <h2 id="matchTitle">Loading Match...</h2>
+            <p id="matchDetails">Loading match information...</p>
+            <span id="matchStatusBadge" class="hero-badge">LIVE MATCH</span>
         </div>
 
-
-        <h2
-            id="statusTitle"
-            class="status-title">
-
-            Loading Match...
-
-        </h2>
-
-
-        <p
-            id="statusSubtitle"
-            class="status-subtitle">
-
-            Loading match information...
-
-        </p>
-
-    </section>
-
-
-    <!-- MATCH TITLE -->
-
-    <section class="score-hero">
-
-        <div class="hero-content">
-
-            <span
-                id="matchStatusBadge"
-                class="hero-badge">
-
-                🔴 LIVE MATCH
-
-            </span>
-
-
-            <h2 id="matchTitle">
-                Loading Match...
-            </h2>
-
-
-            <p id="matchDetails">
-                Loading match information...
-            </p>
-
-        </div>
-
+        <section id="statusCard" class="status-card live" aria-label="Innings status">
+            <div class="status-label">
+                <span class="dot"></span>
+                <span id="statusLabel">LIVE MATCH</span>
+            </div>
+            <h2 id="statusTitle" class="status-title">Loading Match...</h2>
+            <p id="statusSubtitle" class="status-subtitle">Loading match information...</p>
+        </section>
     </section>
 
 
@@ -601,11 +1080,37 @@
     </section>
 
 
-    <!-- TARGET -->
+    <!-- LIVE BATTER SCORECARD -->
 
-    <section
-        id="targetBox"
-        class="target-box">
+    <section class="batting-card" aria-labelledby="battingCardTitle">
+        <div class="batting-card-header">
+            <div>
+                <h2 id="battingCardTitle">Batting scorecard</h2>
+                <p>Runs made by each player this innings</p>
+            </div>
+            <span id="battingCardTeam" class="batting-card-team"></span>
+        </div>
+
+        <div class="batting-table-wrap">
+            <table class="batting-table">
+                <thead>
+                    <tr>
+                        <th scope="col">Batter</th>
+                        <th scope="col">Runs</th>
+                        <th scope="col">Balls</th>
+                        <th scope="col">4s</th>
+                        <th scope="col">6s</th>
+                        <th scope="col">SR</th>
+                    </tr>
+                </thead>
+                <tbody id="battingCardBody"></tbody>
+            </table>
+        </div>
+    </section>
+
+
+    <section class="match-metrics" aria-label="Match figures">
+        <section id="targetBox" class="target-box">
 
         <span class="target-label">
             🎯 TARGET
@@ -629,7 +1134,7 @@
 
         </span>
 
-    </section>
+        </section>
 
 
     <!-- INFORMATION -->
@@ -710,6 +1215,8 @@
 
     </section>
 
+    </section>
+
 
     <!-- INNINGS MESSAGE -->
 
@@ -748,6 +1255,8 @@
 
     </section>
 
+
+    <div class="live-action-grid">
 
     <!-- SCORING -->
 
@@ -926,6 +1435,8 @@
         </button>
 
     </section>
+
+    </div>
 
 </main>
 
@@ -1424,6 +1935,8 @@ function renderMatch() {
 
     updateScoreboard();
 
+    updateBattingCard();
+
     updateTarget();
 
     updateMatchInfo();
@@ -1679,6 +2192,95 @@ function updateScoreboard() {
             ? "2ND INNINGS"
 
             : "1ST INNINGS";
+
+}
+
+
+// =====================================================
+// LIVE BATTING SCORECARD
+// =====================================================
+
+function updateBattingCard() {
+
+    const battingTeam = getBattingTeamData();
+    const players = Array.isArray(battingTeam.players)
+        ? [...battingTeam.players].sort((first, second) =>
+            (first.battingOrder || 0) - (second.battingOrder || 0)
+        )
+        : [];
+    const activePlayers = matchData.activePlayers || {};
+    const body = document.getElementById("battingCardBody");
+    const teamLabel = document.getElementById("battingCardTeam");
+
+    if (!body || !teamLabel) {
+        return;
+    }
+
+    teamLabel.textContent = battingTeam.name || "";
+    body.replaceChildren();
+
+    if (players.length === 0) {
+        const row = document.createElement("tr");
+        const cell = document.createElement("td");
+        cell.className = "batting-empty";
+        cell.colSpan = 6;
+        cell.textContent = "No player names were added for this team.";
+        row.appendChild(cell);
+        body.appendChild(row);
+        return;
+    }
+
+    players.forEach((player) => {
+        const row = document.createElement("tr");
+        const nameCell = document.createElement("td");
+        const nameLine = document.createElement("span");
+        const name = document.createElement("span");
+        const status = document.createElement("span");
+        const isStriker = player.id === activePlayers.strikerId;
+        const isNonStriker = player.id === activePlayers.nonStrikerId;
+        const runs = Number(player.runs) || 0;
+        const balls = Number(player.balls) || 0;
+        const strikeRate = balls > 0 ? (runs / balls) * 100 : 0;
+
+        nameCell.className = "batter-name-cell";
+        name.textContent = player.name || "Unnamed player";
+        nameLine.className = "batter-name-line";
+        nameLine.appendChild(name);
+        nameCell.appendChild(nameLine);
+
+        status.className = "batter-status";
+        if (player.out) {
+            status.textContent = "OUT";
+            status.classList.add("out");
+        } else if (isStriker) {
+            status.textContent = "STRIKING";
+            status.classList.add("active");
+        } else if (isNonStriker) {
+            status.textContent = "AT CREASE";
+            status.classList.add("active");
+        } else {
+            status.textContent = balls > 0 ? "NOT OUT" : "DID NOT BAT";
+        }
+        nameCell.appendChild(status);
+        row.appendChild(nameCell);
+
+        [
+            { value: runs, className: "batter-runs" },
+            { value: balls },
+            { value: Number(player.fours) || 0 },
+            { value: Number(player.sixes) || 0 },
+            { value: strikeRate.toFixed(1) }
+        ].forEach((stat) => {
+            const cell = document.createElement("td");
+            cell.textContent = String(stat.value);
+            if (stat.className) {
+                cell.className = stat.className;
+            }
+            row.appendChild(cell);
+        });
+
+        body.appendChild(row);
+    });
 
 }
 
