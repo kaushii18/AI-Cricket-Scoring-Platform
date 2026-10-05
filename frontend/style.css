@@ -866,6 +866,18 @@ body {
     line-height: 1.55;
 }
 
+.toss-announcement {
+    margin: -8px 0 20px;
+    padding: 13px 15px;
+    border-left: 3px solid #9cf2bf;
+    border-radius: 0 8px 8px 0;
+    color: #e8f4e9;
+    background: rgba(156, 242, 191, 0.07);
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.55;
+}
+
 .modal-actions {
     display: flex;
     align-items: center;

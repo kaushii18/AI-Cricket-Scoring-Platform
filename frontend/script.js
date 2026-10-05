@@ -6,6 +6,7 @@
 let playerSetupMode = false;
 let dashboardSocket = null;
 let dashboardMatches = [];
+let lastTossResult = null;
 
 
 // ==========================================
@@ -172,17 +173,19 @@ async function flipToss() {
     try {
         const result = await window.CricPulsePythonAPI.flipToss({ team1, team2, overs });
         tossSelect.value = result.toss_winner;
+        decisionSelect.value = "";
+        lastTossResult = {
+            coinFace: result.coin_face,
+            winner: result.toss_winner_name
+        };
+        renderTossAnnouncement();
 
         const recommendation = result.recommendation;
-        const coinResult = `${result.coin_face.toUpperCase()} — ${result.toss_winner_name} won the toss.`;
-
-        if (recommendation?.decision) {
-            decisionSelect.value = recommendation.decision;
-            message.textContent = `${coinResult} AI advice: ${recommendation.decision} first. ${recommendation.explanation}`;
-        } else {
-            message.textContent = `${coinResult} ${recommendation?.explanation || "No historical decision advice is available; choose bat or bowl manually."}`;
-        }
+        message.textContent = recommendation?.explanation
+            ? `History insight (not a prediction): ${recommendation.explanation} The toss-winning captain makes the final choice.`
+            : "No historical decision insight is available. The toss-winning captain makes the final choice.";
     } catch (error) {
+        renderTossAnnouncement();
         message.textContent = error.message || "Unable to flip the toss right now.";
     } finally {
         button.disabled = false;
@@ -191,13 +194,41 @@ async function flipToss() {
 
 }
 
+function renderTossAnnouncement() {
+    const announcement = document.getElementById("tossAnnouncement");
+    const decision = document.getElementById("tossDecision")?.value;
+
+    if (!announcement) {
+        return;
+    }
+
+    if (!lastTossResult) {
+        announcement.hidden = true;
+        announcement.textContent = "";
+        return;
+    }
+
+    const coinCall = `The coin lands on ${lastTossResult.coinFace.toUpperCase()}! ${lastTossResult.winner} have won the toss.`;
+    announcement.textContent = decision
+        ? `${coinCall} They have elected to ${decision} first.`
+        : `${coinCall} The captain will now choose whether to bat or bowl first.`;
+    announcement.hidden = false;
+}
+
 
 function initializeTossAssist() {
 
     document.getElementById("flipTossButton")?.addEventListener("click", flipToss);
+    document.getElementById("tossDecision")?.addEventListener("change", renderTossAnnouncement);
 
     ["team1", "team2", "overs"].forEach((id) => {
         document.getElementById(id)?.addEventListener("change", () => {
+            lastTossResult = null;
+            const decision = document.getElementById("tossDecision");
+            if (decision) {
+                decision.value = "";
+            }
+            renderTossAnnouncement();
             const message = document.getElementById("tossAssistMessage");
             if (message) {
                 message.textContent = "Team or format changed. Flip again to refresh the result and history advice.";

@@ -119,24 +119,26 @@
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <label for="tossDecision">Toss decision</label>
-                    <select id="tossDecision" name="tossDecision" required>
-                        <option value="bat">Bat first</option>
-                        <option value="bowl">Bowl first</option>
-                    </select>
-                </div>
-
                 <section class="toss-assist-panel" aria-label="Fair toss and decision advice">
                     <button id="flipTossButton" class="toss-flip-button" type="button">
                         <span class="toss-coin" aria-hidden="true">◉</span>
                         <span>Flip toss<small>Fair coin</small></span>
                     </button>
                     <div class="toss-assist-copy">
-                        <span class="toss-assist-label">AI DECISION ADVISOR</span>
+                        <span class="toss-assist-label">MATCH HISTORY INSIGHT</span>
                         <p id="tossAssistMessage" role="status" aria-live="polite">The result is random. Decision advice uses completed matches in your saved history.</p>
                     </div>
                 </section>
+                <p id="tossAnnouncement" class="toss-announcement" role="status" aria-live="polite" hidden></p>
+
+                <div class="form-group">
+                    <label for="tossDecision">Toss decision</label>
+                    <select id="tossDecision" name="tossDecision" required>
+                        <option value="" selected disabled>Captain's decision</option>
+                        <option value="bat">Bat first</option>
+                        <option value="bowl">Bowl first</option>
+                    </select>
+                </div>
 
                 <div class="player-team-grid">
                     <section class="player-team-panel">
