@@ -1,6 +1,6 @@
 # CricPulse
 
-CricPulse is a real-time cricket scoring app for setting up matches, entering team lineups, and keeping score ball by ball. It includes a responsive browser interface and a Node.js/Express server with Socket.IO updates.
+CricPulse is a real-time cricket scoring app for setting up matches, entering team lineups, and keeping score ball by ball. The existing frontend and Node.js/Express scoring service remain the system of record. A separate FastAPI service provides a versioned REST facade and Python-based match analytics, ready to grow into AI features.
 
 ## Features
 
@@ -12,12 +12,14 @@ CricPulse is a real-time cricket scoring app for setting up matches, entering te
 - Persist match data locally in a JSON file.
 - Receive live match events over Socket.IO.
 - Optionally connect Supabase for team management.
+- Use the optional FastAPI service for versioned match, team, player, score, over, statistics, and insight endpoints.
 
 The home dashboard does not include sample fixtures or placeholder tournament data. Completed matches are kept in local storage but are not shown in the live match list.
 
 ## Requirements
 
 - Node.js 18 or later and npm.
+- Python 3.10 or later and pip for the optional Python service.
 - A modern web browser.
 
 ## Run Locally
@@ -43,6 +45,39 @@ npm --prefix backend run dev
 Open [http://localhost:3000](http://localhost:3000). The Express server serves the frontend and API from the same origin. Stop the server with `Ctrl+C`.
 
 To use a different port, set the `PORT` environment variable before starting the server.
+
+### Start the Python API
+
+The Python service is additive. Keep the Node server running because it continues to own scoring, match persistence, Socket.IO, and the existing UI routes. In a second terminal, from the project root:
+
+```bash
+cd python-backend
+python -m venv .venv
+```
+
+Activate the environment and install the Python dependencies:
+
+```powershell
+# Windows PowerShell
+.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+Copy-Item .env.example .env
+```
+
+```bash
+# macOS / Linux
+source .venv/bin/activate
+pip install -r requirements.txt
+cp .env.example .env
+```
+
+Run FastAPI:
+
+```bash
+python run.py
+```
+
+The Python API is available at [http://127.0.0.1:8000](http://127.0.0.1:8000); interactive OpenAPI documentation is at [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs). The frontend's optional REST helper defaults to `http://127.0.0.1:8000/api/v1` and can be configured before page scripts load with `window.CRICPULSE_PYTHON_API_BASE`.
 
 ## Create and Score a Match
 
@@ -85,6 +120,36 @@ All endpoints use JSON where a request body is required.
 
 Socket.IO broadcasts `match:created` when a match is created and `match:update` when its score or active players change.
 
+### Python API
+
+FastAPI exposes the following versioned routes under `/api/v1`. Match writes are validated by Python and forwarded to the existing Node API, so Node remains authoritative and its real-time Socket.IO events continue to work.
+
+| Method | Endpoint | Purpose |
+| --- | --- | --- |
+| `GET` | `/api/v1/health` | Check Python API health. |
+| `GET` | `/api/v1/health/dependencies` | Check connectivity to the Node scoring API. |
+| `GET`, `POST` | `/api/v1/matches` | List/create matches. |
+| `GET` | `/api/v1/matches/:id` | Get a match. |
+| `POST` | `/api/v1/matches/:id/balls` | Record a ball through the Node scoring logic. |
+| `POST` | `/api/v1/matches/:id/players` | Update active striker, non-striker, and bowler. |
+| `POST` | `/api/v1/matches/:id/reset` | Reset a match through the existing scoring logic. |
+| `GET` | `/api/v1/matches/:id/players` | Get derived player batting and bowling figures. |
+| `GET` | `/api/v1/matches/:id/scores` | Get team totals, overs, run rates, and innings state. |
+| `GET` | `/api/v1/matches/:id/overs` | Get per-over runs, wickets, and deliveries. |
+| `GET` | `/api/v1/matches/:id/statistics` | Get derived player performance statistics. |
+| `GET` | `/api/v1/matches/:id/insights` | Get baseline rule-based observations; this is not an ML prediction. |
+| `GET`, `POST` | `/api/v1/teams` | List/create teams through the existing Node/Supabase team API. |
+
+The existing frontend now sends match creation, match loading/listing, active-player changes, ball recording, and reset requests through `window.CricPulsePythonAPI` to FastAPI. The Node service remains behind that gateway and continues to own the scoring calculations, JSON persistence, and Socket.IO live broadcasts. The frontend helper also exposes `health`, `teams`, `createTeam`, `players`, `scores`, `overs`, `statistics`, and `insights` for further integration.
+
+Python configuration is read from `python-backend/.env` or the process environment. See `python-backend/.env.example` for `HOST`, `PORT`, `NODE_API_BASE_URL`, and `CORS_ORIGINS`. Do not commit real credentials.
+
+Run the Python analytics tests from `python-backend/` with:
+
+```bash
+python -m unittest discover -s tests
+```
+
 ## Project Structure
 
 ```text
@@ -93,12 +158,20 @@ backend/
   package.json        Backend scripts and dependencies
   server.js           Express API, scoring logic, and Socket.IO server
   supabase.js         Optional Supabase client configuration
+python-backend/
+  app/api/routes/     Versioned health, match, and team routes
+  app/core/           Environment-backed settings
+  app/schemas/        Pydantic request validation
+  app/services/       Node API gateway and cricket analytics
+  tests/              Python analytics tests
+  requirements.txt    FastAPI service dependencies
 docs/
   ui-update.md        UI update notes
 frontend/
   index.html          Match setup and app home page
   scorer.html         Live scoring interface
   script.js           Frontend live dashboard and match setup logic
+  python-api.js       Optional REST client for the FastAPI service
   style.css           Shared responsive styles
 ```
 
@@ -107,3 +180,5 @@ frontend/
 - Backend dependencies and scripts are managed from `backend/`; the root `npm start` script is a convenience for starting the backend.
 - `backend/.env` and `node_modules/` are excluded from Git.
 - Match records are stored in a local JSON file, so they persist across server restarts on the same machine but are not shared across deployments.
+- Python is a separate service: start it alongside Node only when Python-backed APIs are needed.
+- The initial Python insights are deterministic, rule-based summaries. Prediction and recommendation models can be added behind the analytics service without altering the current scoring engine.

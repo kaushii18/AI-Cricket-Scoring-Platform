@@ -456,55 +456,15 @@ async function handleMatchSubmit(event) {
 
     try {
 
-        const response =
-            await fetch(
-                "/api/matches",
-                {
-
-                    method: "POST",
-
-                    headers: {
-
-                        "Content-Type":
-                            "application/json"
-
-                    },
-
-                    body:
-                        JSON.stringify({
-
-                            team1,
-
-                            team2,
-
-                            overs,
-
-                            tossWinner,
-
-                            tossDecision,
-
-                            team1Players,
-
-                            team2Players
-
-                        })
-
-                }
-            );
-
-
-        const savedMatch =
-            await response.json();
-
-
-        if (!response.ok) {
-
-            throw new Error(
-                savedMatch.message ||
-                "Unable to create the match."
-            );
-
-        }
+        const savedMatch = await window.CricPulsePythonAPI.createMatch({
+            team1,
+            team2,
+            overs,
+            tossWinner,
+            tossDecision,
+            team1Players,
+            team2Players
+        });
 
 
         // ======================================
@@ -1029,12 +989,7 @@ async function refreshLiveMatches() {
 
     try {
 
-        const response = await fetch("/api/matches");
-        const matches = await response.json();
-
-        if (!response.ok) {
-            throw new Error(matches.message || "Unable to load matches.");
-        }
+        const matches = await window.CricPulsePythonAPI.matches();
 
         if (!Array.isArray(matches)) {
             throw new Error("The server returned an invalid match list.");

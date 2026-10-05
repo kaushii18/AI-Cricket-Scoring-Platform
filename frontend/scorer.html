@@ -1453,6 +1453,7 @@
 <!-- SOCKET.IO -->
 
 <script src="/socket.io/socket.io.js"></script>
+<script src="./python-api.js"></script>
 
 
 <script>
@@ -1598,27 +1599,7 @@ async function loadMatch() {
 
     try {
 
-        const response =
-            await fetch(
-                "/api/matches/" +
-                encodeURIComponent(
-                    matchData.id
-                )
-            );
-
-
-        const data =
-            await response.json();
-
-
-        if (!response.ok) {
-
-            throw new Error(
-                data.message ||
-                "Unable to load match."
-            );
-
-        }
+        const data = await window.CricPulsePythonAPI.match(matchData.id);
 
 
         matchData =
@@ -1836,28 +1817,14 @@ async function updateActivePlayers() {
 
     try {
 
-        const response = await fetch(
-            "/api/matches/" +
-                encodeURIComponent(matchData.id) +
-                "/players",
+        const data = await window.CricPulsePythonAPI.updatePlayers(
+            matchData.id,
             {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    strikerId: strikerSelect.value,
-                    nonStrikerId: nonStrikerSelect.value,
-                    bowlerId: bowlerSelect.value
-                })
+                strikerId: strikerSelect.value,
+                nonStrikerId: nonStrikerSelect.value,
+                bowlerId: bowlerSelect.value
             }
         );
-
-        const data = await response.json();
-
-        if (!response.ok) {
-            throw new Error(data.message || "Unable to update players.");
-        }
 
         matchData = data;
         saveLocalMatch();
@@ -2788,54 +2755,14 @@ async function recordBall(
 
     try {
 
-        const response =
-            await fetch(
-                "/api/matches/" +
-                encodeURIComponent(
-                    matchData.id
-                ) +
-                "/balls",
-                {
-
-                    method: "POST",
-
-                    headers: {
-
-                        "Content-Type":
-                            "application/json"
-
-                    },
-
-                    body:
-                        JSON.stringify({
-
-                            runs:
-                                ballData.runs,
-
-                            wickets:
-                                ballData.wickets,
-
-                            display:
-                                ballData.display
-
-                        })
-
-                }
-            );
-
-
-        const data =
-            await response.json();
-
-
-        if (!response.ok) {
-
-            throw new Error(
-                data.message ||
-                "Unable to record ball."
-            );
-
-        }
+        const data = await window.CricPulsePythonAPI.recordBall(
+            matchData.id,
+            {
+                runs: ballData.runs,
+                wickets: ballData.wickets,
+                display: ballData.display
+            }
+        );
 
 
         matchData =
@@ -2884,33 +2811,7 @@ async function resetMatch() {
 
     try {
 
-        const response =
-            await fetch(
-                "/api/matches/" +
-                encodeURIComponent(
-                    matchData.id
-                ) +
-                "/reset",
-                {
-
-                    method: "POST"
-
-                }
-            );
-
-
-        const data =
-            await response.json();
-
-
-        if (!response.ok) {
-
-            throw new Error(
-                data.message ||
-                "Unable to reset match."
-            );
-
-        }
+        const data = await window.CricPulsePythonAPI.resetMatch(matchData.id);
 
 
         matchData =
