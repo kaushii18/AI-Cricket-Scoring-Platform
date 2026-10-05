@@ -8,7 +8,7 @@ from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
-from app.api.routes import health, matches, teams
+from app.api.routes import health, matches, teams, toss
 from app.core.config import settings
 
 logger = logging.getLogger(__name__)
@@ -37,6 +37,7 @@ app.add_middleware(
 app.include_router(health.router, prefix=settings.api_prefix)
 app.include_router(matches.router, prefix=settings.api_prefix)
 app.include_router(teams.router, prefix=settings.api_prefix)
+app.include_router(toss.router, prefix=settings.api_prefix)
 
 
 @app.exception_handler(Exception)

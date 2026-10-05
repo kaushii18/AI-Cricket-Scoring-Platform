@@ -82,7 +82,7 @@ The Python API is available at [http://127.0.0.1:8000](http://127.0.0.1:8000); i
 ## Create and Score a Match
 
 1. Open the app and choose **New match**.
-2. Enter the two team names, select the overs and toss details, and provide player names for each team.
+2. Enter the two team names, select the overs, then set toss details manually or use **Flip toss** for a fair random result and historical bat/bowl advice. Provide player names for each team.
 3. Start the match. On the scorer page, select the striker, non-striker, and bowler.
 4. Record each delivery using the run or wicket controls. The scorecard and recent-ball list update as the match progresses.
 5. Use the match controls to reset the current match when needed.
@@ -128,6 +128,7 @@ FastAPI exposes the following versioned routes under `/api/v1`. Match writes are
 | --- | --- | --- |
 | `GET` | `/api/v1/health` | Check Python API health. |
 | `GET` | `/api/v1/health/dependencies` | Check connectivity to the Node scoring API. |
+| `POST` | `/api/v1/toss/flip` | Flip a fair coin and advise bat/bowl from completed matches in the same over format. |
 | `GET`, `POST` | `/api/v1/matches` | List/create matches. |
 | `GET` | `/api/v1/matches/:id` | Get a match. |
 | `POST` | `/api/v1/matches/:id/balls` | Record a ball through the Node scoring logic. |
@@ -182,3 +183,4 @@ frontend/
 - Match records are stored in a local JSON file, so they persist across server restarts on the same machine but are not shared across deployments.
 - Python is a separate service: start it alongside Node only when Python-backed APIs are needed.
 - The initial Python insights are deterministic, rule-based summaries. Prediction and recommendation models can be added behind the analytics service without altering the current scoring engine.
+- The toss face is generated with secure randomness, not predicted by AI. Toss advice is an explainable historical-statistics baseline; it requires at least two completed examples for each choice and otherwise leaves bat/bowl selection to the user.

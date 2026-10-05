@@ -35,6 +35,7 @@
     window.CricPulsePythonAPI = Object.freeze({
         baseUrl: apiBase,
         health: () => request("/health"),
+        flipToss: (toss) => post("/toss/flip", toss),
         matches: () => request("/matches"),
         match: (matchId) => request(`/matches/${encodeURIComponent(matchId)}`),
         createMatch: (match) => post("/matches", match),

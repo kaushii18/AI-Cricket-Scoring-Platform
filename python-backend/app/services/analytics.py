@@ -147,3 +147,84 @@ def match_insights(match: dict[str, Any]) -> dict[str, Any]:
         "disclaimer": "These are descriptive summaries, not model-generated predictions.",
         "observations": observations,
     }
+
+
+def toss_decision_advice(matches: list[dict[str, Any]], overs: int) -> dict[str, Any]:
+    outcomes = {
+        "bat": {"matches": 0, "toss_winner_wins": 0},
+        "bowl": {"matches": 0, "toss_winner_wins": 0},
+    }
+
+    for match in matches:
+        if match.get("status") != "COMPLETED" or match.get("overs") != overs:
+            continue
+
+        decision = match.get("tossDecision")
+        toss_winner = match.get("tossWinner")
+        result = str(match.get("result") or "").casefold()
+        if decision not in outcomes or toss_winner not in {"team1", "team2"}:
+            continue
+
+        team_names = [
+            ("team1", str(match.get("team1") or "")),
+            ("team2", str(match.get("team2") or "")),
+        ]
+        match_winner = next(
+            (
+                key
+                for key, name in sorted(team_names, key=lambda item: len(item[1]), reverse=True)
+                if name and result.startswith(f"{name.casefold()} won")
+            ),
+            None,
+        )
+        if match_winner is None:
+            continue
+
+        outcomes[decision]["matches"] += 1
+        if match_winner == toss_winner:
+            outcomes[decision]["toss_winner_wins"] += 1
+
+    rates = {
+        decision: values["toss_winner_wins"] / values["matches"]
+        for decision, values in outcomes.items()
+        if values["matches"] >= 2
+    }
+
+    if len(rates) < 2:
+        sample_count = sum(values["matches"] for values in outcomes.values())
+        return {
+            "decision": None,
+            "method": "historical_toss_outcomes",
+            "sample_size": sample_count,
+            "bat_first_matches": outcomes["bat"]["matches"],
+            "bowl_first_matches": outcomes["bowl"]["matches"],
+            "explanation": (
+                f"Not enough completed {overs}-over matches across both toss choices "
+                "to make a useful recommendation. Choose bat or bowl manually."
+            ),
+        }
+
+    recommended = max(rates, key=rates.get)
+    difference = abs(rates["bat"] - rates["bowl"])
+    if difference < 0.05:
+        decision = None
+        explanation = (
+            f"Completed {overs}-over results show similar outcomes for batting and "
+            "bowling first. There is no clear historical preference."
+        )
+    else:
+        decision = recommended
+        explanation = (
+            f"In completed {overs}-over matches, toss winners choosing to {recommended} "
+            f"first won {outcomes[recommended]['toss_winner_wins']} of "
+            f"{outcomes[recommended]['matches']} matches."
+        )
+
+    return {
+        "decision": decision,
+        "method": "historical_toss_outcomes",
+        "sample_size": sum(values["matches"] for values in outcomes.values()),
+        "bat_first_matches": outcomes["bat"]["matches"],
+        "bowl_first_matches": outcomes["bowl"]["matches"],
+        "explanation": explanation,
+    }

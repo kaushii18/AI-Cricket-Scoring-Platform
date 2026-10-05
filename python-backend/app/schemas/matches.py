@@ -68,3 +68,23 @@ class TeamCreateRequest(BaseModel):
         if not value:
             raise ValueError("Team name and short name cannot be blank.")
         return value
+
+
+class TossFlipRequest(BaseModel):
+    team1: str = Field(min_length=1, max_length=50)
+    team2: str = Field(min_length=1, max_length=50)
+    overs: Literal[5, 10, 20, 50]
+
+    @field_validator("team1", "team2")
+    @classmethod
+    def trim_team_name(cls, value: str) -> str:
+        value = value.strip()
+        if not value:
+            raise ValueError("Team names cannot be blank.")
+        return value
+
+    @model_validator(mode="after")
+    def validate_teams_are_distinct(self) -> "TossFlipRequest":
+        if self.team1.casefold() == self.team2.casefold():
+            raise ValueError("The two teams must be different.")
+        return self

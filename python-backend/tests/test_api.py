@@ -1,5 +1,6 @@
 import unittest
 from typing import Any
+from unittest.mock import patch
 
 import httpx
 
@@ -111,6 +112,18 @@ class ApiTests(unittest.IsolatedAsyncioTestCase):
             self.node_client.calls[-1],
             ("POST", "/matches/match-1/balls", payload),
         )
+
+    async def test_toss_flip_returns_random_result_and_history_advice(self) -> None:
+        with patch("app.api.routes.toss.secrets.choice", return_value="heads"):
+            response = await self.client.post(
+                "/api/v1/toss/flip",
+                json={"team1": "Falcons", "team2": "Tigers", "overs": 5},
+            )
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()["coin_face"], "heads")
+        self.assertEqual(response.json()["toss_winner"], "team1")
+        self.assertIsNone(response.json()["recommendation"]["decision"])
+        self.assertEqual(self.node_client.calls[-1], ("GET", "/matches", None))
 
     async def test_invalid_match_is_rejected_before_forwarding(self) -> None:
         response = await self.client.post(

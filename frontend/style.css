@@ -786,6 +786,86 @@ body {
     gap: 16px;
 }
 
+.toss-assist-panel {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: center;
+    gap: 15px;
+    margin: 2px 0 20px;
+    padding: 14px;
+    border: 1px solid rgba(156, 242, 191, 0.16);
+    border-radius: 11px;
+    background: rgba(156, 242, 191, 0.035);
+}
+
+.toss-flip-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 48px;
+    padding: 8px 13px;
+    border: 1px solid rgba(156, 242, 191, 0.24);
+    border-radius: 8px;
+    color: #e8f4e9;
+    background: #18271d;
+    font: 600 13px "DM Sans", sans-serif;
+    cursor: pointer;
+}
+
+.toss-flip-button:hover:not(:disabled) {
+    border-color: rgba(156, 242, 191, 0.5);
+    background: #1d3324;
+}
+
+.toss-flip-button:disabled {
+    cursor: wait;
+    opacity: 0.7;
+}
+
+.toss-flip-button small {
+    display: block;
+    margin-top: 2px;
+    color: #9cae9f;
+    font-size: 10px;
+    font-weight: 500;
+    text-align: left;
+}
+
+.toss-coin {
+    display: grid;
+    width: 28px;
+    aspect-ratio: 1;
+    place-items: center;
+    border: 1px solid rgba(231, 198, 111, 0.55);
+    border-radius: 50%;
+    color: #ecd17c;
+    font-size: 21px;
+    line-height: 1;
+}
+
+.toss-flip-button.is-flipping .toss-coin {
+    animation: tossFlip 520ms ease-in-out;
+}
+
+@keyframes tossFlip {
+    50% { transform: rotateY(540deg) translateY(-3px); }
+}
+
+.toss-assist-label {
+    display: block;
+    margin-bottom: 3px;
+    color: #a5eabd;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+}
+
+.toss-assist-copy p {
+    color: #aab7ad;
+    font-size: 11px;
+    line-height: 1.55;
+}
+
 .modal-actions {
     display: flex;
     align-items: center;
@@ -2506,6 +2586,15 @@ h3,
     .player-team-grid {
         grid-template-columns: 1fr;
         gap: 0;
+    }
+
+    .toss-assist-panel {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    .toss-flip-button {
+        justify-content: center;
     }
 
     .player-team-grid {

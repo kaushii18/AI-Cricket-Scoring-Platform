@@ -124,6 +124,15 @@ function syncDefaultPlayerNames() {
         team2Heading.textContent = `${team2Name} squad`;
     }
 
+    const team1TossOption = document.querySelector('#toss option[value="team1"]');
+    const team2TossOption = document.querySelector('#toss option[value="team2"]');
+    if (team1TossOption) {
+        team1TossOption.textContent = team1Name;
+    }
+    if (team2TossOption) {
+        team2TossOption.textContent = team2Name;
+    }
+
     Array.from(document.querySelectorAll(".team1-player-input")).forEach((input, index) => {
         input.setAttribute("aria-label", `${team1Name} player ${index + 1}`);
     });
@@ -133,6 +142,71 @@ function syncDefaultPlayerNames() {
     });
 
 }
+
+async function flipToss() {
+
+    const team1 = document.getElementById("team1")?.value.trim();
+    const team2 = document.getElementById("team2")?.value.trim();
+    const overs = Number(document.getElementById("overs")?.value);
+    const tossSelect = document.getElementById("toss");
+    const decisionSelect = document.getElementById("tossDecision");
+    const button = document.getElementById("flipTossButton");
+    const message = document.getElementById("tossAssistMessage");
+
+    if (!team1 || !team2 || team1.toLowerCase() === team2.toLowerCase()) {
+        if (message) {
+            message.textContent = "Enter two different team names before flipping the toss.";
+        }
+        document.getElementById("team1")?.focus();
+        return;
+    }
+
+    if (!button || !tossSelect || !decisionSelect || !message) {
+        return;
+    }
+
+    button.disabled = true;
+    button.classList.add("is-flipping");
+    message.textContent = "Flipping a fair coin and checking completed match history...";
+
+    try {
+        const result = await window.CricPulsePythonAPI.flipToss({ team1, team2, overs });
+        tossSelect.value = result.toss_winner;
+
+        const recommendation = result.recommendation;
+        const coinResult = `${result.coin_face.toUpperCase()} — ${result.toss_winner_name} won the toss.`;
+
+        if (recommendation?.decision) {
+            decisionSelect.value = recommendation.decision;
+            message.textContent = `${coinResult} AI advice: ${recommendation.decision} first. ${recommendation.explanation}`;
+        } else {
+            message.textContent = `${coinResult} ${recommendation?.explanation || "No historical decision advice is available; choose bat or bowl manually."}`;
+        }
+    } catch (error) {
+        message.textContent = error.message || "Unable to flip the toss right now.";
+    } finally {
+        button.disabled = false;
+        button.classList.remove("is-flipping");
+    }
+
+}
+
+
+function initializeTossAssist() {
+
+    document.getElementById("flipTossButton")?.addEventListener("click", flipToss);
+
+    ["team1", "team2", "overs"].forEach((id) => {
+        document.getElementById(id)?.addEventListener("change", () => {
+            const message = document.getElementById("tossAssistMessage");
+            if (message) {
+                message.textContent = "Team or format changed. Flip again to refresh the result and history advice.";
+            }
+        });
+    });
+
+}
+
 
 function populatePlayerInputDefaults() {
 
@@ -1109,6 +1183,7 @@ document.addEventListener(
     "DOMContentLoaded",
     function () {
         populatePlayerInputDefaults();
+        initializeTossAssist();
         initializeLiveDashboard();
     }
 );
