@@ -4,6 +4,7 @@ CricPulse is a real-time cricket scoring app for setting up matches, entering te
 
 ## Features
 
+- Show only currently live matches on the home dashboard, with scores loaded from the backend and refreshed over Socket.IO.
 - Create a match with team names, overs, toss details, and player names.
 - Select the striker, non-striker, and bowler by name.
 - Record runs and wickets and view the live score and recent balls.
@@ -11,6 +12,8 @@ CricPulse is a real-time cricket scoring app for setting up matches, entering te
 - Persist match data locally in a JSON file.
 - Receive live match events over Socket.IO.
 - Optionally connect Supabase for team management.
+
+The home dashboard does not include sample fixtures or placeholder tournament data. Completed matches are kept in local storage but are not shown in the live match list.
 
 ## Requirements
 
@@ -43,13 +46,13 @@ To use a different port, set the `PORT` environment variable before starting the
 
 ## Create and Score a Match
 
-1. Open the app and choose **New Match**.
+1. Open the app and choose **New match**.
 2. Enter the two team names, select the overs and toss details, and provide player names for each team.
 3. Start the match. On the scorer page, select the striker, non-striker, and bowler.
 4. Record each delivery using the run or wicket controls. The scorecard and recent-ball list update as the match progresses.
 5. Use the match controls to reset the current match when needed.
 
-Player lists accept up to 11 names per team. The available over lengths are 5, 10, 20, and 50 overs.
+Player lists accept up to 11 names per team; default player names are generated from the team names and can be edited. The available over lengths are 5, 10, 20, and 50 overs.
 
 ## Configuration
 
@@ -95,12 +98,12 @@ docs/
 frontend/
   index.html          Match setup and app home page
   scorer.html         Live scoring interface
-  script.js           Frontend match setup logic
+  script.js           Frontend live dashboard and match setup logic
   style.css           Shared responsive styles
 ```
 
 ## Development Notes
 
-- Run npm commands with `backend/` as the package directory; there is no root `package.json`.
+- Backend dependencies and scripts are managed from `backend/`; the root `npm start` script is a convenience for starting the backend.
 - `backend/.env` and `node_modules/` are excluded from Git.
 - Match records are stored in a local JSON file, so they persist across server restarts on the same machine but are not shared across deployments.

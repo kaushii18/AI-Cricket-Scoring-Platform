@@ -4,6 +4,8 @@
 // ==========================================
 
 let playerSetupMode = false;
+let dashboardSocket = null;
+let dashboardMatches = [];
 
 
 // ==========================================
@@ -23,6 +25,8 @@ function openMatchModal() {
     modal.setAttribute("aria-hidden", "false");
 
     document.body.style.overflow = "hidden";
+
+    document.getElementById("team1")?.focus();
 }
 
 
@@ -59,6 +63,42 @@ function getPlayerNameInputs(teamKey) {
 
 }
 
+
+function buildPlayerNameInputs(teamKey, teamName) {
+
+    const roster =
+        document.getElementById(`${teamKey}Roster`);
+
+    if (!roster) {
+        return;
+    }
+
+    const inputs = [];
+
+    for (let index = 0; index < 11; index += 1) {
+
+        const input = document.createElement("input");
+        input.type = "text";
+        input.maxLength = 50;
+        input.autocomplete = "off";
+        input.className = `${teamKey}-player-input player-name-input`;
+        input.setAttribute("aria-label", `${teamName} player ${index + 1}`);
+        input.dataset.defaultName = `${teamName} Player ${index + 1}`;
+        input.value = input.dataset.defaultName;
+
+        input.addEventListener("input", function () {
+            input.dataset.customized = "true";
+        });
+
+        inputs.push(input);
+
+    }
+
+    roster.replaceChildren(...inputs);
+
+}
+
+
 function syncDefaultPlayerNames() {
 
     const team1Input =
@@ -77,28 +117,39 @@ function syncDefaultPlayerNames() {
     const team2Name =
         team2Input.value.trim() || "Team 2";
 
+    const team1Heading = document.getElementById("team1RosterHeading");
+    const team2Heading = document.getElementById("team2RosterHeading");
+
+    if (team1Heading) {
+        team1Heading.textContent = `${team1Name} squad`;
+    }
+
+    if (team2Heading) {
+        team2Heading.textContent = `${team2Name} squad`;
+    }
+
     Array.from(document.querySelectorAll(".team1-player-input")).forEach((input, index) => {
         if (!input.dataset.customized) {
             input.value = `${team1Name} Player ${index + 1}`;
+            input.dataset.defaultName = input.value;
+            input.setAttribute("aria-label", `${team1Name} player ${index + 1}`);
         }
     });
 
     Array.from(document.querySelectorAll(".team2-player-input")).forEach((input, index) => {
         if (!input.dataset.customized) {
             input.value = `${team2Name} Player ${index + 1}`;
+            input.dataset.defaultName = input.value;
+            input.setAttribute("aria-label", `${team2Name} player ${index + 1}`);
         }
-    });
-
-    document.querySelectorAll(".player-name-input").forEach((input) => {
-        input.addEventListener("input", function () {
-            input.dataset.customized = String(Boolean(this.value.trim()));
-        });
     });
 
 }
 
 function populatePlayerInputDefaults() {
 
+    buildPlayerNameInputs("team1", "Team 1");
+    buildPlayerNameInputs("team2", "Team 2");
     syncDefaultPlayerNames();
 
     const team1Input = document.getElementById("team1");
@@ -261,16 +312,18 @@ async function handleMatchSubmit(event) {
     // ==========================================
 
     const team1Players =
-        getPlayerNameInputs("team1")
-            .length
-            ? getPlayerNameInputs("team1")
-            : createDefaultPlayers(team1).map((player) => player.name);
+        getPlayerNameInputs("team1");
 
     const team2Players =
-        getPlayerNameInputs("team2")
-            .length
-            ? getPlayerNameInputs("team2")
-            : createDefaultPlayers(team2).map((player) => player.name);
+        getPlayerNameInputs("team2");
+
+    while (team1Players.length < 2) {
+        team1Players.push(`${team1} Player ${team1Players.length + 1}`);
+    }
+
+    while (team2Players.length < 2) {
+        team2Players.push(`${team2} Player ${team2Players.length + 1}`);
+    }
 
 
     // ==========================================
@@ -767,76 +820,341 @@ function saveCurrentPlayers(players) {
 
 
 // ==========================================
-// TOURNAMENT TABS
+// LIVE MATCH DASHBOARD
 // ==========================================
 
-function switchTab(
-    button,
-    contentId
-) {
+function formatMatchOvers(balls) {
 
-    if (!button) {
+    const count = Number.isFinite(Number(balls))
+        ? Math.max(0, Number(balls))
+        : 0;
 
+    return `${Math.floor(count / 6)}.${count % 6}`;
+
+}
+
+
+function getMatchTeamScore(team, isYetToBat) {
+
+    if (isYetToBat) {
+        return {
+            score: "Yet to bat",
+            overs: ""
+        };
+    }
+
+    const runs = Number.isFinite(Number(team?.runs))
+        ? Number(team.runs)
+        : 0;
+
+    const wickets = Number.isFinite(Number(team?.wickets))
+        ? Number(team.wickets)
+        : 0;
+
+    return {
+        score: `${runs}/${wickets}`,
+        overs: `${formatMatchOvers(team?.balls)} overs`
+    };
+
+}
+
+
+function makeMatchTeam(name, score, overs, isBatting) {
+
+    const team = document.createElement("div");
+    team.className = "match-side";
+
+    const teamName = document.createElement("span");
+    teamName.className = "match-team-name";
+    teamName.textContent = name || "Unnamed team";
+    team.appendChild(teamName);
+
+    const scoreText = document.createElement("strong");
+    scoreText.className = "match-score";
+    scoreText.textContent = score;
+    team.appendChild(scoreText);
+
+    if (overs) {
+        const oversText = document.createElement("span");
+        oversText.className = "match-overs";
+        oversText.textContent = overs;
+        team.appendChild(oversText);
+    } else if (isBatting) {
+        const inningsText = document.createElement("span");
+        inningsText.className = "match-overs";
+        inningsText.textContent = "Currently batting";
+        team.appendChild(inningsText);
+    }
+
+    return team;
+
+}
+
+
+function renderLiveMatches() {
+
+    const list = document.getElementById("matchList");
+    const count = document.getElementById("liveMatchCount");
+    const label = document.getElementById("liveMatchLabel");
+    const updated = document.getElementById("matchUpdatedAt");
+
+    if (!list || !count || !label) {
         return;
+    }
+
+    count.textContent = String(dashboardMatches.length);
+    label.textContent = dashboardMatches.length === 1
+        ? "match currently in play"
+        : "matches currently in play";
+
+    const fragment = document.createDocumentFragment();
+
+    if (dashboardMatches.length === 0) {
+
+        const empty = document.createElement("div");
+        empty.className = "match-state-card";
+
+        const heading = document.createElement("strong");
+        heading.textContent = "No live matches right now";
+
+        const message = document.createElement("p");
+        message.textContent = "Start a match to see its live score appear here.";
+
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "primary-button";
+        button.textContent = "Set up a match";
+        button.addEventListener("click", openMatchModal);
+
+        empty.append(heading, message, button);
+        fragment.appendChild(empty);
+
+    } else {
+
+        dashboardMatches.forEach((match) => {
+
+            const card = document.createElement("article");
+            card.className = "match-card";
+
+            const main = document.createElement("div");
+            main.className = "match-card-main";
+
+            const meta = document.createElement("div");
+            meta.className = "match-card-meta";
+
+            const liveLabel = document.createElement("span");
+            liveLabel.className = "match-live-label";
+            liveLabel.textContent = "LIVE";
+
+            const inningsLabel = document.createElement("span");
+            inningsLabel.textContent =
+                `INNINGS ${match.currentInnings || 1} · ${match.overs || "—"} OVERS`;
+
+            meta.append(liveLabel, inningsLabel);
+
+            const teams = document.createElement("div");
+            teams.className = "match-teams";
+
+            const team1 = match.teams?.team1;
+            const team2 = match.teams?.team2;
+            const battingKey = match.battingTeam === match.team1 ? "team1" : "team2";
+            const firstScore = getMatchTeamScore(
+                team1,
+                match.currentInnings === 1 && battingKey !== "team1" && !team1?.balls
+            );
+            const secondScore = getMatchTeamScore(
+                team2,
+                match.currentInnings === 1 && battingKey !== "team2" && !team2?.balls
+            );
+
+            teams.append(
+                makeMatchTeam(
+                    match.team1,
+                    firstScore.score,
+                    firstScore.overs,
+                    battingKey === "team1"
+                )
+            );
+
+            const versus = document.createElement("span");
+            versus.className = "match-vs";
+            versus.textContent = "VS";
+            teams.appendChild(versus);
+
+            teams.append(
+                makeMatchTeam(
+                    match.team2,
+                    secondScore.score,
+                    secondScore.overs,
+                    battingKey === "team2"
+                )
+            );
+
+            main.append(meta, teams);
+
+            const action = document.createElement("button");
+            action.type = "button";
+            action.className = "match-card-action";
+            action.textContent = "Open scorer";
+            action.setAttribute("aria-label", `Open scorer for ${match.team1} versus ${match.team2}`);
+            action.addEventListener("click", () => {
+                try {
+                    localStorage.setItem("cricPulseMatch", JSON.stringify(match));
+                    window.location.href = "scorer.html";
+                } catch (error) {
+                    console.error("Unable to open match:", error);
+                    const errorMessage = document.getElementById("matchLoadError");
+                    if (errorMessage) {
+                        errorMessage.textContent = "Could not save this match in browser storage. Check your browser settings and try again.";
+                        errorMessage.hidden = false;
+                    }
+                }
+            });
+
+            card.append(main, action);
+            fragment.appendChild(card);
+
+        });
 
     }
 
+    list.replaceChildren(fragment);
+    list.setAttribute("aria-busy", "false");
 
-    document
-        .querySelectorAll(".tab-btn")
-        .forEach(
-            function (btn) {
+    if (updated) {
+        updated.textContent = `Updated ${new Date().toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })}`;
+    }
 
-                btn.classList.remove(
-                    "active"
-                );
-
-                btn.setAttribute(
-                    "aria-selected",
-                    "false"
-                );
-
-            }
-        );
+}
 
 
-    document
-        .querySelectorAll(".tab-content")
-        .forEach(
-            function (content) {
+async function refreshLiveMatches() {
 
-                content.classList.remove(
-                    "active"
-                );
+    const list = document.getElementById("matchList");
+    const errorMessage = document.getElementById("matchLoadError");
 
-            }
-        );
+    if (!list) {
+        return;
+    }
 
+    list.setAttribute("aria-busy", "true");
 
-    button.classList.add(
-        "active"
-    );
+    try {
 
+        const response = await fetch("/api/matches");
+        const matches = await response.json();
 
-    button.setAttribute(
-        "aria-selected",
-        "true"
-    );
+        if (!response.ok) {
+            throw new Error(matches.message || "Unable to load matches.");
+        }
 
+        if (!Array.isArray(matches)) {
+            throw new Error("The server returned an invalid match list.");
+        }
 
-    const selectedContent =
-        document.getElementById(
-            contentId
-        );
+        dashboardMatches = matches.filter((match) => match.status === "LIVE");
 
+        if (errorMessage) {
+            errorMessage.hidden = true;
+            errorMessage.textContent = "";
+        }
 
-    if (selectedContent) {
+        renderLiveMatches();
 
-        selectedContent.classList.add(
-            "active"
-        );
+    } catch (error) {
+
+        console.error("Unable to refresh live matches:", error);
+        list.setAttribute("aria-busy", "false");
+
+        if (dashboardMatches.length === 0) {
+            const state = document.createElement("div");
+            state.className = "match-state-card";
+
+            const heading = document.createElement("strong");
+            heading.textContent = "Live scores are unavailable";
+
+            const message = document.createElement("p");
+            message.textContent = "Check that the scoring server is running, then try again.";
+
+            const retry = document.createElement("button");
+            retry.type = "button";
+            retry.className = "secondary-button";
+            retry.textContent = "Retry";
+            retry.addEventListener("click", refreshLiveMatches);
+
+            state.append(heading, message, retry);
+            list.replaceChildren(state);
+        }
+
+        if (errorMessage) {
+            errorMessage.textContent = error.message || "Unable to load live matches.";
+            errorMessage.hidden = false;
+        }
 
     }
+
+}
+
+
+function updateConnectionStatus(connected) {
+
+    const dot = document.getElementById("connectionDot");
+    const text = document.getElementById("connectionText");
+
+    if (dot) {
+        dot.classList.toggle("offline", !connected);
+    }
+
+    if (text) {
+        text.textContent = connected ? "Live updates on" : "Reconnecting";
+    }
+
+}
+
+
+function initializeLiveDashboard() {
+
+    refreshLiveMatches();
+
+    if (typeof io !== "function") {
+        updateConnectionStatus(false);
+        return;
+    }
+
+    dashboardSocket = io();
+
+    dashboardSocket.on("connect", () => {
+        updateConnectionStatus(true);
+        refreshLiveMatches();
+    });
+
+    dashboardSocket.on("disconnect", () => {
+        updateConnectionStatus(false);
+    });
+
+    dashboardSocket.on("match:created", (match) => {
+        if (match?.status === "LIVE") {
+            dashboardMatches = [
+                match,
+                ...dashboardMatches.filter((item) => item.id !== match.id)
+            ];
+            renderLiveMatches();
+        }
+    });
+
+    dashboardSocket.on("match:update", (match) => {
+        if (!match?.id) {
+            refreshLiveMatches();
+            return;
+        }
+
+        dashboardMatches = match.status === "LIVE"
+            ? [match, ...dashboardMatches.filter((item) => item.id !== match.id)]
+            : dashboardMatches.filter((item) => item.id !== match.id);
+
+        renderLiveMatches();
+    });
+
 }
 
 
@@ -848,6 +1166,7 @@ document.addEventListener(
     "DOMContentLoaded",
     function () {
         populatePlayerInputDefaults();
+        initializeLiveDashboard();
     }
 );
 

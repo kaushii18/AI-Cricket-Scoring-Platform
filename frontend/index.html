@@ -1,884 +1,169 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>CricPulse | Real-Time Cricket Platform</title>
-
+    <meta name="theme-color" content="#08110d">
+    <meta name="description" content="Create a cricket match and follow live scores ball by ball.">
+    <title>CricPulse | Live Cricket Scoring</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-    <link
-        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
-        rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 
-<body>
-
-    <a href="#main-content" class="skip-link">
-        Skip to main content
-    </a>
-
-
-    <!-- ================= HEADER ================= -->
+<body class="dashboard-page">
+    <a href="#main-content" class="skip-link">Skip to main content</a>
 
     <header class="top-header">
-
-        <div class="brand">
-
-            <div class="brand-icon" aria-hidden="true">
-                🏏
-            </div>
-
-            <div>
-                <h1>CricPulse</h1>
-                <p>Real-Time Cricket Platform</p>
-            </div>
-
-        </div>
-
-
-        <nav class="nav-links">
-
-            <a href="#hero">Live</a>
-
-            <a href="#tournaments">Tournaments</a>
-
-            <a href="#features">Features</a>
-
-        </nav>
-
+        <a class="brand" href="./index.html" aria-label="CricPulse home">
+            <span class="brand-icon" aria-hidden="true">C</span>
+            <span>
+                <strong>CricPulse</strong>
+                <small>LIVE SCORING</small>
+            </span>
+        </a>
 
         <div class="header-actions">
-
-            <div class="live-status">
-                <span class="status-dot"></span>
-                <span>Live Ready</span>
+            <div class="live-status" aria-live="polite">
+                <span id="connectionDot" class="status-dot"></span>
+                <span id="connectionText">Connecting</span>
             </div>
-
-            <button
-                type="button"
-                class="primary-button compact-btn"
-                onclick="openMatchModal()">
-
-                + New Match
-
+            <button type="button" class="primary-button compact-btn" onclick="openMatchModal()">
+                <span aria-hidden="true">+</span> New match
             </button>
-
         </div>
-
     </header>
 
-
-    <!-- ================= MAIN ================= -->
-
     <main id="main-content" class="main-content">
-
-
-        <!-- ================= HERO ================= -->
-
-        <section id="hero" class="hero-section">
-
+        <section class="dashboard-hero">
             <div class="hero-content">
-
-                <span class="hero-badge">
-                    ⚡ LIVE CRICKET EXPERIENCE
-                </span>
-
-
-                <h2>
-                    Every Ball.
-                    <span>Every Moment.</span>
-                    One Platform.
-                </h2>
-
-
-                <p>
-                    Create matches, manage live scores,
-                    track tournaments and follow cricket
-                    performance in real time.
-                </p>
-
-
-                <div class="hero-actions">
-
-                    <button
-                        id="startButton"
-                        type="button"
-                        class="primary-button"
-                        onclick="openMatchModal()">
-
-                        🏏 Start New Match
-
-                    </button>
-
-
-                    <a
-                        href="#tournaments"
-                        class="secondary-button">
-
-                        🏆 Explore Tournaments
-
-                    </a>
-
-                </div>
-
-            </div>
-
-
-            <!-- LIVE SCORE PREVIEW -->
-
-            <div
-                class="score-preview"
-                role="region"
-                aria-label="Live Match Scorecard">
-
-                <div class="score-header">
-
-                    <span class="live-tag">
-                        🔴 LIVE MATCH
-                    </span>
-
-                    <span class="match-type">
-                        Friendly T20
-                    </span>
-
-                </div>
-
-
-                <div class="teams">
-
-                    <div class="team">
-
-                        <div class="team-logo">
-                            🔵
-                        </div>
-
-                        <h3 id="previewTeam1">
-                            Blue Warriors
-                        </h3>
-
-                        <strong id="team1Score">
-                            128/4
-                        </strong>
-
-                        <small id="team1Overs">
-                            15.2 Overs
-                        </small>
-
-                    </div>
-
-
-                    <div class="vs-container">
-
-                        <div class="vs">
-                            VS
-                        </div>
-
-                        <span class="target-badge">
-                            Target: 129
-                        </span>
-
-                    </div>
-
-
-                    <div class="team">
-
-                        <div class="team-logo">
-                            🟠
-                        </div>
-
-                        <h3 id="previewTeam2">
-                            Orange Kings
-                        </h3>
-
-                        <strong id="team2Score">
-                            Yet to Bat
-                        </strong>
-
-                        <small>
-                            Inning 2 Pending
-                        </small>
-
-                    </div>
-
-                </div>
-
-
-                <div class="match-info">
-
-                    <span>
-                        🏏 Current Run Rate:
-                        <b id="crrVal">8.35</b>
-                    </span>
-
-                    <span>
-                        🎯 Required Rate:
-                        <b id="rrrVal">8.92</b>
-                    </span>
-
-                </div>
-
-
-                <div class="ball-feed-container">
-
-                    <span class="feed-label">
-                        Recent Balls:
-                    </span>
-
-                    <div class="ball-pills">
-
-                        <span class="ball-pill">0</span>
-                        <span class="ball-pill">1</span>
-                        <span class="ball-pill four">4</span>
-                        <span class="ball-pill">2</span>
-                        <span class="ball-pill six">6</span>
-                        <span class="ball-pill Wicket">W</span>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- ================= TOURNAMENTS ================= -->
-
-        <section
-            id="tournaments"
-            class="tournaments-section">
-
-            <div class="section-heading">
-
-                <span>
-                    COMPETITIONS
-                </span>
-
-                <h2>
-                    Cricket Tournaments
-                </h2>
-
-            </div>
-
-
-            <div class="tournament-tabs">
-
-                <button
-                    type="button"
-                    class="tab-btn active"
-                    role="tab"
-                    aria-selected="true"
-                    onclick="switchTab(this, 'active-t')">
-
-                    Live & Active
-
+                <span class="hero-badge"><span class="eyebrow-mark"></span> YOUR MATCH CENTRE</span>
+                <h1>Cricket, <span>in real time.</span></h1>
+                <p>Every delivery, every score, one live view. Start a match or jump back into the action.</p>
+                <button type="button" class="primary-button hero-cta" onclick="openMatchModal()">
+                    Set up a match <span aria-hidden="true">↗</span>
                 </button>
-
-
-                <button
-                    type="button"
-                    class="tab-btn"
-                    role="tab"
-                    aria-selected="false"
-                    onclick="switchTab(this, 'upcoming-t')">
-
-                    Upcoming
-
-                </button>
-
             </div>
 
-
-            <!-- ACTIVE TOURNAMENTS -->
-
-            <div
-                id="active-t"
-                class="tab-content active">
-
-                <div class="tournament-grid">
-
-
-                    <div class="tournament-card">
-
-                        <div class="t-card-header">
-
-                            <span class="t-badge live">
-                                LIVE
-                            </span>
-
-                            <span class="t-teams-count">
-                                8 Teams
-                            </span>
-
-                        </div>
-
-
-                        <h3>
-                            Premier T20 League
-                        </h3>
-
-
-                        <p>
-                            Live tournament
-                        </p>
-
-
-                        <div class="t-progress-bar">
-
-                            <div
-                                class="progress"
-                                style="width: 50%;">
-                            </div>
-
-                        </div>
-
-
-                        <div class="t-footer">
-
-                            <small>
-                                Matches in progress
-                            </small>
-
-                            <button
-                                type="button"
-                                class="text-btn">
-
-                                View Table →
-
-                            </button>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="tournament-card">
-
-                        <div class="t-card-header">
-
-                            <span class="t-badge live">
-                                ACTIVE
-                            </span>
-
-                            <span class="t-teams-count">
-                                4 Teams
-                            </span>
-
-                        </div>
-
-
-                        <h3>
-                            Inter-College Championship
-                        </h3>
-
-
-                        <p>
-                            Knockout tournament
-                        </p>
-
-
-                        <div class="t-progress-bar">
-
-                            <div
-                                class="progress"
-                                style="width: 75%;">
-                            </div>
-
-                        </div>
-
-
-                        <div class="t-footer">
-
-                            <small>
-                                Semi Finals
-                            </small>
-
-                            <button
-                                type="button"
-                                class="text-btn">
-
-                                Fixtures →
-
-                            </button>
-
-                        </div>
-
-                    </div>
-
+            <aside class="dashboard-summary" aria-label="Live match summary">
+                <div class="summary-topline">
+                    <span class="summary-icon" aria-hidden="true">◎</span>
+                    <span>LIVE CENTRE</span>
+                    <span class="summary-indicator"><i></i> UPDATING</span>
                 </div>
-
-            </div>
-
-
-            <!-- UPCOMING TOURNAMENTS -->
-
-            <div
-                id="upcoming-t"
-                class="tab-content">
-
-                <div class="tournament-grid">
-
-                    <div class="tournament-card">
-
-                        <div class="t-card-header">
-
-                            <span class="t-badge upcoming">
-                                UPCOMING
-                            </span>
-
-                            <span class="t-teams-count">
-                                12 Teams
-                            </span>
-
-                        </div>
-
-
-                        <h3>
-                            Corporate Super Cup
-                        </h3>
-
-
-                        <p>
-                            Registration open
-                        </p>
-
-
-                        <div class="t-footer">
-
-                            <small>
-                                Tournament starting soon
-                            </small>
-
-                            <button
-                                type="button"
-                                class="primary-button compact-btn">
-
-                                Register Team
-
-                            </button>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
+                <div class="summary-number" id="liveMatchCount">—</div>
+                <p id="liveMatchLabel">Checking live matches</p>
+                <div class="summary-divider"></div>
+                <p class="summary-note">Live scores refresh automatically as deliveries are recorded.</p>
+            </aside>
         </section>
 
-
-        <!-- ================= FEATURES ================= -->
-
-        <section
-            id="features"
-            class="features-section">
-
+        <section class="matches-section" aria-labelledby="matchesHeading">
             <div class="section-heading">
-
-                <span>
-                    CRICPULSE FEATURES
-                </span>
-
-                <h2>
-                    Everything You Need for Cricket
-                </h2>
-
+                <div>
+                    <span class="section-kicker">ON THE FIELD</span>
+                    <h2 id="matchesHeading">Live matches</h2>
+                </div>
+                <span id="matchUpdatedAt" class="updated-label">Waiting for score data</span>
             </div>
 
-
-            <div class="feature-grid">
-
-
-                <div class="feature-card">
-
-                    <div class="feature-icon">
-                        🔴
-                    </div>
-
-                    <h3>
-                        Live Ball-by-Ball Scoring
-                    </h3>
-
-                    <p>
-                        Record every ball and update
-                        match scores in real time.
-                    </p>
-
+            <div id="matchList" class="live-match-list" aria-live="polite" aria-busy="true">
+                <div class="match-state-card">
+                    <span class="loading-spinner" aria-hidden="true"></span>
+                    <p>Loading live matches…</p>
                 </div>
-
-
-                <div class="feature-card">
-
-                    <div class="feature-icon">
-                        🏆
-                    </div>
-
-                    <h3>
-                        Tournament Management
-                    </h3>
-
-                    <p>
-                        Create tournaments, manage teams,
-                        fixtures and standings.
-                    </p>
-
-                </div>
-
-
-                <div class="feature-card">
-
-                    <div class="feature-icon">
-                        📊
-                    </div>
-
-                    <h3>
-                        Player Statistics
-                    </h3>
-
-                    <p>
-                        Track runs, wickets, strike rates,
-                        averages and match performance.
-                    </p>
-
-                </div>
-
-
-                <div class="feature-card">
-
-                    <div class="feature-icon">
-                        🤖
-                    </div>
-
-                    <h3>
-                        AI Match Insights
-                    </h3>
-
-                    <p>
-                        Generate useful match insights
-                        from live scoring data.
-                    </p>
-
-                </div>
-
             </div>
-
+            <p id="matchLoadError" class="inline-error" role="alert" hidden></p>
         </section>
 
-
-        <!-- ================= CTA ================= -->
-
-        <section class="cta-section">
-
-            <h2>
-                Ready to Start the Match?
-            </h2>
-
-            <p>
-                Create a match and start live scoring.
-            </p>
-
-
-            <button
-                id="ctaStartButton"
-                type="button"
-                class="primary-button"
-                onclick="openMatchModal()">
-
-                🏏 Create Match Now
-
-            </button>
-
+        <section class="dashboard-note">
+            <span class="note-mark" aria-hidden="true">✳</span>
+            <p><strong>Ready when you are.</strong> Match data is stored locally by this app. Create a match to begin live scoring.</p>
+            <button type="button" class="text-action" onclick="openMatchModal()">Create match <span aria-hidden="true">→</span></button>
         </section>
-
     </main>
 
-
-    <!-- ================= FOOTER ================= -->
-
-    <footer>
-
-        <div class="footer-brand">
-            🏏 <strong>CricPulse</strong>
-        </div>
-
-        <p>
-            Real-Time Cricket Scoring & Tournament Platform
-        </p>
-
-        <small>
-            © 2026 CricPulse • Built as a Final-Year Engineering Project
-        </small>
-
+    <footer class="site-footer">
+        <a class="brand footer-brand" href="./index.html" aria-label="CricPulse home">
+            <span class="brand-icon" aria-hidden="true">C</span>
+            <strong>CricPulse</strong>
+        </a>
+        <span>Live cricket scoring</span>
     </footer>
 
-
-    <!-- =====================================================
-         QUICK MATCH SETUP MODAL
-    ====================================================== -->
-
-    <div
-        id="matchModal"
-        class="modal-overlay"
-        aria-hidden="true"
-        role="dialog"
-        aria-labelledby="modalTitle">
-
+    <div id="matchModal" class="modal-overlay" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
         <div class="modal-card">
-
-
             <div class="modal-header">
-
-                <h3 id="modalTitle">
-                    ⚡ Quick Match Setup
-                </h3>
-
-
-                <button
-                    type="button"
-                    class="close-btn"
-                    onclick="closeMatchModal()"
-                    aria-label="Close">
-
-                    &times;
-
-                </button>
-
+                <div>
+                    <span class="section-kicker">MATCH SETUP</span>
+                    <h2 id="modalTitle">New match</h2>
+                </div>
+                <button type="button" class="close-btn" onclick="closeMatchModal()" aria-label="Close">&times;</button>
             </div>
 
-
-            <form
-                id="matchForm"
-                onsubmit="handleMatchSubmit(event)">
-
-
-                <!-- TEAM NAMES -->
-
+            <form id="matchForm" onsubmit="handleMatchSubmit(event)">
                 <div class="form-group-row">
-
-
                     <div class="form-group">
-
-                        <label for="team1">
-                            Team 1 Name
-                        </label>
-
-                        <input
-                            type="text"
-                            id="team1"
-                            name="team1"
-                            placeholder="e.g. Mumbai Indians"
-                            required>
-
+                        <label for="team1">First team</label>
+                        <input type="text" id="team1" name="team1" placeholder="Enter team name" maxlength="50" required>
                     </div>
-
-
                     <div class="form-group">
-
-                        <label for="team2">
-                            Team 2 Name
-                        </label>
-
-                        <input
-                            type="text"
-                            id="team2"
-                            name="team2"
-                            placeholder="e.g. Chennai Super Kings"
-                            required>
-
+                        <label for="team2">Second team</label>
+                        <input type="text" id="team2" name="team2" placeholder="Enter team name" maxlength="50" required>
                     </div>
-
                 </div>
 
-
-                <!-- OVERS + TOSS -->
-
                 <div class="form-group-row">
-
-
                     <div class="form-group">
-
-                        <label for="overs">
-                            Total Overs
-                        </label>
-
-
-                        <select
-                            id="overs"
-                            name="overs"
-                            required>
-
-                            <option value="5">
-                                5 Overs
-                            </option>
-
-                            <option value="10">
-                                10 Overs
-                            </option>
-
-                            <option
-                                value="20"
-                                selected>
-
-                                20 Overs (T20)
-
-                            </option>
-
-                            <option value="50">
-                                50 Overs (ODI)
-                            </option>
-
+                        <label for="overs">Overs per innings</label>
+                        <select id="overs" name="overs" required>
+                            <option value="5">5 overs</option>
+                            <option value="10">10 overs</option>
+                            <option value="20" selected>20 overs</option>
+                            <option value="50">50 overs</option>
                         </select>
-
                     </div>
-
-
                     <div class="form-group">
-
-                        <label for="toss">
-                            Toss Winner
-                        </label>
-
-
-                        <select
-                            id="toss"
-                            name="toss"
-                            required>
-
-                            <option value="team1">
-                                Team 1
-                            </option>
-
-                            <option value="team2">
-                                Team 2
-                            </option>
-
+                        <label for="toss">Toss winner</label>
+                        <select id="toss" name="toss" required>
+                            <option value="team1">First team</option>
+                            <option value="team2">Second team</option>
                         </select>
-
                     </div>
-
                 </div>
-
-
-                <!-- TOSS DECISION -->
 
                 <div class="form-group">
-
-                    <label for="tossDecision">
-                        Toss Decision
-                    </label>
-
-
-                    <select
-                        id="tossDecision"
-                        name="tossDecision"
-                        required>
-
-                        <option value="bat">
-                            Bat First
-                        </option>
-
-                        <option value="bowl">
-                            Bowl First
-                        </option>
-
+                    <label for="tossDecision">Toss decision</label>
+                    <select id="tossDecision" name="tossDecision" required>
+                        <option value="bat">Bat first</option>
+                        <option value="bowl">Bowl first</option>
                     </select>
-
                 </div>
-
-
-                <!-- TEAM PLAYERS -->
 
                 <div class="player-team-grid">
-
-                    <div class="player-team-panel">
-
-                        <div class="player-team-header">
-                            <h4>Team 1 Players</h4>
-                        </div>
-
-                        <div class="player-list-grid">
-                            <input type="text" class="team1-player-input player-name-input" value="Mumbai Player 1">
-                            <input type="text" class="team1-player-input player-name-input" value="Mumbai Player 2">
-                            <input type="text" class="team1-player-input player-name-input" value="Mumbai Player 3">
-                            <input type="text" class="team1-player-input player-name-input" value="Mumbai Player 4">
-                            <input type="text" class="team1-player-input player-name-input" value="Mumbai Player 5">
-                            <input type="text" class="team1-player-input player-name-input" value="Mumbai Player 6">
-                            <input type="text" class="team1-player-input player-name-input" value="Mumbai Player 7">
-                            <input type="text" class="team1-player-input player-name-input" value="Mumbai Player 8">
-                            <input type="text" class="team1-player-input player-name-input" value="Mumbai Player 9">
-                            <input type="text" class="team1-player-input player-name-input" value="Mumbai Player 10">
-                            <input type="text" class="team1-player-input player-name-input" value="Mumbai Player 11">
-                        </div>
-
-                    </div>
-
-                    <div class="player-team-panel">
-
-                        <div class="player-team-header">
-                            <h4>Team 2 Players</h4>
-                        </div>
-
-                        <div class="player-list-grid">
-                            <input type="text" class="team2-player-input player-name-input" value="Chennai Player 1">
-                            <input type="text" class="team2-player-input player-name-input" value="Chennai Player 2">
-                            <input type="text" class="team2-player-input player-name-input" value="Chennai Player 3">
-                            <input type="text" class="team2-player-input player-name-input" value="Chennai Player 4">
-                            <input type="text" class="team2-player-input player-name-input" value="Chennai Player 5">
-                            <input type="text" class="team2-player-input player-name-input" value="Chennai Player 6">
-                            <input type="text" class="team2-player-input player-name-input" value="Chennai Player 7">
-                            <input type="text" class="team2-player-input player-name-input" value="Chennai Player 8">
-                            <input type="text" class="team2-player-input player-name-input" value="Chennai Player 9">
-                            <input type="text" class="team2-player-input player-name-input" value="Chennai Player 10">
-                            <input type="text" class="team2-player-input player-name-input" value="Chennai Player 11">
-                        </div>
-
-                    </div>
-
+                    <section class="player-team-panel">
+                        <div class="player-team-header"><h3 id="team1RosterHeading">First team squad</h3><span>11 PLAYERS</span></div>
+                        <div id="team1Roster" class="player-list-grid"></div>
+                    </section>
+                    <section class="player-team-panel">
+                        <div class="player-team-header"><h3 id="team2RosterHeading">Second team squad</h3><span>11 PLAYERS</span></div>
+                        <div id="team2Roster" class="player-list-grid"></div>
+                    </section>
                 </div>
 
-
-                <!-- ACTION BUTTONS -->
-
+                <p class="form-hint">Player names are optional. You can update the active players during scoring.</p>
                 <div class="modal-actions">
-
-                    <button
-                        type="button"
-                        class="secondary-button"
-                        onclick="closeMatchModal()">
-
-                        Cancel
-
-                    </button>
-
-
-                    <button
-                        type="submit"
-                        class="primary-button">
-
-                        Launch Live Scorer 🚀
-
-                    </button>
-
+                    <button type="button" class="secondary-button" onclick="closeMatchModal()">Cancel</button>
+                    <button id="createMatchButton" type="submit" class="primary-button">Create and score <span aria-hidden="true">→</span></button>
                 </div>
-
             </form>
-
         </div>
-
     </div>
 
-
-    <!-- JAVASCRIPT -->
-
+    <script src="/socket.io/socket.io.js"></script>
     <script src="./script.js"></script>
-
 </body>
+
 </html>
