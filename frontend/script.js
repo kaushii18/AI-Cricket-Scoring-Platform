@@ -45,6 +45,75 @@ function closeMatchModal() {
 // CREATE NEW MATCH
 // ==========================================
 
+function getPlayerNameInputs(teamKey) {
+
+    return Array.from(
+        document.querySelectorAll(
+            `.${teamKey}-player-input`
+        )
+    )
+    .map((input) =>
+        input.value.trim()
+    )
+    .filter(Boolean);
+
+}
+
+function syncDefaultPlayerNames() {
+
+    const team1Input =
+        document.getElementById("team1");
+
+    const team2Input =
+        document.getElementById("team2");
+
+    if (!team1Input || !team2Input) {
+        return;
+    }
+
+    const team1Name =
+        team1Input.value.trim() || "Team 1";
+
+    const team2Name =
+        team2Input.value.trim() || "Team 2";
+
+    Array.from(document.querySelectorAll(".team1-player-input")).forEach((input, index) => {
+        if (!input.dataset.customized) {
+            input.value = `${team1Name} Player ${index + 1}`;
+        }
+    });
+
+    Array.from(document.querySelectorAll(".team2-player-input")).forEach((input, index) => {
+        if (!input.dataset.customized) {
+            input.value = `${team2Name} Player ${index + 1}`;
+        }
+    });
+
+    document.querySelectorAll(".player-name-input").forEach((input) => {
+        input.addEventListener("input", function () {
+            input.dataset.customized = String(Boolean(this.value.trim()));
+        });
+    });
+
+}
+
+function populatePlayerInputDefaults() {
+
+    syncDefaultPlayerNames();
+
+    const team1Input = document.getElementById("team1");
+    const team2Input = document.getElementById("team2");
+
+    if (team1Input) {
+        team1Input.addEventListener("input", syncDefaultPlayerNames);
+    }
+
+    if (team2Input) {
+        team2Input.addEventListener("input", syncDefaultPlayerNames);
+    }
+
+}
+
 async function handleMatchSubmit(event) {
 
     event.preventDefault();
@@ -192,10 +261,16 @@ async function handleMatchSubmit(event) {
     // ==========================================
 
     const team1Players =
-        createDefaultPlayers(team1);
+        getPlayerNameInputs("team1")
+            .length
+            ? getPlayerNameInputs("team1")
+            : createDefaultPlayers(team1).map((player) => player.name);
 
     const team2Players =
-        createDefaultPlayers(team2);
+        getPlayerNameInputs("team2")
+            .length
+            ? getPlayerNameInputs("team2")
+            : createDefaultPlayers(team2).map((player) => player.name);
 
 
     // ==========================================
@@ -768,6 +843,14 @@ function switchTab(
 // ==========================================
 // ESCAPE KEY
 // ==========================================
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+        populatePlayerInputDefaults();
+    }
+);
+
 
 document.addEventListener(
     "keydown",

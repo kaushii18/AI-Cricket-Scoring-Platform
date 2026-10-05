@@ -884,6 +884,37 @@
             CricPulse backend controls the live score and match state.
         </p>
 
+        <div class="player-selection-panel">
+
+            <div class="selection-header">
+                <span>Team Roles</span>
+            </div>
+
+            <p id="playerSelectionMessage" class="status-subtitle">
+                Choose the active striker, non-striker and bowler.
+            </p>
+
+            <div class="selection-grid">
+
+                <label>
+                    <span>Striker</span>
+                    <select id="strikerSelect"></select>
+                </label>
+
+                <label>
+                    <span>Non-Striker</span>
+                    <select id="nonStrikerSelect"></select>
+                </label>
+
+                <label>
+                    <span>Bowler</span>
+                    <select id="bowlerSelect"></select>
+                </label>
+
+            </div>
+
+        </div>
+
 
         <button
             type="button"
@@ -1153,6 +1184,201 @@ function getBowlingTeamData() {
 
 
 // =====================================================
+// ACTIVE PLAYER SELECTION
+// =====================================================
+
+function populatePlayerSelectors() {
+
+    const strikerSelect =
+        document.getElementById("strikerSelect");
+
+    const nonStrikerSelect =
+        document.getElementById("nonStrikerSelect");
+
+    const bowlerSelect =
+        document.getElementById("bowlerSelect");
+
+    if (!strikerSelect || !nonStrikerSelect || !bowlerSelect) {
+        return;
+    }
+
+    const battingTeam = getBattingTeamData();
+    const bowlingTeam = getBowlingTeamData();
+    const batters = Array.isArray(battingTeam.players)
+        ? battingTeam.players.filter((player) => player && player.id && !player.out)
+        : [];
+    const bowlers = Array.isArray(bowlingTeam.players)
+        ? bowlingTeam.players.filter((player) => player && player.id)
+        : [];
+    const activePlayers = matchData.activePlayers || {};
+
+    function populateSelect(select, players, selectedId, fallbackId) {
+
+        select.replaceChildren();
+
+        players.forEach((player) => {
+            const option = document.createElement("option");
+            option.value = player.id;
+            option.textContent = player.name;
+            select.appendChild(option);
+        });
+
+        const preferredId =
+            players.some((player) => player.id === selectedId)
+                ? selectedId
+                : fallbackId;
+
+        select.value = preferredId || "";
+        select.disabled =
+            matchData.status !== "LIVE" ||
+            players.length === 0;
+
+    }
+
+    const defaultStrikerId =
+        activePlayers.strikerId ||
+        batters[0]?.id;
+
+    const defaultNonStrikerId =
+        activePlayers.nonStrikerId ||
+        batters.find((player) => player.id !== defaultStrikerId)?.id;
+
+    populateSelect(
+        strikerSelect,
+        batters,
+        activePlayers.strikerId,
+        defaultStrikerId
+    );
+
+    populateSelect(
+        nonStrikerSelect,
+        batters,
+        activePlayers.nonStrikerId,
+        defaultNonStrikerId
+    );
+
+    populateSelect(
+        bowlerSelect,
+        bowlers,
+        activePlayers.bowlerId,
+        bowlers[0]?.id
+    );
+
+    const message =
+        document.getElementById("playerSelectionMessage");
+
+    if (message) {
+        message.textContent = batters.length < 2 || bowlers.length === 0
+            ? "Player roles are unavailable until team rosters are set."
+            : matchData.status === "LIVE"
+                ? "Choose the active striker, non-striker and bowler."
+                : "Match completed; player selections are locked.";
+    }
+
+}
+
+
+async function updateActivePlayers() {
+
+    const strikerSelect =
+        document.getElementById("strikerSelect");
+
+    const nonStrikerSelect =
+        document.getElementById("nonStrikerSelect");
+
+    const bowlerSelect =
+        document.getElementById("bowlerSelect");
+
+    if (
+        !matchData ||
+        matchData.status !== "LIVE" ||
+        !strikerSelect ||
+        !nonStrikerSelect ||
+        !bowlerSelect
+    ) {
+        return;
+    }
+
+    if (
+        !strikerSelect.value ||
+        !nonStrikerSelect.value ||
+        !bowlerSelect.value
+    ) {
+        return;
+    }
+
+    if (strikerSelect.value === nonStrikerSelect.value) {
+        alert("Striker and non-striker must be different.");
+        populatePlayerSelectors();
+        return;
+    }
+
+    const selectors = [
+        strikerSelect,
+        nonStrikerSelect,
+        bowlerSelect
+    ];
+
+    selectors.forEach((select) => {
+        select.disabled = true;
+    });
+
+    try {
+
+        const response = await fetch(
+            "/api/matches/" +
+                encodeURIComponent(matchData.id) +
+                "/players",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    strikerId: strikerSelect.value,
+                    nonStrikerId: nonStrikerSelect.value,
+                    bowlerId: bowlerSelect.value
+                })
+            }
+        );
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data.message || "Unable to update players.");
+        }
+
+        matchData = data;
+        saveLocalMatch();
+        renderMatch();
+
+    } catch (error) {
+
+        console.error("Unable to update active players:", error);
+        populatePlayerSelectors();
+        alert(error.message || "Unable to update active players.");
+
+    }
+
+}
+
+
+document.addEventListener("change", function (event) {
+
+    const changedId = event.target && event.target.id;
+
+    if (
+        changedId === "strikerSelect" ||
+        changedId === "nonStrikerSelect" ||
+        changedId === "bowlerSelect"
+    ) {
+        updateActivePlayers();
+    }
+
+});
+
+
+// =====================================================
 // TOSS TEAM NAME
 // =====================================================
 
@@ -1192,6 +1418,7 @@ function renderMatch() {
         return;
     }
 
+    populatePlayerSelectors();
 
     updateHeader();
 
