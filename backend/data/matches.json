@@ -1,0 +1,3178 @@
+[
+  {
+    "id": "267bbd9c-6b04-4427-b642-2f6cbde7eecf",
+    "team1": "nn",
+    "team2": "mm",
+    "overs": 5,
+    "tossWinner": "team1",
+    "tossWinnerName": "nn",
+    "tossDecision": "bat",
+    "battingTeam": "nn",
+    "bowlingTeam": "mm",
+    "currentInnings": 1,
+    "status": "LIVE",
+    "teams": {
+      "team1": {
+        "name": "nn",
+        "runs": 0,
+        "wickets": 0,
+        "balls": 0,
+        "players": []
+      },
+      "team2": {
+        "name": "mm",
+        "runs": 0,
+        "wickets": 0,
+        "balls": 0,
+        "players": []
+      }
+    },
+    "activePlayers": {
+      "strikerId": null,
+      "nonStrikerId": null,
+      "bowlerId": null
+    },
+    "balls": [],
+    "recentBalls": [],
+    "target": null,
+    "result": null,
+    "createdAt": "2026-10-05T09:05:54.070Z",
+    "updatedAt": "2026-10-05T09:05:54.070Z"
+  },
+  {
+    "id": "2b57e680-ee04-4a1f-8c91-be4ff4ae310e",
+    "team1": "ui",
+    "team2": "mi",
+    "overs": 5,
+    "tossWinner": "team2",
+    "tossWinnerName": "mi",
+    "tossDecision": "bowl",
+    "battingTeam": "ui",
+    "bowlingTeam": "mi",
+    "currentInnings": 1,
+    "status": "LIVE",
+    "teams": {
+      "team1": {
+        "name": "ui",
+        "runs": 0,
+        "wickets": 0,
+        "balls": 0,
+        "players": []
+      },
+      "team2": {
+        "name": "mi",
+        "runs": 0,
+        "wickets": 0,
+        "balls": 0,
+        "players": []
+      }
+    },
+    "activePlayers": {
+      "strikerId": null,
+      "nonStrikerId": null,
+      "bowlerId": null
+    },
+    "balls": [],
+    "recentBalls": [],
+    "target": null,
+    "result": null,
+    "createdAt": "2026-10-05T08:54:31.200Z",
+    "updatedAt": "2026-10-05T08:55:26.295Z"
+  },
+  {
+    "id": "27fa2151-ae53-4992-badf-fcb4f623bc5c",
+    "team1": "mmm",
+    "team2": "bbb",
+    "overs": 20,
+    "tossWinner": "team2",
+    "tossWinnerName": "bbb",
+    "tossDecision": "bat",
+    "battingTeam": "bbb",
+    "bowlingTeam": "mmm",
+    "currentInnings": 1,
+    "status": "LIVE",
+    "teams": {
+      "team1": {
+        "name": "mmm",
+        "runs": 0,
+        "wickets": 0,
+        "balls": 0
+      },
+      "team2": {
+        "name": "bbb",
+        "runs": 0,
+        "wickets": 0,
+        "balls": 0
+      }
+    },
+    "balls": [],
+    "recentBalls": [],
+    "target": null,
+    "result": null,
+    "createdAt": "2026-10-04T05:57:59.948Z",
+    "updatedAt": "2026-10-04T05:58:21.909Z"
+  },
+  {
+    "id": "b3adc513-2c12-4d1f-b3d2-5127934bbead",
+    "team1": "cci",
+    "team2": "bombay",
+    "overs": 5,
+    "tossWinner": "team2",
+    "tossWinnerName": "bombay",
+    "tossDecision": "bowl",
+    "battingTeam": "bombay",
+    "bowlingTeam": "cci",
+    "currentInnings": 2,
+    "status": "COMPLETED",
+    "teams": {
+      "team1": {
+        "name": "cci",
+        "runs": 115,
+        "wickets": 4,
+        "balls": 30
+      },
+      "team2": {
+        "name": "bombay",
+        "runs": 120,
+        "wickets": 0,
+        "balls": 20
+      }
+    },
+    "balls": [
+      {
+        "number": 1,
+        "innings": 1,
+        "battingTeam": "cci",
+        "runs": 4,
+        "wickets": 0,
+        "display": "4",
+        "timestamp": "2026-10-04T05:45:30.296Z"
+      },
+      {
+        "number": 2,
+        "innings": 1,
+        "battingTeam": "cci",
+        "runs": 4,
+        "wickets": 0,
+        "display": "4",
+        "timestamp": "2026-10-04T05:45:30.441Z"
+      },
+      {
+        "number": 3,
+        "innings": 1,
+        "battingTeam": "cci",
+        "runs": 4,
+        "wickets": 0,
+        "display": "4",
+        "timestamp": "2026-10-04T05:45:30.567Z"
+      },
+      {
+        "number": 4,
+        "innings": 1,
+        "battingTeam": "cci",
+        "runs": 4,
+        "wickets": 0,
+        "display": "4",
+        "timestamp": "2026-10-04T05:45:30.681Z"
+      },
+      {
+        "number": 5,
+        "innings": 1,
+        "battingTeam": "cci",
+        "runs": 4,
+        "wickets": 0,
+        "display": "4",
+        "timestamp": "2026-10-04T05:45:30.809Z"
+      },
+      {
+        "number": 6,
+        "innings": 1,
+        "battingTeam": "cci",
+        "runs": 4,
+        "wickets": 0,
+        "display": "4",
+        "timestamp": "2026-10-04T05:45:31.036Z"
+      },
+      {
+        "number": 7,
+        "innings": 1,
+        "battingTeam": "cci",
+        "runs": 4,
+        "wickets": 0,
+        "display": "4",
+        "timestamp": "2026-10-04T05:45:31.414Z"
+      },
+      {
+        "number": 8,
+        "innings": 1,
+        "battingTeam": "cci",
+        "runs": 4,
+        "wickets": 0,
+        "display": "4",
+        "timestamp": "2026-10-04T05:45:31.563Z"
+      },
+      {
+        "number": 9,
+        "innings": 1,
+        "battingTeam": "cci",
+        "runs": 4,
+        "wickets": 0,
+        "display": "4",
+        "timestamp": "2026-10-04T05:45:31.782Z"
+      },
+      {
+        "number": 10,
+        "innings": 1,
+        "battingTeam": "cci",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T05:45:47.174Z"
+      },
+      {
+        "number": 11,
+        "innings": 1,
+        "battingTeam": "cci",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T05:45:47.299Z"
+      },
+      {
+        "number": 12,
+        "innings": 1,
+        "battingTeam": "cci",
+        "runs": 3,
+        "wickets": 0,
+        "display": "3",
+        "timestamp": "2026-10-04T05:45:48.056Z"
+      },
+      {
+        "number": 13,
+        "innings": 1,
+        "battingTeam": "cci",
+        "runs": 3,
+        "wickets": 0,
+        "display": "3",
+        "timestamp": "2026-10-04T05:45:48.192Z"
+      },
+      {
+        "number": 14,
+        "innings": 1,
+        "battingTeam": "cci",
+        "runs": 2,
+        "wickets": 0,
+        "display": "2",
+        "timestamp": "2026-10-04T05:45:48.922Z"
+      },
+      {
+        "number": 15,
+        "innings": 1,
+        "battingTeam": "cci",
+        "runs": 2,
+        "wickets": 0,
+        "display": "2",
+        "timestamp": "2026-10-04T05:45:51.583Z"
+      },
+      {
+        "number": 16,
+        "innings": 1,
+        "battingTeam": "cci",
+        "runs": 3,
+        "wickets": 0,
+        "display": "3",
+        "timestamp": "2026-10-04T05:45:52.335Z"
+      },
+      {
+        "number": 17,
+        "innings": 1,
+        "battingTeam": "cci",
+        "runs": 4,
+        "wickets": 0,
+        "display": "4",
+        "timestamp": "2026-10-04T05:45:53.008Z"
+      },
+      {
+        "number": 18,
+        "innings": 1,
+        "battingTeam": "cci",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T05:45:54.448Z"
+      },
+      {
+        "number": 19,
+        "innings": 1,
+        "battingTeam": "cci",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T05:45:54.683Z"
+      },
+      {
+        "number": 20,
+        "innings": 1,
+        "battingTeam": "cci",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T05:45:55.028Z"
+      },
+      {
+        "number": 21,
+        "innings": 1,
+        "battingTeam": "cci",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T05:45:55.260Z"
+      },
+      {
+        "number": 22,
+        "innings": 1,
+        "battingTeam": "cci",
+        "runs": 4,
+        "wickets": 0,
+        "display": "4",
+        "timestamp": "2026-10-04T05:45:59.342Z"
+      },
+      {
+        "number": 23,
+        "innings": 1,
+        "battingTeam": "cci",
+        "runs": 4,
+        "wickets": 0,
+        "display": "4",
+        "timestamp": "2026-10-04T05:45:59.565Z"
+      },
+      {
+        "number": 24,
+        "innings": 1,
+        "battingTeam": "cci",
+        "runs": 0,
+        "wickets": 1,
+        "display": "W",
+        "timestamp": "2026-10-04T05:46:00.921Z"
+      },
+      {
+        "number": 25,
+        "innings": 1,
+        "battingTeam": "cci",
+        "runs": 0,
+        "wickets": 1,
+        "display": "W",
+        "timestamp": "2026-10-04T05:46:01.143Z"
+      },
+      {
+        "number": 26,
+        "innings": 1,
+        "battingTeam": "cci",
+        "runs": 0,
+        "wickets": 1,
+        "display": "W",
+        "timestamp": "2026-10-04T05:46:02.100Z"
+      },
+      {
+        "number": 27,
+        "innings": 1,
+        "battingTeam": "cci",
+        "runs": 0,
+        "wickets": 1,
+        "display": "W",
+        "timestamp": "2026-10-04T05:46:02.716Z"
+      },
+      {
+        "number": 28,
+        "innings": 1,
+        "battingTeam": "cci",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T05:46:04.344Z"
+      },
+      {
+        "number": 29,
+        "innings": 1,
+        "battingTeam": "cci",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T05:46:04.828Z"
+      },
+      {
+        "number": 30,
+        "innings": 1,
+        "battingTeam": "cci",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T05:46:05.473Z"
+      },
+      {
+        "number": 31,
+        "innings": 2,
+        "battingTeam": "bombay",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T05:46:10.821Z"
+      },
+      {
+        "number": 32,
+        "innings": 2,
+        "battingTeam": "bombay",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T05:46:10.955Z"
+      },
+      {
+        "number": 33,
+        "innings": 2,
+        "battingTeam": "bombay",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T05:46:11.069Z"
+      },
+      {
+        "number": 34,
+        "innings": 2,
+        "battingTeam": "bombay",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T05:46:11.205Z"
+      },
+      {
+        "number": 35,
+        "innings": 2,
+        "battingTeam": "bombay",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T05:46:11.337Z"
+      },
+      {
+        "number": 36,
+        "innings": 2,
+        "battingTeam": "bombay",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T05:46:11.453Z"
+      },
+      {
+        "number": 37,
+        "innings": 2,
+        "battingTeam": "bombay",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T05:46:11.579Z"
+      },
+      {
+        "number": 38,
+        "innings": 2,
+        "battingTeam": "bombay",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T05:46:11.707Z"
+      },
+      {
+        "number": 39,
+        "innings": 2,
+        "battingTeam": "bombay",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T05:46:11.831Z"
+      },
+      {
+        "number": 40,
+        "innings": 2,
+        "battingTeam": "bombay",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T05:46:11.956Z"
+      },
+      {
+        "number": 41,
+        "innings": 2,
+        "battingTeam": "bombay",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T05:46:12.077Z"
+      },
+      {
+        "number": 42,
+        "innings": 2,
+        "battingTeam": "bombay",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T05:46:12.279Z"
+      },
+      {
+        "number": 43,
+        "innings": 2,
+        "battingTeam": "bombay",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T05:46:12.465Z"
+      },
+      {
+        "number": 44,
+        "innings": 2,
+        "battingTeam": "bombay",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T05:46:12.617Z"
+      },
+      {
+        "number": 45,
+        "innings": 2,
+        "battingTeam": "bombay",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T05:46:12.786Z"
+      },
+      {
+        "number": 46,
+        "innings": 2,
+        "battingTeam": "bombay",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T05:46:12.951Z"
+      },
+      {
+        "number": 47,
+        "innings": 2,
+        "battingTeam": "bombay",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T05:46:13.179Z"
+      },
+      {
+        "number": 48,
+        "innings": 2,
+        "battingTeam": "bombay",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T05:46:13.580Z"
+      },
+      {
+        "number": 49,
+        "innings": 2,
+        "battingTeam": "bombay",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T05:46:13.966Z"
+      },
+      {
+        "number": 50,
+        "innings": 2,
+        "battingTeam": "bombay",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T05:46:14.746Z"
+      }
+    ],
+    "recentBalls": [
+      {
+        "number": 39,
+        "innings": 2,
+        "battingTeam": "bombay",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T05:46:11.831Z"
+      },
+      {
+        "number": 40,
+        "innings": 2,
+        "battingTeam": "bombay",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T05:46:11.956Z"
+      },
+      {
+        "number": 41,
+        "innings": 2,
+        "battingTeam": "bombay",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T05:46:12.077Z"
+      },
+      {
+        "number": 42,
+        "innings": 2,
+        "battingTeam": "bombay",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T05:46:12.279Z"
+      },
+      {
+        "number": 43,
+        "innings": 2,
+        "battingTeam": "bombay",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T05:46:12.465Z"
+      },
+      {
+        "number": 44,
+        "innings": 2,
+        "battingTeam": "bombay",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T05:46:12.617Z"
+      },
+      {
+        "number": 45,
+        "innings": 2,
+        "battingTeam": "bombay",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T05:46:12.786Z"
+      },
+      {
+        "number": 46,
+        "innings": 2,
+        "battingTeam": "bombay",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T05:46:12.951Z"
+      },
+      {
+        "number": 47,
+        "innings": 2,
+        "battingTeam": "bombay",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T05:46:13.179Z"
+      },
+      {
+        "number": 48,
+        "innings": 2,
+        "battingTeam": "bombay",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T05:46:13.580Z"
+      },
+      {
+        "number": 49,
+        "innings": 2,
+        "battingTeam": "bombay",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T05:46:13.966Z"
+      },
+      {
+        "number": 50,
+        "innings": 2,
+        "battingTeam": "bombay",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T05:46:14.746Z"
+      }
+    ],
+    "target": 116,
+    "result": "bombay won by 10 wickets.",
+    "createdAt": "2026-10-04T05:45:01.235Z",
+    "updatedAt": "2026-10-04T05:46:14.746Z"
+  },
+  {
+    "id": "2396a063-c3c2-49d1-b937-b3a8e9c70a87",
+    "team1": "ideal",
+    "team2": "viva",
+    "overs": 20,
+    "tossWinner": "team1",
+    "tossWinnerName": "ideal",
+    "tossDecision": "bat",
+    "battingTeam": "viva",
+    "bowlingTeam": "ideal",
+    "currentInnings": 2,
+    "status": "COMPLETED",
+    "teams": {
+      "team1": {
+        "name": "ideal",
+        "runs": 54,
+        "wickets": 10,
+        "balls": 19
+      },
+      "team2": {
+        "name": "viva",
+        "runs": 60,
+        "wickets": 3,
+        "balls": 13
+      }
+    },
+    "balls": [
+      {
+        "number": 1,
+        "innings": 1,
+        "battingTeam": "ideal",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T05:00:07.515Z"
+      },
+      {
+        "number": 2,
+        "innings": 1,
+        "battingTeam": "ideal",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T05:00:07.707Z"
+      },
+      {
+        "number": 3,
+        "innings": 1,
+        "battingTeam": "ideal",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T05:00:07.845Z"
+      },
+      {
+        "number": 4,
+        "innings": 1,
+        "battingTeam": "ideal",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T05:00:07.969Z"
+      },
+      {
+        "number": 5,
+        "innings": 1,
+        "battingTeam": "ideal",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T05:00:08.104Z"
+      },
+      {
+        "number": 6,
+        "innings": 1,
+        "battingTeam": "ideal",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T05:00:08.228Z"
+      },
+      {
+        "number": 7,
+        "innings": 1,
+        "battingTeam": "ideal",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T05:00:08.362Z"
+      },
+      {
+        "number": 8,
+        "innings": 1,
+        "battingTeam": "ideal",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T05:00:08.483Z"
+      },
+      {
+        "number": 9,
+        "innings": 1,
+        "battingTeam": "ideal",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T05:00:08.607Z"
+      },
+      {
+        "number": 10,
+        "innings": 1,
+        "battingTeam": "ideal",
+        "runs": 0,
+        "wickets": 1,
+        "display": "W",
+        "timestamp": "2026-10-04T05:00:09.341Z"
+      },
+      {
+        "number": 11,
+        "innings": 1,
+        "battingTeam": "ideal",
+        "runs": 0,
+        "wickets": 1,
+        "display": "W",
+        "timestamp": "2026-10-04T05:00:09.472Z"
+      },
+      {
+        "number": 12,
+        "innings": 1,
+        "battingTeam": "ideal",
+        "runs": 0,
+        "wickets": 1,
+        "display": "W",
+        "timestamp": "2026-10-04T05:00:09.596Z"
+      },
+      {
+        "number": 13,
+        "innings": 1,
+        "battingTeam": "ideal",
+        "runs": 0,
+        "wickets": 1,
+        "display": "W",
+        "timestamp": "2026-10-04T05:00:09.722Z"
+      },
+      {
+        "number": 14,
+        "innings": 1,
+        "battingTeam": "ideal",
+        "runs": 0,
+        "wickets": 1,
+        "display": "W",
+        "timestamp": "2026-10-04T05:00:09.847Z"
+      },
+      {
+        "number": 15,
+        "innings": 1,
+        "battingTeam": "ideal",
+        "runs": 0,
+        "wickets": 1,
+        "display": "W",
+        "timestamp": "2026-10-04T05:00:09.976Z"
+      },
+      {
+        "number": 16,
+        "innings": 1,
+        "battingTeam": "ideal",
+        "runs": 0,
+        "wickets": 1,
+        "display": "W",
+        "timestamp": "2026-10-04T05:00:10.102Z"
+      },
+      {
+        "number": 17,
+        "innings": 1,
+        "battingTeam": "ideal",
+        "runs": 0,
+        "wickets": 1,
+        "display": "W",
+        "timestamp": "2026-10-04T05:00:10.219Z"
+      },
+      {
+        "number": 18,
+        "innings": 1,
+        "battingTeam": "ideal",
+        "runs": 0,
+        "wickets": 1,
+        "display": "W",
+        "timestamp": "2026-10-04T05:00:10.357Z"
+      },
+      {
+        "number": 19,
+        "innings": 1,
+        "battingTeam": "ideal",
+        "runs": 0,
+        "wickets": 1,
+        "display": "W",
+        "timestamp": "2026-10-04T05:00:10.488Z"
+      },
+      {
+        "number": 20,
+        "innings": 2,
+        "battingTeam": "viva",
+        "runs": 0,
+        "wickets": 1,
+        "display": "W",
+        "timestamp": "2026-10-04T05:00:10.613Z"
+      },
+      {
+        "number": 21,
+        "innings": 2,
+        "battingTeam": "viva",
+        "runs": 0,
+        "wickets": 1,
+        "display": "W",
+        "timestamp": "2026-10-04T05:00:10.741Z"
+      },
+      {
+        "number": 22,
+        "innings": 2,
+        "battingTeam": "viva",
+        "runs": 0,
+        "wickets": 1,
+        "display": "W",
+        "timestamp": "2026-10-04T05:00:10.870Z"
+      },
+      {
+        "number": 23,
+        "innings": 2,
+        "battingTeam": "viva",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T05:00:18.564Z"
+      },
+      {
+        "number": 24,
+        "innings": 2,
+        "battingTeam": "viva",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T05:00:18.689Z"
+      },
+      {
+        "number": 25,
+        "innings": 2,
+        "battingTeam": "viva",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T05:00:18.815Z"
+      },
+      {
+        "number": 26,
+        "innings": 2,
+        "battingTeam": "viva",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T05:00:18.938Z"
+      },
+      {
+        "number": 27,
+        "innings": 2,
+        "battingTeam": "viva",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T05:00:19.065Z"
+      },
+      {
+        "number": 28,
+        "innings": 2,
+        "battingTeam": "viva",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T05:00:19.242Z"
+      },
+      {
+        "number": 29,
+        "innings": 2,
+        "battingTeam": "viva",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T05:00:19.552Z"
+      },
+      {
+        "number": 30,
+        "innings": 2,
+        "battingTeam": "viva",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T05:00:19.778Z"
+      },
+      {
+        "number": 31,
+        "innings": 2,
+        "battingTeam": "viva",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T05:00:20.224Z"
+      },
+      {
+        "number": 32,
+        "innings": 2,
+        "battingTeam": "viva",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T05:00:20.732Z"
+      }
+    ],
+    "recentBalls": [
+      {
+        "number": 21,
+        "innings": 2,
+        "battingTeam": "viva",
+        "runs": 0,
+        "wickets": 1,
+        "display": "W",
+        "timestamp": "2026-10-04T05:00:10.741Z"
+      },
+      {
+        "number": 22,
+        "innings": 2,
+        "battingTeam": "viva",
+        "runs": 0,
+        "wickets": 1,
+        "display": "W",
+        "timestamp": "2026-10-04T05:00:10.870Z"
+      },
+      {
+        "number": 23,
+        "innings": 2,
+        "battingTeam": "viva",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T05:00:18.564Z"
+      },
+      {
+        "number": 24,
+        "innings": 2,
+        "battingTeam": "viva",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T05:00:18.689Z"
+      },
+      {
+        "number": 25,
+        "innings": 2,
+        "battingTeam": "viva",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T05:00:18.815Z"
+      },
+      {
+        "number": 26,
+        "innings": 2,
+        "battingTeam": "viva",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T05:00:18.938Z"
+      },
+      {
+        "number": 27,
+        "innings": 2,
+        "battingTeam": "viva",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T05:00:19.065Z"
+      },
+      {
+        "number": 28,
+        "innings": 2,
+        "battingTeam": "viva",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T05:00:19.242Z"
+      },
+      {
+        "number": 29,
+        "innings": 2,
+        "battingTeam": "viva",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T05:00:19.552Z"
+      },
+      {
+        "number": 30,
+        "innings": 2,
+        "battingTeam": "viva",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T05:00:19.778Z"
+      },
+      {
+        "number": 31,
+        "innings": 2,
+        "battingTeam": "viva",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T05:00:20.224Z"
+      },
+      {
+        "number": 32,
+        "innings": 2,
+        "battingTeam": "viva",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T05:00:20.732Z"
+      }
+    ],
+    "target": 55,
+    "result": "viva won by 7 wickets.",
+    "createdAt": "2026-10-04T04:59:57.874Z",
+    "updatedAt": "2026-10-04T05:00:20.732Z"
+  },
+  {
+    "id": "1ab31d27-8540-471d-bced-76687471aa51",
+    "team1": "viva",
+    "team2": "vartak",
+    "overs": 5,
+    "tossWinner": "team2",
+    "tossWinnerName": "vartak",
+    "tossDecision": "bowl",
+    "battingTeam": "vartak",
+    "bowlingTeam": "viva",
+    "currentInnings": 2,
+    "status": "COMPLETED",
+    "teams": {
+      "team1": {
+        "name": "viva",
+        "runs": 120,
+        "wickets": 0,
+        "balls": 30
+      },
+      "team2": {
+        "name": "vartak",
+        "runs": 107,
+        "wickets": 5,
+        "balls": 30
+      }
+    },
+    "balls": [
+      {
+        "number": 1,
+        "innings": 1,
+        "battingTeam": "viva",
+        "runs": 4,
+        "wickets": 0,
+        "display": "4",
+        "timestamp": "2026-10-04T04:56:41.942Z"
+      },
+      {
+        "number": 2,
+        "innings": 1,
+        "battingTeam": "viva",
+        "runs": 4,
+        "wickets": 0,
+        "display": "4",
+        "timestamp": "2026-10-04T04:56:50.082Z"
+      },
+      {
+        "number": 3,
+        "innings": 1,
+        "battingTeam": "viva",
+        "runs": 4,
+        "wickets": 0,
+        "display": "4",
+        "timestamp": "2026-10-04T04:56:50.312Z"
+      },
+      {
+        "number": 4,
+        "innings": 1,
+        "battingTeam": "viva",
+        "runs": 4,
+        "wickets": 0,
+        "display": "4",
+        "timestamp": "2026-10-04T04:56:50.451Z"
+      },
+      {
+        "number": 5,
+        "innings": 1,
+        "battingTeam": "viva",
+        "runs": 4,
+        "wickets": 0,
+        "display": "4",
+        "timestamp": "2026-10-04T04:56:50.642Z"
+      },
+      {
+        "number": 6,
+        "innings": 1,
+        "battingTeam": "viva",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T04:56:51.284Z"
+      },
+      {
+        "number": 7,
+        "innings": 1,
+        "battingTeam": "viva",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T04:56:51.432Z"
+      },
+      {
+        "number": 8,
+        "innings": 1,
+        "battingTeam": "viva",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T04:56:51.663Z"
+      },
+      {
+        "number": 9,
+        "innings": 1,
+        "battingTeam": "viva",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T04:56:53.673Z"
+      },
+      {
+        "number": 10,
+        "innings": 1,
+        "battingTeam": "viva",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T04:56:53.897Z"
+      },
+      {
+        "number": 11,
+        "innings": 1,
+        "battingTeam": "viva",
+        "runs": 4,
+        "wickets": 0,
+        "display": "4",
+        "timestamp": "2026-10-04T04:56:54.422Z"
+      },
+      {
+        "number": 12,
+        "innings": 1,
+        "battingTeam": "viva",
+        "runs": 4,
+        "wickets": 0,
+        "display": "4",
+        "timestamp": "2026-10-04T04:56:54.586Z"
+      },
+      {
+        "number": 13,
+        "innings": 1,
+        "battingTeam": "viva",
+        "runs": 4,
+        "wickets": 0,
+        "display": "4",
+        "timestamp": "2026-10-04T04:56:54.736Z"
+      },
+      {
+        "number": 14,
+        "innings": 1,
+        "battingTeam": "viva",
+        "runs": 4,
+        "wickets": 0,
+        "display": "4",
+        "timestamp": "2026-10-04T04:56:54.880Z"
+      },
+      {
+        "number": 15,
+        "innings": 1,
+        "battingTeam": "viva",
+        "runs": 4,
+        "wickets": 0,
+        "display": "4",
+        "timestamp": "2026-10-04T04:56:55.002Z"
+      },
+      {
+        "number": 16,
+        "innings": 1,
+        "battingTeam": "viva",
+        "runs": 3,
+        "wickets": 0,
+        "display": "3",
+        "timestamp": "2026-10-04T04:56:55.736Z"
+      },
+      {
+        "number": 17,
+        "innings": 1,
+        "battingTeam": "viva",
+        "runs": 2,
+        "wickets": 0,
+        "display": "2",
+        "timestamp": "2026-10-04T04:56:57.370Z"
+      },
+      {
+        "number": 18,
+        "innings": 1,
+        "battingTeam": "viva",
+        "runs": 2,
+        "wickets": 0,
+        "display": "2",
+        "timestamp": "2026-10-04T04:56:57.512Z"
+      },
+      {
+        "number": 19,
+        "innings": 1,
+        "battingTeam": "viva",
+        "runs": 2,
+        "wickets": 0,
+        "display": "2",
+        "timestamp": "2026-10-04T04:56:57.630Z"
+      },
+      {
+        "number": 20,
+        "innings": 1,
+        "battingTeam": "viva",
+        "runs": 2,
+        "wickets": 0,
+        "display": "2",
+        "timestamp": "2026-10-04T04:56:57.769Z"
+      },
+      {
+        "number": 21,
+        "innings": 1,
+        "battingTeam": "viva",
+        "runs": 2,
+        "wickets": 0,
+        "display": "2",
+        "timestamp": "2026-10-04T04:56:57.982Z"
+      },
+      {
+        "number": 22,
+        "innings": 1,
+        "battingTeam": "viva",
+        "runs": 2,
+        "wickets": 0,
+        "display": "2",
+        "timestamp": "2026-10-04T04:56:58.193Z"
+      },
+      {
+        "number": 23,
+        "innings": 1,
+        "battingTeam": "viva",
+        "runs": 3,
+        "wickets": 0,
+        "display": "3",
+        "timestamp": "2026-10-04T04:56:59.624Z"
+      },
+      {
+        "number": 24,
+        "innings": 1,
+        "battingTeam": "viva",
+        "runs": 3,
+        "wickets": 0,
+        "display": "3",
+        "timestamp": "2026-10-04T04:56:59.752Z"
+      },
+      {
+        "number": 25,
+        "innings": 1,
+        "battingTeam": "viva",
+        "runs": 3,
+        "wickets": 0,
+        "display": "3",
+        "timestamp": "2026-10-04T04:56:59.970Z"
+      },
+      {
+        "number": 26,
+        "innings": 1,
+        "battingTeam": "viva",
+        "runs": 4,
+        "wickets": 0,
+        "display": "4",
+        "timestamp": "2026-10-04T04:57:00.586Z"
+      },
+      {
+        "number": 27,
+        "innings": 1,
+        "battingTeam": "viva",
+        "runs": 4,
+        "wickets": 0,
+        "display": "4",
+        "timestamp": "2026-10-04T04:57:00.814Z"
+      },
+      {
+        "number": 28,
+        "innings": 1,
+        "battingTeam": "viva",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T04:57:01.641Z"
+      },
+      {
+        "number": 29,
+        "innings": 1,
+        "battingTeam": "viva",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T04:57:01.763Z"
+      },
+      {
+        "number": 30,
+        "innings": 1,
+        "battingTeam": "viva",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T04:57:01.980Z"
+      },
+      {
+        "number": 31,
+        "innings": 2,
+        "battingTeam": "vartak",
+        "runs": 0,
+        "wickets": 1,
+        "display": "W",
+        "timestamp": "2026-10-04T04:57:39.752Z"
+      },
+      {
+        "number": 32,
+        "innings": 2,
+        "battingTeam": "vartak",
+        "runs": 0,
+        "wickets": 1,
+        "display": "W",
+        "timestamp": "2026-10-04T04:57:39.899Z"
+      },
+      {
+        "number": 33,
+        "innings": 2,
+        "battingTeam": "vartak",
+        "runs": 0,
+        "wickets": 1,
+        "display": "W",
+        "timestamp": "2026-10-04T04:57:40.059Z"
+      },
+      {
+        "number": 34,
+        "innings": 2,
+        "battingTeam": "vartak",
+        "runs": 0,
+        "wickets": 1,
+        "display": "W",
+        "timestamp": "2026-10-04T04:57:40.286Z"
+      },
+      {
+        "number": 35,
+        "innings": 2,
+        "battingTeam": "vartak",
+        "runs": 0,
+        "wickets": 1,
+        "display": "W",
+        "timestamp": "2026-10-04T04:57:43.022Z"
+      },
+      {
+        "number": 36,
+        "innings": 2,
+        "battingTeam": "vartak",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T04:57:44.238Z"
+      },
+      {
+        "number": 37,
+        "innings": 2,
+        "battingTeam": "vartak",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T04:57:44.375Z"
+      },
+      {
+        "number": 38,
+        "innings": 2,
+        "battingTeam": "vartak",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T04:57:44.576Z"
+      },
+      {
+        "number": 39,
+        "innings": 2,
+        "battingTeam": "vartak",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T04:57:44.784Z"
+      },
+      {
+        "number": 40,
+        "innings": 2,
+        "battingTeam": "vartak",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T04:57:44.930Z"
+      },
+      {
+        "number": 41,
+        "innings": 2,
+        "battingTeam": "vartak",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T04:57:45.087Z"
+      },
+      {
+        "number": 42,
+        "innings": 2,
+        "battingTeam": "vartak",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T04:57:45.220Z"
+      },
+      {
+        "number": 43,
+        "innings": 2,
+        "battingTeam": "vartak",
+        "runs": 4,
+        "wickets": 0,
+        "display": "4",
+        "timestamp": "2026-10-04T04:57:45.947Z"
+      },
+      {
+        "number": 44,
+        "innings": 2,
+        "battingTeam": "vartak",
+        "runs": 4,
+        "wickets": 0,
+        "display": "4",
+        "timestamp": "2026-10-04T04:57:46.095Z"
+      },
+      {
+        "number": 45,
+        "innings": 2,
+        "battingTeam": "vartak",
+        "runs": 4,
+        "wickets": 0,
+        "display": "4",
+        "timestamp": "2026-10-04T04:57:46.220Z"
+      },
+      {
+        "number": 46,
+        "innings": 2,
+        "battingTeam": "vartak",
+        "runs": 4,
+        "wickets": 0,
+        "display": "4",
+        "timestamp": "2026-10-04T04:57:46.341Z"
+      },
+      {
+        "number": 47,
+        "innings": 2,
+        "battingTeam": "vartak",
+        "runs": 4,
+        "wickets": 0,
+        "display": "4",
+        "timestamp": "2026-10-04T04:57:46.468Z"
+      },
+      {
+        "number": 48,
+        "innings": 2,
+        "battingTeam": "vartak",
+        "runs": 4,
+        "wickets": 0,
+        "display": "4",
+        "timestamp": "2026-10-04T04:57:46.581Z"
+      },
+      {
+        "number": 49,
+        "innings": 2,
+        "battingTeam": "vartak",
+        "runs": 4,
+        "wickets": 0,
+        "display": "4",
+        "timestamp": "2026-10-04T04:57:46.806Z"
+      },
+      {
+        "number": 50,
+        "innings": 2,
+        "battingTeam": "vartak",
+        "runs": 4,
+        "wickets": 0,
+        "display": "4",
+        "timestamp": "2026-10-04T04:57:46.937Z"
+      },
+      {
+        "number": 51,
+        "innings": 2,
+        "battingTeam": "vartak",
+        "runs": 4,
+        "wickets": 0,
+        "display": "4",
+        "timestamp": "2026-10-04T04:57:47.069Z"
+      },
+      {
+        "number": 52,
+        "innings": 2,
+        "battingTeam": "vartak",
+        "runs": 4,
+        "wickets": 0,
+        "display": "4",
+        "timestamp": "2026-10-04T04:57:47.196Z"
+      },
+      {
+        "number": 53,
+        "innings": 2,
+        "battingTeam": "vartak",
+        "runs": 4,
+        "wickets": 0,
+        "display": "4",
+        "timestamp": "2026-10-04T04:57:47.383Z"
+      },
+      {
+        "number": 54,
+        "innings": 2,
+        "battingTeam": "vartak",
+        "runs": 3,
+        "wickets": 0,
+        "display": "3",
+        "timestamp": "2026-10-04T04:57:47.975Z"
+      },
+      {
+        "number": 55,
+        "innings": 2,
+        "battingTeam": "vartak",
+        "runs": 3,
+        "wickets": 0,
+        "display": "3",
+        "timestamp": "2026-10-04T04:57:48.116Z"
+      },
+      {
+        "number": 56,
+        "innings": 2,
+        "battingTeam": "vartak",
+        "runs": 3,
+        "wickets": 0,
+        "display": "3",
+        "timestamp": "2026-10-04T04:57:48.243Z"
+      },
+      {
+        "number": 57,
+        "innings": 2,
+        "battingTeam": "vartak",
+        "runs": 3,
+        "wickets": 0,
+        "display": "3",
+        "timestamp": "2026-10-04T04:57:48.372Z"
+      },
+      {
+        "number": 58,
+        "innings": 2,
+        "battingTeam": "vartak",
+        "runs": 3,
+        "wickets": 0,
+        "display": "3",
+        "timestamp": "2026-10-04T04:57:48.498Z"
+      },
+      {
+        "number": 59,
+        "innings": 2,
+        "battingTeam": "vartak",
+        "runs": 3,
+        "wickets": 0,
+        "display": "3",
+        "timestamp": "2026-10-04T04:57:48.624Z"
+      },
+      {
+        "number": 60,
+        "innings": 2,
+        "battingTeam": "vartak",
+        "runs": 3,
+        "wickets": 0,
+        "display": "3",
+        "timestamp": "2026-10-04T04:57:48.856Z"
+      }
+    ],
+    "recentBalls": [
+      {
+        "number": 49,
+        "innings": 2,
+        "battingTeam": "vartak",
+        "runs": 4,
+        "wickets": 0,
+        "display": "4",
+        "timestamp": "2026-10-04T04:57:46.806Z"
+      },
+      {
+        "number": 50,
+        "innings": 2,
+        "battingTeam": "vartak",
+        "runs": 4,
+        "wickets": 0,
+        "display": "4",
+        "timestamp": "2026-10-04T04:57:46.937Z"
+      },
+      {
+        "number": 51,
+        "innings": 2,
+        "battingTeam": "vartak",
+        "runs": 4,
+        "wickets": 0,
+        "display": "4",
+        "timestamp": "2026-10-04T04:57:47.069Z"
+      },
+      {
+        "number": 52,
+        "innings": 2,
+        "battingTeam": "vartak",
+        "runs": 4,
+        "wickets": 0,
+        "display": "4",
+        "timestamp": "2026-10-04T04:57:47.196Z"
+      },
+      {
+        "number": 53,
+        "innings": 2,
+        "battingTeam": "vartak",
+        "runs": 4,
+        "wickets": 0,
+        "display": "4",
+        "timestamp": "2026-10-04T04:57:47.383Z"
+      },
+      {
+        "number": 54,
+        "innings": 2,
+        "battingTeam": "vartak",
+        "runs": 3,
+        "wickets": 0,
+        "display": "3",
+        "timestamp": "2026-10-04T04:57:47.975Z"
+      },
+      {
+        "number": 55,
+        "innings": 2,
+        "battingTeam": "vartak",
+        "runs": 3,
+        "wickets": 0,
+        "display": "3",
+        "timestamp": "2026-10-04T04:57:48.116Z"
+      },
+      {
+        "number": 56,
+        "innings": 2,
+        "battingTeam": "vartak",
+        "runs": 3,
+        "wickets": 0,
+        "display": "3",
+        "timestamp": "2026-10-04T04:57:48.243Z"
+      },
+      {
+        "number": 57,
+        "innings": 2,
+        "battingTeam": "vartak",
+        "runs": 3,
+        "wickets": 0,
+        "display": "3",
+        "timestamp": "2026-10-04T04:57:48.372Z"
+      },
+      {
+        "number": 58,
+        "innings": 2,
+        "battingTeam": "vartak",
+        "runs": 3,
+        "wickets": 0,
+        "display": "3",
+        "timestamp": "2026-10-04T04:57:48.498Z"
+      },
+      {
+        "number": 59,
+        "innings": 2,
+        "battingTeam": "vartak",
+        "runs": 3,
+        "wickets": 0,
+        "display": "3",
+        "timestamp": "2026-10-04T04:57:48.624Z"
+      },
+      {
+        "number": 60,
+        "innings": 2,
+        "battingTeam": "vartak",
+        "runs": 3,
+        "wickets": 0,
+        "display": "3",
+        "timestamp": "2026-10-04T04:57:48.856Z"
+      }
+    ],
+    "target": 121,
+    "result": "viva won by 13 runs.",
+    "createdAt": "2026-10-04T04:56:20.511Z",
+    "updatedAt": "2026-10-04T04:57:48.856Z"
+  },
+  {
+    "id": "9659e893-961e-420f-9b01-b46645a786f5",
+    "team1": "dddd",
+    "team2": "aaaaa",
+    "overs": 5,
+    "tossWinner": "team1",
+    "tossWinnerName": "dddd",
+    "tossDecision": "bat",
+    "battingTeam": "aaaaa",
+    "bowlingTeam": "dddd",
+    "currentInnings": 2,
+    "status": "COMPLETED",
+    "teams": {
+      "team1": {
+        "name": "dddd",
+        "runs": 116,
+        "wickets": 0,
+        "balls": 30
+      },
+      "team2": {
+        "name": "aaaaa",
+        "runs": 120,
+        "wickets": 0,
+        "balls": 20
+      }
+    },
+    "balls": [
+      {
+        "number": 1,
+        "innings": 1,
+        "battingTeam": "dddd",
+        "runs": 4,
+        "wickets": 0,
+        "display": "4",
+        "timestamp": "2026-10-04T04:49:36.615Z"
+      },
+      {
+        "number": 2,
+        "innings": 1,
+        "battingTeam": "dddd",
+        "runs": 4,
+        "wickets": 0,
+        "display": "4",
+        "timestamp": "2026-10-04T04:49:36.761Z"
+      },
+      {
+        "number": 3,
+        "innings": 1,
+        "battingTeam": "dddd",
+        "runs": 4,
+        "wickets": 0,
+        "display": "4",
+        "timestamp": "2026-10-04T04:49:36.961Z"
+      },
+      {
+        "number": 4,
+        "innings": 1,
+        "battingTeam": "dddd",
+        "runs": 4,
+        "wickets": 0,
+        "display": "4",
+        "timestamp": "2026-10-04T04:49:37.113Z"
+      },
+      {
+        "number": 5,
+        "innings": 1,
+        "battingTeam": "dddd",
+        "runs": 4,
+        "wickets": 0,
+        "display": "4",
+        "timestamp": "2026-10-04T04:49:37.347Z"
+      },
+      {
+        "number": 6,
+        "innings": 1,
+        "battingTeam": "dddd",
+        "runs": 4,
+        "wickets": 0,
+        "display": "4",
+        "timestamp": "2026-10-04T04:49:37.621Z"
+      },
+      {
+        "number": 7,
+        "innings": 1,
+        "battingTeam": "dddd",
+        "runs": 4,
+        "wickets": 0,
+        "display": "4",
+        "timestamp": "2026-10-04T04:49:37.747Z"
+      },
+      {
+        "number": 8,
+        "innings": 1,
+        "battingTeam": "dddd",
+        "runs": 4,
+        "wickets": 0,
+        "display": "4",
+        "timestamp": "2026-10-04T04:49:37.870Z"
+      },
+      {
+        "number": 9,
+        "innings": 1,
+        "battingTeam": "dddd",
+        "runs": 4,
+        "wickets": 0,
+        "display": "4",
+        "timestamp": "2026-10-04T04:49:37.995Z"
+      },
+      {
+        "number": 10,
+        "innings": 1,
+        "battingTeam": "dddd",
+        "runs": 4,
+        "wickets": 0,
+        "display": "4",
+        "timestamp": "2026-10-04T04:49:38.121Z"
+      },
+      {
+        "number": 11,
+        "innings": 1,
+        "battingTeam": "dddd",
+        "runs": 4,
+        "wickets": 0,
+        "display": "4",
+        "timestamp": "2026-10-04T04:49:38.252Z"
+      },
+      {
+        "number": 12,
+        "innings": 1,
+        "battingTeam": "dddd",
+        "runs": 4,
+        "wickets": 0,
+        "display": "4",
+        "timestamp": "2026-10-04T04:49:38.373Z"
+      },
+      {
+        "number": 13,
+        "innings": 1,
+        "battingTeam": "dddd",
+        "runs": 4,
+        "wickets": 0,
+        "display": "4",
+        "timestamp": "2026-10-04T04:49:38.503Z"
+      },
+      {
+        "number": 14,
+        "innings": 1,
+        "battingTeam": "dddd",
+        "runs": 4,
+        "wickets": 0,
+        "display": "4",
+        "timestamp": "2026-10-04T04:49:38.627Z"
+      },
+      {
+        "number": 15,
+        "innings": 1,
+        "battingTeam": "dddd",
+        "runs": 4,
+        "wickets": 0,
+        "display": "4",
+        "timestamp": "2026-10-04T04:49:38.756Z"
+      },
+      {
+        "number": 16,
+        "innings": 1,
+        "battingTeam": "dddd",
+        "runs": 4,
+        "wickets": 0,
+        "display": "4",
+        "timestamp": "2026-10-04T04:49:38.892Z"
+      },
+      {
+        "number": 17,
+        "innings": 1,
+        "battingTeam": "dddd",
+        "runs": 4,
+        "wickets": 0,
+        "display": "4",
+        "timestamp": "2026-10-04T04:49:39.052Z"
+      },
+      {
+        "number": 18,
+        "innings": 1,
+        "battingTeam": "dddd",
+        "runs": 4,
+        "wickets": 0,
+        "display": "4",
+        "timestamp": "2026-10-04T04:49:39.505Z"
+      },
+      {
+        "number": 19,
+        "innings": 1,
+        "battingTeam": "dddd",
+        "runs": 4,
+        "wickets": 0,
+        "display": "4",
+        "timestamp": "2026-10-04T04:49:39.628Z"
+      },
+      {
+        "number": 20,
+        "innings": 1,
+        "battingTeam": "dddd",
+        "runs": 4,
+        "wickets": 0,
+        "display": "4",
+        "timestamp": "2026-10-04T04:49:39.755Z"
+      },
+      {
+        "number": 21,
+        "innings": 1,
+        "battingTeam": "dddd",
+        "runs": 4,
+        "wickets": 0,
+        "display": "4",
+        "timestamp": "2026-10-04T04:49:39.964Z"
+      },
+      {
+        "number": 22,
+        "innings": 1,
+        "battingTeam": "dddd",
+        "runs": 4,
+        "wickets": 0,
+        "display": "4",
+        "timestamp": "2026-10-04T04:49:40.216Z"
+      },
+      {
+        "number": 23,
+        "innings": 1,
+        "battingTeam": "dddd",
+        "runs": 4,
+        "wickets": 0,
+        "display": "4",
+        "timestamp": "2026-10-04T04:49:40.388Z"
+      },
+      {
+        "number": 24,
+        "innings": 1,
+        "battingTeam": "dddd",
+        "runs": 4,
+        "wickets": 0,
+        "display": "4",
+        "timestamp": "2026-10-04T04:49:40.587Z"
+      },
+      {
+        "number": 25,
+        "innings": 1,
+        "battingTeam": "dddd",
+        "runs": 4,
+        "wickets": 0,
+        "display": "4",
+        "timestamp": "2026-10-04T04:49:40.807Z"
+      },
+      {
+        "number": 26,
+        "innings": 1,
+        "battingTeam": "dddd",
+        "runs": 4,
+        "wickets": 0,
+        "display": "4",
+        "timestamp": "2026-10-04T04:49:41.781Z"
+      },
+      {
+        "number": 27,
+        "innings": 1,
+        "battingTeam": "dddd",
+        "runs": 2,
+        "wickets": 0,
+        "display": "2",
+        "timestamp": "2026-10-04T04:49:42.984Z"
+      },
+      {
+        "number": 28,
+        "innings": 1,
+        "battingTeam": "dddd",
+        "runs": 2,
+        "wickets": 0,
+        "display": "2",
+        "timestamp": "2026-10-04T04:49:43.123Z"
+      },
+      {
+        "number": 29,
+        "innings": 1,
+        "battingTeam": "dddd",
+        "runs": 2,
+        "wickets": 0,
+        "display": "2",
+        "timestamp": "2026-10-04T04:49:43.345Z"
+      },
+      {
+        "number": 30,
+        "innings": 1,
+        "battingTeam": "dddd",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T04:49:44.281Z"
+      },
+      {
+        "number": 31,
+        "innings": 2,
+        "battingTeam": "aaaaa",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T04:49:44.601Z"
+      },
+      {
+        "number": 32,
+        "innings": 2,
+        "battingTeam": "aaaaa",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T04:49:57.136Z"
+      },
+      {
+        "number": 33,
+        "innings": 2,
+        "battingTeam": "aaaaa",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T04:49:57.285Z"
+      },
+      {
+        "number": 34,
+        "innings": 2,
+        "battingTeam": "aaaaa",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T04:49:57.434Z"
+      },
+      {
+        "number": 35,
+        "innings": 2,
+        "battingTeam": "aaaaa",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T04:49:57.596Z"
+      },
+      {
+        "number": 36,
+        "innings": 2,
+        "battingTeam": "aaaaa",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T04:49:57.749Z"
+      },
+      {
+        "number": 37,
+        "innings": 2,
+        "battingTeam": "aaaaa",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T04:49:57.920Z"
+      },
+      {
+        "number": 38,
+        "innings": 2,
+        "battingTeam": "aaaaa",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T04:49:58.088Z"
+      },
+      {
+        "number": 39,
+        "innings": 2,
+        "battingTeam": "aaaaa",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T04:49:58.247Z"
+      },
+      {
+        "number": 40,
+        "innings": 2,
+        "battingTeam": "aaaaa",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T04:49:58.449Z"
+      },
+      {
+        "number": 41,
+        "innings": 2,
+        "battingTeam": "aaaaa",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T04:49:58.675Z"
+      },
+      {
+        "number": 42,
+        "innings": 2,
+        "battingTeam": "aaaaa",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T04:49:58.895Z"
+      },
+      {
+        "number": 43,
+        "innings": 2,
+        "battingTeam": "aaaaa",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T04:49:59.168Z"
+      },
+      {
+        "number": 44,
+        "innings": 2,
+        "battingTeam": "aaaaa",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T04:49:59.503Z"
+      },
+      {
+        "number": 45,
+        "innings": 2,
+        "battingTeam": "aaaaa",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T04:49:59.868Z"
+      },
+      {
+        "number": 46,
+        "innings": 2,
+        "battingTeam": "aaaaa",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T04:50:00.118Z"
+      },
+      {
+        "number": 47,
+        "innings": 2,
+        "battingTeam": "aaaaa",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T04:50:00.383Z"
+      },
+      {
+        "number": 48,
+        "innings": 2,
+        "battingTeam": "aaaaa",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T04:50:00.595Z"
+      },
+      {
+        "number": 49,
+        "innings": 2,
+        "battingTeam": "aaaaa",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T04:50:00.789Z"
+      },
+      {
+        "number": 50,
+        "innings": 2,
+        "battingTeam": "aaaaa",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T04:50:01.042Z"
+      }
+    ],
+    "recentBalls": [
+      {
+        "number": 39,
+        "innings": 2,
+        "battingTeam": "aaaaa",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T04:49:58.247Z"
+      },
+      {
+        "number": 40,
+        "innings": 2,
+        "battingTeam": "aaaaa",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T04:49:58.449Z"
+      },
+      {
+        "number": 41,
+        "innings": 2,
+        "battingTeam": "aaaaa",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T04:49:58.675Z"
+      },
+      {
+        "number": 42,
+        "innings": 2,
+        "battingTeam": "aaaaa",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T04:49:58.895Z"
+      },
+      {
+        "number": 43,
+        "innings": 2,
+        "battingTeam": "aaaaa",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T04:49:59.168Z"
+      },
+      {
+        "number": 44,
+        "innings": 2,
+        "battingTeam": "aaaaa",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T04:49:59.503Z"
+      },
+      {
+        "number": 45,
+        "innings": 2,
+        "battingTeam": "aaaaa",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T04:49:59.868Z"
+      },
+      {
+        "number": 46,
+        "innings": 2,
+        "battingTeam": "aaaaa",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T04:50:00.118Z"
+      },
+      {
+        "number": 47,
+        "innings": 2,
+        "battingTeam": "aaaaa",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T04:50:00.383Z"
+      },
+      {
+        "number": 48,
+        "innings": 2,
+        "battingTeam": "aaaaa",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T04:50:00.595Z"
+      },
+      {
+        "number": 49,
+        "innings": 2,
+        "battingTeam": "aaaaa",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T04:50:00.789Z"
+      },
+      {
+        "number": 50,
+        "innings": 2,
+        "battingTeam": "aaaaa",
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T04:50:01.042Z"
+      }
+    ],
+    "target": 117,
+    "result": "aaaaa won by 10 wickets.",
+    "createdAt": "2026-10-04T04:48:40.826Z",
+    "updatedAt": "2026-10-04T04:50:01.042Z"
+  },
+  {
+    "id": "fc4f2257-1a07-48e0-b512-6e95edfb79eb",
+    "team1": "sss",
+    "team2": "www",
+    "overs": 5,
+    "tossWinner": "team2",
+    "tossWinnerName": "www",
+    "tossDecision": "bowl",
+    "battingTeam": "sss",
+    "bowlingTeam": "www",
+    "currentInnings": 1,
+    "status": "COMPLETED",
+    "teams": {
+      "team1": {
+        "name": "sss",
+        "runs": 154,
+        "wickets": 1,
+        "balls": 30
+      },
+      "team2": {
+        "name": "www",
+        "runs": 0,
+        "wickets": 0,
+        "balls": 0
+      }
+    },
+    "balls": [
+      {
+        "number": 1,
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T04:02:45.530Z"
+      },
+      {
+        "number": 2,
+        "runs": 2,
+        "wickets": 0,
+        "display": "2",
+        "timestamp": "2026-10-04T04:02:46.906Z"
+      },
+      {
+        "number": 3,
+        "runs": 0,
+        "wickets": 0,
+        "display": "0",
+        "timestamp": "2026-10-04T04:02:47.987Z"
+      },
+      {
+        "number": 4,
+        "runs": 0,
+        "wickets": 0,
+        "display": "0",
+        "timestamp": "2026-10-04T04:02:48.203Z"
+      },
+      {
+        "number": 5,
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T04:02:49.810Z"
+      },
+      {
+        "number": 6,
+        "runs": 0,
+        "wickets": 1,
+        "display": "W",
+        "timestamp": "2026-10-04T04:02:50.486Z"
+      },
+      {
+        "number": 7,
+        "runs": 4,
+        "wickets": 0,
+        "display": "4",
+        "timestamp": "2026-10-04T04:02:51.324Z"
+      },
+      {
+        "number": 8,
+        "runs": 4,
+        "wickets": 0,
+        "display": "4",
+        "timestamp": "2026-10-04T04:02:51.547Z"
+      },
+      {
+        "number": 9,
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T04:02:52.943Z"
+      },
+      {
+        "number": 10,
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T04:02:53.070Z"
+      },
+      {
+        "number": 11,
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T04:02:53.514Z"
+      },
+      {
+        "number": 12,
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T04:02:53.877Z"
+      },
+      {
+        "number": 13,
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T04:02:54.261Z"
+      },
+      {
+        "number": 14,
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T04:02:54.412Z"
+      },
+      {
+        "number": 15,
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T04:02:54.544Z"
+      },
+      {
+        "number": 16,
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T04:02:54.675Z"
+      },
+      {
+        "number": 17,
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T04:02:54.803Z"
+      },
+      {
+        "number": 18,
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T04:02:54.929Z"
+      },
+      {
+        "number": 19,
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T04:02:55.050Z"
+      },
+      {
+        "number": 20,
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T04:02:55.181Z"
+      },
+      {
+        "number": 21,
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T04:02:55.320Z"
+      },
+      {
+        "number": 22,
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T04:02:55.452Z"
+      },
+      {
+        "number": 23,
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T04:02:55.590Z"
+      },
+      {
+        "number": 24,
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T04:02:55.715Z"
+      },
+      {
+        "number": 25,
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T04:02:55.930Z"
+      },
+      {
+        "number": 26,
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T04:02:56.083Z"
+      },
+      {
+        "number": 27,
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T04:02:56.224Z"
+      },
+      {
+        "number": 28,
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T04:02:56.354Z"
+      },
+      {
+        "number": 29,
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T04:02:56.581Z"
+      },
+      {
+        "number": 30,
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T04:02:56.890Z"
+      }
+    ],
+    "recentBalls": [
+      {
+        "number": 19,
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T04:02:55.050Z"
+      },
+      {
+        "number": 20,
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T04:02:55.181Z"
+      },
+      {
+        "number": 21,
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T04:02:55.320Z"
+      },
+      {
+        "number": 22,
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T04:02:55.452Z"
+      },
+      {
+        "number": 23,
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T04:02:55.590Z"
+      },
+      {
+        "number": 24,
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T04:02:55.715Z"
+      },
+      {
+        "number": 25,
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T04:02:55.930Z"
+      },
+      {
+        "number": 26,
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T04:02:56.083Z"
+      },
+      {
+        "number": 27,
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T04:02:56.224Z"
+      },
+      {
+        "number": 28,
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T04:02:56.354Z"
+      },
+      {
+        "number": 29,
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T04:02:56.581Z"
+      },
+      {
+        "number": 30,
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-10-04T04:02:56.890Z"
+      }
+    ],
+    "target": null,
+    "result": null,
+    "createdAt": "2026-10-04T04:02:42.060Z",
+    "updatedAt": "2026-10-04T04:02:56.890Z"
+  },
+  {
+    "id": "fbe60446-6ae7-4e1a-9ca9-6d049eabdb67",
+    "team1": "aus",
+    "team2": "ind",
+    "overs": 5,
+    "tossWinner": "team2",
+    "tossWinnerName": "ind",
+    "tossDecision": "bowl",
+    "battingTeam": "aus",
+    "bowlingTeam": "ind",
+    "currentInnings": 1,
+    "status": "LIVE",
+    "teams": {
+      "team1": {
+        "name": "aus",
+        "runs": 34,
+        "wickets": 2,
+        "balls": 12
+      },
+      "team2": {
+        "name": "ind",
+        "runs": 0,
+        "wickets": 0,
+        "balls": 0
+      }
+    },
+    "balls": [
+      {
+        "number": 1,
+        "runs": 0,
+        "wickets": 0,
+        "display": "0",
+        "timestamp": "2026-09-27T12:32:29.770Z"
+      },
+      {
+        "number": 2,
+        "runs": 1,
+        "wickets": 0,
+        "display": "1",
+        "timestamp": "2026-09-27T12:32:33.762Z"
+      },
+      {
+        "number": 3,
+        "runs": 4,
+        "wickets": 0,
+        "display": "4",
+        "timestamp": "2026-09-27T12:32:39.347Z"
+      },
+      {
+        "number": 4,
+        "runs": 0,
+        "wickets": 1,
+        "display": "W",
+        "timestamp": "2026-09-27T12:32:43.056Z"
+      },
+      {
+        "number": 5,
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-09-27T12:32:45.249Z"
+      },
+      {
+        "number": 6,
+        "runs": 4,
+        "wickets": 0,
+        "display": "4",
+        "timestamp": "2026-09-27T12:32:46.773Z"
+      },
+      {
+        "number": 7,
+        "runs": 3,
+        "wickets": 0,
+        "display": "3",
+        "timestamp": "2026-09-27T12:32:48.302Z"
+      },
+      {
+        "number": 8,
+        "runs": 0,
+        "wickets": 1,
+        "display": "W",
+        "timestamp": "2026-09-27T12:32:51.364Z"
+      },
+      {
+        "number": 9,
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-09-27T12:32:52.751Z"
+      },
+      {
+        "number": 10,
+        "runs": 4,
+        "wickets": 0,
+        "display": "4",
+        "timestamp": "2026-09-27T12:32:54.232Z"
+      },
+      {
+        "number": 11,
+        "runs": 0,
+        "wickets": 0,
+        "display": "0",
+        "timestamp": "2026-09-27T12:43:59.605Z"
+      },
+      {
+        "number": 12,
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-09-27T12:44:05.412Z"
+      }
+    ],
+    "recentBalls": [
+      {
+        "number": 1,
+        "runs": 0,
+        "wickets": 0,
+        "display": "0",
+        "timestamp": "2026-09-27T12:32:29.770Z"
+      },
+      {
+        "number": 2,
+        "runs": 1,
+        "wickets": 0,
+        "display": "1",
+        "timestamp": "2026-09-27T12:32:33.762Z"
+      },
+      {
+        "number": 3,
+        "runs": 4,
+        "wickets": 0,
+        "display": "4",
+        "timestamp": "2026-09-27T12:32:39.347Z"
+      },
+      {
+        "number": 4,
+        "runs": 0,
+        "wickets": 1,
+        "display": "W",
+        "timestamp": "2026-09-27T12:32:43.056Z"
+      },
+      {
+        "number": 5,
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-09-27T12:32:45.249Z"
+      },
+      {
+        "number": 6,
+        "runs": 4,
+        "wickets": 0,
+        "display": "4",
+        "timestamp": "2026-09-27T12:32:46.773Z"
+      },
+      {
+        "number": 7,
+        "runs": 3,
+        "wickets": 0,
+        "display": "3",
+        "timestamp": "2026-09-27T12:32:48.302Z"
+      },
+      {
+        "number": 8,
+        "runs": 0,
+        "wickets": 1,
+        "display": "W",
+        "timestamp": "2026-09-27T12:32:51.364Z"
+      },
+      {
+        "number": 9,
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-09-27T12:32:52.751Z"
+      },
+      {
+        "number": 10,
+        "runs": 4,
+        "wickets": 0,
+        "display": "4",
+        "timestamp": "2026-09-27T12:32:54.232Z"
+      },
+      {
+        "number": 11,
+        "runs": 0,
+        "wickets": 0,
+        "display": "0",
+        "timestamp": "2026-09-27T12:43:59.605Z"
+      },
+      {
+        "number": 12,
+        "runs": 6,
+        "wickets": 0,
+        "display": "6",
+        "timestamp": "2026-09-27T12:44:05.412Z"
+      }
+    ],
+    "target": null,
+    "result": null,
+    "createdAt": "2026-09-27T12:32:25.958Z",
+    "updatedAt": "2026-09-27T12:44:05.412Z"
+  },
+  {
+    "id": "e5591b95-6291-4878-8007-3373347ebeae",
+    "team1": "aus",
+    "team2": "ind",
+    "overs": 5,
+    "tossWinner": "team2",
+    "tossWinnerName": "ind",
+    "tossDecision": "bowl",
+    "battingTeam": "aus",
+    "bowlingTeam": "ind",
+    "currentInnings": 1,
+    "status": "LIVE",
+    "teams": {
+      "team1": {
+        "name": "aus",
+        "runs": 0,
+        "wickets": 0,
+        "balls": 0
+      },
+      "team2": {
+        "name": "ind",
+        "runs": 0,
+        "wickets": 0,
+        "balls": 0
+      }
+    },
+    "balls": [],
+    "recentBalls": [],
+    "target": null,
+    "result": null,
+    "createdAt": "2026-09-27T12:32:08.101Z",
+    "updatedAt": "2026-09-27T12:32:08.101Z"
+  },
+  {
+    "id": "19fa2c10-a63e-4119-b1d0-227eb78717b5",
+    "team1": "mm",
+    "team2": "jj",
+    "overs": 5,
+    "tossWinner": "team2",
+    "tossWinnerName": "jj",
+    "tossDecision": "bowl",
+    "battingTeam": "mm",
+    "bowlingTeam": "jj",
+    "currentInnings": 1,
+    "status": "LIVE",
+    "teams": {
+      "team1": {
+        "name": "mm",
+        "runs": 0,
+        "wickets": 0,
+        "balls": 0
+      },
+      "team2": {
+        "name": "jj",
+        "runs": 0,
+        "wickets": 0,
+        "balls": 0
+      }
+    },
+    "balls": [],
+    "recentBalls": [],
+    "target": null,
+    "result": null,
+    "createdAt": "2026-09-27T12:31:18.244Z",
+    "updatedAt": "2026-09-27T12:31:42.100Z"
+  },
+  {
+    "id": "f95ce00c-9c31-4276-97cb-2258205740f3",
+    "team1": "iss",
+    "team2": "oss'",
+    "overs": 5,
+    "tossWinner": "team1",
+    "tossWinnerName": "iss",
+    "tossDecision": "bat",
+    "battingTeam": "iss",
+    "bowlingTeam": "oss'",
+    "currentInnings": 1,
+    "status": "LIVE",
+    "teams": {
+      "team1": {
+        "name": "iss",
+        "runs": 0,
+        "wickets": 0,
+        "balls": 0
+      },
+      "team2": {
+        "name": "oss'",
+        "runs": 0,
+        "wickets": 0,
+        "balls": 0
+      }
+    },
+    "balls": [],
+    "recentBalls": [],
+    "target": null,
+    "result": null,
+    "createdAt": "2026-09-22T07:51:09.798Z",
+    "updatedAt": "2026-09-22T07:51:09.798Z"
+  },
+  {
+    "id": "80e38e01-2331-454d-9775-a264ad76e5de",
+    "team1": "rus",
+    "team2": "oss",
+    "overs": 20,
+    "tossWinner": "team1",
+    "tossWinnerName": "rus",
+    "tossDecision": "bat",
+    "battingTeam": "rus",
+    "bowlingTeam": "oss",
+    "currentInnings": 1,
+    "status": "LIVE",
+    "teams": {
+      "team1": {
+        "name": "rus",
+        "runs": 0,
+        "wickets": 0,
+        "balls": 0
+      },
+      "team2": {
+        "name": "oss",
+        "runs": 0,
+        "wickets": 0,
+        "balls": 0
+      }
+    },
+    "balls": [],
+    "recentBalls": [],
+    "target": null,
+    "result": null,
+    "createdAt": "2026-09-22T07:48:37.857Z",
+    "updatedAt": "2026-09-22T07:48:37.857Z"
+  },
+  {
+    "id": "37c0f759-b1d5-4d91-98b3-4abd7643a9bd",
+    "team1": "aus",
+    "team2": "ind",
+    "overs": 20,
+    "tossWinner": "team1",
+    "tossWinnerName": "aus",
+    "tossDecision": "bat",
+    "battingTeam": "aus",
+    "bowlingTeam": "ind",
+    "currentInnings": 1,
+    "status": "LIVE",
+    "teams": {
+      "team1": {
+        "name": "aus",
+        "runs": 0,
+        "wickets": 0,
+        "balls": 0
+      },
+      "team2": {
+        "name": "ind",
+        "runs": 0,
+        "wickets": 0,
+        "balls": 0
+      }
+    },
+    "balls": [],
+    "recentBalls": [],
+    "target": null,
+    "result": null,
+    "createdAt": "2026-09-22T07:44:45.896Z",
+    "updatedAt": "2026-09-22T07:44:45.896Z"
+  },
+  {
+    "id": "dba7965b-551d-44b2-91c0-8af1575a024b",
+    "team1": "aus",
+    "team2": "ind",
+    "overs": 5,
+    "tossWinner": "team2",
+    "tossWinnerName": "ind",
+    "tossDecision": "bowl",
+    "battingTeam": "aus",
+    "bowlingTeam": "ind",
+    "currentInnings": 1,
+    "status": "LIVE",
+    "teams": {
+      "team1": {
+        "name": "aus",
+        "runs": 0,
+        "wickets": 0,
+        "balls": 0
+      },
+      "team2": {
+        "name": "ind",
+        "runs": 0,
+        "wickets": 0,
+        "balls": 0
+      }
+    },
+    "balls": [],
+    "recentBalls": [],
+    "target": null,
+    "result": null,
+    "createdAt": "2026-09-22T07:33:57.695Z",
+    "updatedAt": "2026-09-22T07:33:57.695Z"
+  },
+  {
+    "id": "ae14904a-c7f2-4d35-b523-05b3b2328e58",
+    "team1": "Blue Warriors",
+    "team2": "Orange Kings",
+    "overs": 20,
+    "tossWinner": "team1",
+    "tossWinnerName": "Blue Warriors",
+    "tossDecision": "bat",
+    "battingTeam": "Blue Warriors",
+    "bowlingTeam": "Orange Kings",
+    "currentInnings": 1,
+    "status": "LIVE",
+    "teams": {
+      "team1": {
+        "name": "Blue Warriors",
+        "runs": 0,
+        "wickets": 0,
+        "balls": 0
+      },
+      "team2": {
+        "name": "Orange Kings",
+        "runs": 0,
+        "wickets": 0,
+        "balls": 0
+      }
+    },
+    "balls": [],
+    "recentBalls": [],
+    "target": null,
+    "result": null,
+    "createdAt": "2026-09-22T06:02:26.512Z",
+    "updatedAt": "2026-09-22T06:02:26.512Z"
+  }
+]

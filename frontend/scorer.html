@@ -1,29 +1,386 @@
 <!DOCTYPE html>
-
 <html lang="en">
 
 <head>
 
-```
-<meta charset="UTF-8">
+    <meta charset="UTF-8">
 
-<meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
 
-<title>CricPulse | Live Scorer</title>
+    <title>CricPulse | Live Scorer</title>
 
-<link rel="stylesheet" href="style.css">
-```
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+
+        .score-page {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+
+        .score-hero {
+            margin-bottom: 24px;
+        }
+
+        .status-card,
+        .scoring-card,
+        .history-card,
+        .controls-card {
+            border: 1px solid rgba(255,255,255,0.10);
+            border-radius: 22px;
+            padding: 24px;
+            margin-bottom: 18px;
+            background: rgba(255,255,255,0.04);
+        }
+
+        .status-card.live {
+            border-color: rgba(32,200,120,0.35);
+        }
+
+        .status-card.completed {
+            border-color: rgba(245,196,81,0.40);
+        }
+
+        .status-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            margin-bottom: 12px;
+        }
+
+        .status-label .dot {
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: #20c878;
+            box-shadow: 0 0 12px rgba(32,200,120,0.8);
+        }
+
+        .completed .status-label .dot {
+            background: #f5c451;
+            box-shadow: 0 0 12px rgba(245,196,81,0.7);
+        }
+
+        .status-title {
+            margin: 0;
+            font-size: clamp(24px, 4vw, 38px);
+            font-weight: 900;
+        }
+
+        .status-subtitle {
+            margin: 8px 0 0;
+            opacity: 0.72;
+        }
+
+        .scoreboard {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 20px;
+            align-items: center;
+            padding: 28px;
+            border-radius: 24px;
+            background: rgba(255,255,255,0.045);
+            border: 1px solid rgba(255,255,255,0.10);
+        }
+
+        .score-team {
+            text-align: center;
+        }
+
+        .score-team.active {
+            transform: scale(1.02);
+        }
+
+        .team-label {
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            opacity: 0.55;
+            margin-bottom: 8px;
+        }
+
+        .team-name {
+            font-size: clamp(20px, 3vw, 30px);
+            font-weight: 900;
+            margin-bottom: 8px;
+        }
+
+        .main-score {
+            font-size: clamp(42px, 7vw, 68px);
+            line-height: 1;
+            font-weight: 900;
+        }
+
+        .overs-display {
+            margin-top: 10px;
+            opacity: 0.70;
+            font-weight: 700;
+        }
+
+        .vs-area {
+            text-align: center;
+            min-width: 130px;
+        }
+
+        .vs-circle {
+            width: 58px;
+            height: 58px;
+            margin: 0 auto 12px;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            font-weight: 900;
+            border: 1px solid rgba(255,255,255,0.15);
+            background: rgba(255,255,255,0.06);
+        }
+
+        .target-box {
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 18px;
+            text-align: center;
+            background: rgba(245,196,81,0.08);
+            border: 1px solid rgba(245,196,81,0.25);
+        }
+
+        .target-label {
+            font-size: 12px;
+            font-weight: 900;
+            letter-spacing: 0.1em;
+            opacity: 0.65;
+        }
+
+        .target-number {
+            display: block;
+            font-size: 36px;
+            font-weight: 900;
+            margin: 4px 0;
+        }
+
+        .runs-needed {
+            font-size: 15px;
+            font-weight: 800;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-top: 18px;
+        }
+
+        .info-box {
+            padding: 16px;
+            border-radius: 16px;
+            text-align: center;
+            background: rgba(255,255,255,0.035);
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .info-label {
+            display: block;
+            font-size: 11px;
+            font-weight: 800;
+            opacity: 0.55;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+
+        .info-value {
+            font-size: 20px;
+            font-weight: 900;
+        }
+
+        .result-box {
+            display: none;
+            margin-top: 18px;
+            padding: 22px;
+            text-align: center;
+            border-radius: 18px;
+            background: rgba(245,196,81,0.08);
+            border: 1px solid rgba(245,196,81,0.28);
+        }
+
+        .result-box.show {
+            display: block;
+        }
+
+        .result-icon {
+            font-size: 32px;
+        }
+
+        .result-title {
+            margin: 5px 0;
+            font-size: 24px;
+            font-weight: 900;
+        }
+
+        .result-text {
+            margin: 0;
+            opacity: 0.75;
+            font-weight: 700;
+        }
+
+        .innings-banner {
+            margin-top: 18px;
+            padding: 15px 18px;
+            border-radius: 14px;
+            text-align: center;
+            font-weight: 800;
+            background: rgba(32,200,120,0.07);
+            border: 1px solid rgba(32,200,120,0.20);
+        }
+
+        .scoring-heading {
+            margin-bottom: 16px;
+        }
+
+        .scoring-heading h2 {
+            margin: 0 0 5px;
+        }
+
+        .scoring-heading p {
+            margin: 0;
+            opacity: 0.65;
+        }
+
+        .score-buttons {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+        }
+
+        .score-button {
+            min-height: 58px;
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 14px;
+            background: rgba(255,255,255,0.06);
+            color: inherit;
+            font-size: 20px;
+            font-weight: 900;
+            cursor: pointer;
+            transition: transform 0.15s ease, opacity 0.15s ease;
+        }
+
+        .score-button:hover {
+            transform: translateY(-2px);
+        }
+
+        .score-button:disabled {
+            opacity: 0.35;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .wicket-button {
+            border-color: rgba(255,80,80,0.35);
+        }
+
+        .history-card h2 {
+            margin-top: 0;
+        }
+
+        .ball-history {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 9px;
+        }
+
+        .history-ball {
+            min-width: 42px;
+            height: 42px;
+            padding: 0 10px;
+            border-radius: 50px;
+            display: grid;
+            place-items: center;
+            font-weight: 900;
+            background: rgba(255,255,255,0.07);
+            border: 1px solid rgba(255,255,255,0.10);
+        }
+
+        .empty-history {
+            opacity: 0.55;
+        }
+
+        .controls-card {
+            text-align: center;
+        }
+
+        .controls-card p {
+            opacity: 0.65;
+        }
+
+        .live-connection {
+            position: fixed;
+            right: 18px;
+            bottom: 18px;
+            z-index: 100;
+            padding: 10px 14px;
+            border-radius: 50px;
+            font-size: 12px;
+            font-weight: 800;
+            background: rgba(0,0,0,0.75);
+            border: 1px solid rgba(255,255,255,0.12);
+        }
+
+        .live-connection.connected {
+            border-color: rgba(32,200,120,0.45);
+        }
+
+        .live-connection.disconnected {
+            border-color: rgba(255,80,80,0.45);
+        }
+
+        @media (max-width: 700px) {
+
+            .score-page {
+                padding: 14px;
+            }
+
+            .scoreboard {
+                grid-template-columns: 1fr;
+                padding: 20px;
+            }
+
+            .vs-area {
+                order: 2;
+            }
+
+            .score-team:first-child {
+                order: 1;
+            }
+
+            .score-team:last-child {
+                order: 3;
+            }
+
+            .info-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .score-buttons {
+                grid-template-columns: repeat(4, 1fr);
+            }
+
+            .score-button {
+                min-height: 54px;
+            }
+
+        }
+
+    </style>
 
 </head>
 
+
 <body>
 
-```
-<!-- =========================
-     HEADER
-========================== -->
 
 <header class="top-header">
 
@@ -37,9 +394,7 @@
 
             <h1>CricPulse</h1>
 
-            <p>
-                Live Cricket Scorer
-            </p>
+            <p>Live Cricket Scorer</p>
 
         </div>
 
@@ -50,9 +405,14 @@
 
         <div class="live-status">
 
-            <span class="status-dot"></span>
+            <span
+                id="headerStatusDot"
+                class="status-dot">
+            </span>
 
-            <span class="status-text">
+            <span
+                id="statusText"
+                class="status-text">
                 LIVE SCORING
             </span>
 
@@ -73,25 +433,58 @@
 </header>
 
 
-
-<!-- =========================
-     MAIN
-========================== -->
-
-<main class="main-content">
+<main class="score-page">
 
 
-    <!-- =========================
-         MATCH HEADER
-    ========================== -->
+    <!-- MATCH STATUS -->
 
-    <section class="hero-section">
+    <section
+        id="statusCard"
+        class="status-card live">
 
+        <div class="status-label">
+
+            <span class="dot"></span>
+
+            <span id="statusLabel">
+                LIVE MATCH
+            </span>
+
+        </div>
+
+
+        <h2
+            id="statusTitle"
+            class="status-title">
+
+            Loading Match...
+
+        </h2>
+
+
+        <p
+            id="statusSubtitle"
+            class="status-subtitle">
+
+            Loading match information...
+
+        </p>
+
+    </section>
+
+
+    <!-- MATCH TITLE -->
+
+    <section class="score-hero">
 
         <div class="hero-content">
 
-            <span class="hero-badge">
+            <span
+                id="matchStatusBadge"
+                class="hero-badge">
+
                 🔴 LIVE MATCH
+
             </span>
 
 
@@ -106,234 +499,100 @@
 
         </div>
 
+    </section>
 
 
-        <!-- =========================
-             SCORE CARD
-        ========================== -->
+    <!-- SCOREBOARD -->
 
-        <div class="score-preview">
+    <section class="scoreboard">
 
 
-            <div class="score-header">
+        <div
+            id="battingTeamCard"
+            class="score-team active">
 
-                <span class="live-tag">
-                    🔴 LIVE
-                </span>
+            <div class="team-label">
+                BATTING NOW
+            </div>
 
 
-                <span
-                    id="oversLimit"
-                    class="match-type">
+            <div
+                id="battingTeam"
+                class="team-name">
 
-                    Overs
-
-                </span>
+                Team 1
 
             </div>
 
 
+            <div
+                id="score"
+                class="main-score">
 
-            <!-- =========================
-                 TEAMS
-            ========================== -->
-
-            <div class="teams">
-
-
-                <!-- BATTING TEAM -->
-
-                <div class="team">
-
-                    <div class="team-logo">
-                        🏏
-                    </div>
-
-
-                    <h3 id="battingTeam">
-                        Team 1
-                    </h3>
-
-
-                    <strong id="score">
-                        0/0
-                    </strong>
-
-
-                    <small id="overs">
-                        0.0 Overs
-                    </small>
-
-                </div>
-
-
-
-                <!-- VS -->
-
-                <div class="vs-container">
-
-                    <div class="vs">
-                        VS
-                    </div>
-
-
-                    <span class="target-badge">
-
-                        Target:
-                        <span id="target">
-                            -
-                        </span>
-
-                    </span>
-
-                </div>
-
-
-
-                <!-- BOWLING TEAM -->
-
-                <div class="team">
-
-                    <div class="team-logo">
-                        🏏
-                    </div>
-
-
-                    <h3 id="bowlingTeam">
-                        Team 2
-                    </h3>
-
-
-                    <strong>
-                        Bowling
-                    </strong>
-
-
-                    <small>
-                        Live
-                    </small>
-
-                </div>
+                0/0
 
             </div>
 
 
+            <div
+                id="overs"
+                class="overs-display">
 
-            <!-- =========================
-                 MATCH INFORMATION
-            ========================== -->
+                0.0 / 5 Overs
 
-            <div class="match-info">
+            </div>
 
-                <span>
-
-                    🏏 Current Run Rate:
-
-                    <b id="runRate">
-                        0.00
-                    </b>
-
-                </span>
+        </div>
 
 
-                <span>
+        <div class="vs-area">
 
-                    ⚾ Balls:
+            <div class="vs-circle">
+                VS
+            </div>
 
-                    <b id="ballCount">
-                        0
-                    </b>
 
-                </span>
+            <div
+                id="inningsStatus"
+                class="team-label">
+
+                1ST INNINGS
+
+            </div>
+
+        </div>
+
+
+        <div class="score-team">
+
+            <div class="team-label">
+                BOWLING
+            </div>
+
+
+            <div
+                id="bowlingTeam"
+                class="team-name">
+
+                Team 2
 
             </div>
 
 
+            <div
+                id="bowlingScore"
+                class="main-score">
 
-            <!-- =========================
-                 SCORING BUTTONS
-            ========================== -->
+                0/0
 
-            <div class="ball-feed-container">
-
-                <span class="feed-label">
-                    Record Ball
-                </span>
+            </div>
 
 
-                <div class="ball-pills">
+            <div
+                id="bowlingStatus"
+                class="overs-display">
 
-
-                    <button
-                        type="button"
-                        class="ball-pill dot"
-                        onclick="addRun(0)">
-
-                        0
-
-                    </button>
-
-
-                    <button
-                        type="button"
-                        class="ball-pill"
-                        onclick="addRun(1)">
-
-                        1
-
-                    </button>
-
-
-                    <button
-                        type="button"
-                        class="ball-pill"
-                        onclick="addRun(2)">
-
-                        2
-
-                    </button>
-
-
-                    <button
-                        type="button"
-                        class="ball-pill"
-                        onclick="addRun(3)">
-
-                        3
-
-                    </button>
-
-
-                    <button
-                        type="button"
-                        class="ball-pill four"
-                        onclick="addRun(4)">
-
-                        4
-
-                    </button>
-
-
-                    <button
-                        type="button"
-                        class="ball-pill six"
-                        onclick="addRun(6)">
-
-                        6
-
-                    </button>
-
-
-                    <button
-                        type="button"
-                        class="ball-pill Wicket"
-                        onclick="addWicket()">
-
-                        W
-
-                    </button>
-
-                </div>
+                Waiting
 
             </div>
 
@@ -342,33 +601,268 @@
     </section>
 
 
+    <!-- TARGET -->
 
-    <!-- =========================
-         BALL HISTORY
-    ========================== -->
+    <section
+        id="targetBox"
+        class="target-box">
 
-    <section class="features-section">
+        <span class="target-label">
+            🎯 TARGET
+        </span>
 
 
-        <div class="section-heading">
+        <span
+            id="target"
+            class="target-number">
 
-            <span>
-                BALL-BY-BALL
+            —
+
+        </span>
+
+
+        <span
+            id="runsNeeded"
+            class="runs-needed">
+
+            Target will appear after 1st innings
+
+        </span>
+
+    </section>
+
+
+    <!-- INFORMATION -->
+
+    <section class="info-grid">
+
+
+        <div class="info-box">
+
+            <span class="info-label">
+                Current Run Rate
             </span>
 
 
-            <h2>
-                Recent Balls
-            </h2>
+            <span
+                id="runRate"
+                class="info-value">
+
+                0.00
+
+            </span>
 
         </div>
 
 
+        <div class="info-box">
+
+            <span class="info-label">
+                Balls
+            </span>
+
+
+            <span
+                id="ballCount"
+                class="info-value">
+
+                0
+
+            </span>
+
+        </div>
+
+
+        <div class="info-box">
+
+            <span class="info-label">
+                Match Overs
+            </span>
+
+
+            <span
+                id="oversLimit"
+                class="info-value">
+
+                5 Overs
+
+            </span>
+
+        </div>
+
+
+        <div class="info-box">
+
+            <span class="info-label">
+                Required Rate
+            </span>
+
+
+            <span
+                id="requiredRate"
+                class="info-value">
+
+                —
+
+            </span>
+
+        </div>
+
+    </section>
+
+
+    <!-- INNINGS MESSAGE -->
+
+    <div
+        id="inningsBanner"
+        class="innings-banner">
+
+        🏏 First innings in progress
+
+    </div>
+
+
+    <!-- RESULT -->
+
+    <section
+        id="resultBox"
+        class="result-box">
+
+        <div class="result-icon">
+            🏆
+        </div>
+
+
+        <h2 class="result-title">
+            MATCH WINNER
+        </h2>
+
+
+        <p
+            id="resultText"
+            class="result-text">
+
+            —
+
+        </p>
+
+    </section>
+
+
+    <!-- SCORING -->
+
+    <section class="scoring-card">
+
+        <div class="scoring-heading">
+
+            <h2>
+                Record Ball
+            </h2>
+
+
+            <p id="controlMessage">
+                Select what happened on the current ball.
+            </p>
+
+        </div>
+
+
+        <div class="score-buttons">
+
+
+            <button
+                type="button"
+                class="score-button"
+                onclick="addRun(0)">
+
+                0
+
+            </button>
+
+
+            <button
+                type="button"
+                class="score-button"
+                onclick="addRun(1)">
+
+                1
+
+            </button>
+
+
+            <button
+                type="button"
+                class="score-button"
+                onclick="addRun(2)">
+
+                2
+
+            </button>
+
+
+            <button
+                type="button"
+                class="score-button"
+                onclick="addRun(3)">
+
+                3
+
+            </button>
+
+
+            <button
+                type="button"
+                class="score-button"
+                onclick="addRun(4)">
+
+                4
+
+            </button>
+
+
+            <button
+                type="button"
+                class="score-button"
+                onclick="addRun(6)">
+
+                6
+
+            </button>
+
+
+            <button
+                type="button"
+                class="score-button wicket-button"
+                onclick="addWicket()">
+
+                W
+
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- BALL HISTORY -->
+
+    <section class="history-card">
+
+        <h2>
+            Recent Balls
+        </h2>
+
+
+        <p class="status-subtitle">
+            Latest 12 deliveries
+        </p>
+
+
         <div
             id="ballHistory"
-            class="ball-feed-container">
+            class="ball-history">
 
-            <span class="feed-label">
+            <span class="empty-history">
                 No balls recorded yet
             </span>
 
@@ -377,12 +871,9 @@
     </section>
 
 
+    <!-- CONTROLS -->
 
-    <!-- =========================
-         MATCH CONTROLS
-    ========================== -->
-
-    <section class="cta-section">
+    <section class="controls-card">
 
         <h2>
             Match Controls
@@ -390,8 +881,7 @@
 
 
         <p>
-            Record every ball and CricPulse
-            will automatically update the score.
+            CricPulse backend controls the live score and match state.
         </p>
 
 
@@ -409,640 +899,1231 @@
 </main>
 
 
+<div
+    id="liveConnection"
+    class="live-connection">
 
-<!-- =========================
-     JAVASCRIPT
-========================== -->
+    Connecting...
+
+</div>
+
+
+<!-- SOCKET.IO -->
+
+<script src="/socket.io/socket.io.js"></script>
+
 
 <script>
 
-    // ==========================================
-    // MATCH DATA
-    // ==========================================
 
-    const savedMatch =
-        localStorage.getItem("cricPulseMatch");
+// =====================================================
+// MATCH DATA
+// =====================================================
 
-    let matchData = null;
-
-
-    if (savedMatch) {
-
-        try {
-
-            matchData =
-                JSON.parse(savedMatch);
-
-        } catch (error) {
-
-            console.error(
-                "Unable to read saved match:",
-                error
-            );
-
-            matchData = null;
-
-        }
-
-    }
+const savedMatch =
+    localStorage.getItem(
+        "cricPulseMatch"
+    );
 
 
-    // ==========================================
-    // CHECK MATCH
-    // ==========================================
+let matchData = null;
 
-    if (!matchData || !matchData.id) {
 
-        alert(
-            "No valid match found. Please create a new match."
+if (savedMatch) {
+
+    try {
+
+        matchData =
+            JSON.parse(savedMatch);
+
+    } catch (error) {
+
+        console.error(
+            "Unable to read saved match:",
+            error
         );
 
-        window.location.href =
-            "index.html";
-
-    } else {
-
-        loadMatch();
+        matchData = null;
 
     }
 
-
-    // ==========================================
-    // LOAD MATCH FROM BACKEND
-    // ==========================================
-
-    async function loadMatch() {
-
-        try {
-
-            const response =
-                await fetch(
-                    "/api/matches/" +
-                    encodeURIComponent(matchData.id)
-                );
+}
 
 
-            const data =
-                await response.json();
+if (
+    !matchData ||
+    !matchData.id
+) {
+
+    alert(
+        "No valid match found. Please create a new match."
+    );
+
+    window.location.href =
+        "index.html";
+
+} else {
+
+    loadMatch();
+
+}
 
 
-            if (!response.ok) {
+// =====================================================
+// SOCKET.IO CONNECTION
+// =====================================================
 
-                throw new Error(
-                    data.message ||
-                    "Unable to load match."
-                );
-
-            }
+const socket =
+    io();
 
 
-            matchData = data;
+const connectionElement =
+    document.getElementById(
+        "liveConnection"
+    );
 
 
-            localStorage.setItem(
-                "cricPulseMatch",
-                JSON.stringify(matchData)
+socket.on(
+    "connect",
+    function () {
+
+        connectionElement.textContent =
+            "🟢 LIVE CONNECTED";
+
+        connectionElement.className =
+            "live-connection connected";
+
+    }
+);
+
+
+socket.on(
+    "disconnect",
+    function () {
+
+        connectionElement.textContent =
+            "🔴 CONNECTION LOST";
+
+        connectionElement.className =
+            "live-connection disconnected";
+
+    }
+);
+
+
+// =====================================================
+// REAL-TIME MATCH UPDATE
+// =====================================================
+
+socket.on(
+    "match:update",
+    function (updatedMatch) {
+
+        if (
+            !matchData ||
+            !updatedMatch
+        ) {
+            return;
+        }
+
+
+        if (
+            updatedMatch.id !==
+            matchData.id
+        ) {
+            return;
+        }
+
+
+        matchData =
+            updatedMatch;
+
+
+        saveLocalMatch();
+
+
+        renderMatch();
+
+    }
+);
+
+
+// =====================================================
+// LOAD MATCH
+// =====================================================
+
+async function loadMatch() {
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/matches/" +
+                encodeURIComponent(
+                    matchData.id
+                )
             );
 
 
-            updateMatchInformation();
-
-            updateScore();
-
-        } catch (error) {
-
-            console.error(
-                "Unable to load match:",
-                error
-            );
+        const data =
+            await response.json();
 
 
-            alert(
-                error.message ||
+        if (!response.ok) {
+
+            throw new Error(
+                data.message ||
                 "Unable to load match."
             );
 
         }
 
-    }
+
+        matchData =
+            data;
 
 
-    // ==========================================
-    // UPDATE MATCH INFORMATION
-    // ==========================================
-
-    function updateMatchInformation() {
-
-        document.getElementById(
-            "matchTitle"
-        ).textContent =
-            matchData.team1 +
-            " vs " +
-            matchData.team2;
+        saveLocalMatch();
 
 
-        document.getElementById(
-            "matchDetails"
-        ).textContent =
-            matchData.overs +
-            " Overs • Toss: " +
-            getTossTeamName() +
-            " • " +
-            getTossDecisionText();
+        renderMatch();
+
+    } catch (error) {
+
+        console.error(
+            "Unable to load match:",
+            error
+        );
 
 
-        document.getElementById(
-            "battingTeam"
-        ).textContent =
-            matchData.battingTeam;
-
-
-        document.getElementById(
-            "bowlingTeam"
-        ).textContent =
-            matchData.bowlingTeam;
-
-
-        document.getElementById(
-            "oversLimit"
-        ).textContent =
-            matchData.overs +
-            " Overs";
+        alert(
+            error.message ||
+            "Unable to load match."
+        );
 
     }
 
+}
 
-    // ==========================================
-    // TOSS TEAM
-    // ==========================================
 
-    function getTossTeamName() {
+// =====================================================
+// SAVE LOCAL MATCH
+// =====================================================
 
-        return matchData.tossWinner === "team1"
-            ? matchData.team1
-            : matchData.team2;
+function saveLocalMatch() {
 
+    localStorage.setItem(
+        "cricPulseMatch",
+        JSON.stringify(matchData)
+    );
+
+}
+
+
+// =====================================================
+// GET BATTING TEAM
+// =====================================================
+
+function getBattingTeamData() {
+
+    return matchData.battingTeam ===
+        matchData.team1
+
+        ? matchData.teams.team1
+
+        : matchData.teams.team2;
+
+}
+
+
+// =====================================================
+// GET BOWLING TEAM
+// =====================================================
+
+function getBowlingTeamData() {
+
+    return matchData.bowlingTeam ===
+        matchData.team1
+
+        ? matchData.teams.team1
+
+        : matchData.teams.team2;
+
+}
+
+
+// =====================================================
+// TOSS TEAM NAME
+// =====================================================
+
+function getTossTeamName() {
+
+    return matchData.tossWinner === "team1"
+
+        ? matchData.team1
+
+        : matchData.team2;
+
+}
+
+
+// =====================================================
+// TOSS DECISION
+// =====================================================
+
+function getTossDecisionText() {
+
+    return matchData.tossDecision === "bat"
+
+        ? "Chose to Bat"
+
+        : "Chose to Bowl";
+
+}
+
+
+// =====================================================
+// RENDER
+// =====================================================
+
+function renderMatch() {
+
+    if (!matchData) {
+        return;
     }
 
 
-    // ==========================================
-    // TOSS DECISION
-    // ==========================================
+    updateHeader();
 
-    function getTossDecisionText() {
+    updateScoreboard();
 
-        return matchData.tossDecision === "bat"
-            ? "Chose to Bat"
-            : "Chose to Bowl";
+    updateTarget();
 
-    }
+    updateMatchInfo();
 
+    updateInningsMessage();
 
-    // ==========================================
-    // GET BATTING TEAM DATA
-    // ==========================================
+    updateResult();
 
-    function getBattingTeamData() {
+    updateBallHistory();
 
-        if (
-            matchData.battingTeam ===
-            matchData.team1
-        ) {
+    updateScoringControls();
 
-            return matchData.teams.team1;
+}
 
-        }
 
-        return matchData.teams.team2;
+// =====================================================
+// HEADER
+// =====================================================
 
-    }
+function updateHeader() {
 
+    const completed =
+        matchData.status === "COMPLETED";
 
-    // ==========================================
-    // ADD RUN
-    // ==========================================
 
-    async function addRun(value) {
-
-        const battingTeam =
-            getBattingTeamData();
-
-
-        if (
-            battingTeam.balls >=
-            matchData.overs * 6
-        ) {
-
-            alert(
-                "Maximum overs completed."
-            );
-
-            return;
-
-        }
-
-
-        await recordBall({
-            runs: value,
-            wickets: 0,
-            display: value.toString()
-        });
-
-    }
-
-
-    // ==========================================
-    // ADD WICKET
-    // ==========================================
-
-    async function addWicket() {
-
-        const battingTeam =
-            getBattingTeamData();
-
-
-        if (
-            battingTeam.balls >=
-            matchData.overs * 6
-        ) {
-
-            alert(
-                "Maximum overs completed."
-            );
-
-            return;
-
-        }
-
-
-        if (
-            battingTeam.wickets >= 10
-        ) {
-
-            alert(
-                "All wickets are down."
-            );
-
-            return;
-
-        }
-
-
-        await recordBall({
-            runs: 0,
-            wickets: 1,
-            display: "W"
-        });
-
-    }
-
-
-    // ==========================================
-    // RECORD BALL THROUGH API
-    // ==========================================
-
-    async function recordBall(ballData) {
-
-        try {
-
-            const response =
-                await fetch(
-                    "/api/matches/" +
-                    encodeURIComponent(matchData.id) +
-                    "/balls",
-                    {
-                        method: "POST",
-
-                        headers: {
-                            "Content-Type":
-                                "application/json"
-                        },
-
-                        body: JSON.stringify({
-                            runs: ballData.runs,
-                            wickets: ballData.wickets,
-                            display: ballData.display
-                        })
-                    }
-                );
-
-
-            const data =
-                await response.json();
-
-
-            if (!response.ok) {
-
-                throw new Error(
-                    data.message ||
-                    "Unable to record ball."
-                );
-
-            }
-
-
-            matchData = data;
-
-
-            localStorage.setItem(
-                "cricPulseMatch",
-                JSON.stringify(matchData)
-            );
-
-
-            updateMatchInformation();
-
-            updateScore();
-
-
-        } catch (error) {
-
-            console.error(
-                "Unable to record ball:",
-                error
-            );
-
-
-            alert(
-                error.message ||
-                "Unable to record ball."
-            );
-
-        }
-
-    }
-
-
-    // ==========================================
-    // UPDATE SCORE
-    // ==========================================
-
-    function updateScore() {
-
-        if (!matchData || !matchData.teams) {
-            return;
-        }
-
-
-        const battingTeam =
-            getBattingTeamData();
-
-
-        if (!battingTeam) {
-            return;
-        }
-
-
-        const runs =
-            battingTeam.runs || 0;
-
-
-        const wickets =
-            battingTeam.wickets || 0;
-
-
-        const balls =
-            battingTeam.balls || 0;
-
-
+    const statusCard =
         document.getElementById(
-            "score"
-        ).textContent =
-            runs +
-            "/" +
-            wickets;
+            "statusCard"
+        );
 
 
-        const completedOvers =
-            Math.floor(
-                balls / 6
-            );
-
-
-        const ballsInOver =
-            balls % 6;
-
-
+    const statusLabel =
         document.getElementById(
-            "overs"
-        ).textContent =
-            completedOvers +
-            "." +
-            ballsInOver +
-            " Overs";
+            "statusLabel"
+        );
 
 
+    const statusTitle =
         document.getElementById(
-            "ballCount"
-        ).textContent =
-            balls;
+            "statusTitle"
+        );
 
 
-        let runRate = 0;
-
-
-        if (balls > 0) {
-
-            runRate =
-                runs /
-                (balls / 6);
-
-        }
-
-
+    const statusSubtitle =
         document.getElementById(
-            "runRate"
-        ).textContent =
-            runRate.toFixed(2);
+            "statusSubtitle"
+        );
 
 
+    const badge =
+        document.getElementById(
+            "matchStatusBadge"
+        );
+
+
+    const headerStatus =
+        document.getElementById(
+            "statusText"
+        );
+
+
+    if (completed) {
+
+        statusCard.classList.remove(
+            "live"
+        );
+
+        statusCard.classList.add(
+            "completed"
+        );
+
+
+        statusLabel.textContent =
+            "MATCH COMPLETED";
+
+
+        statusTitle.textContent =
+            "🏆 MATCH ENDED";
+
+
+        statusSubtitle.textContent =
+            matchData.result ||
+            "The match has finished.";
+
+
+        badge.textContent =
+            "🏆 MATCH COMPLETED";
+
+
+        headerStatus.textContent =
+            "MATCH ENDED";
+
+    } else {
+
+        statusCard.classList.remove(
+            "completed"
+        );
+
+        statusCard.classList.add(
+            "live"
+        );
+
+
+        statusLabel.textContent =
+            "LIVE MATCH";
+
+
+        statusTitle.textContent =
+            matchData.currentInnings === 2
+
+                ? "2ND INNINGS • CHASE"
+
+                : "1ST INNINGS • LIVE";
+
+
+        statusSubtitle.textContent =
+            matchData.currentInnings === 2
+
+                ? "Target chase is in progress."
+
+                : "First innings is in progress.";
+
+
+        badge.textContent =
+            "🔴 LIVE MATCH";
+
+
+        headerStatus.textContent =
+            "LIVE SCORING";
+
+    }
+
+
+    document.getElementById(
+        "matchTitle"
+    ).textContent =
+        matchData.team1 +
+        " vs " +
+        matchData.team2;
+
+
+    document.getElementById(
+        "matchDetails"
+    ).textContent =
+        matchData.overs +
+        " Overs • Toss: " +
+        getTossTeamName() +
+        " • " +
+        getTossDecisionText();
+
+}
+
+
+// =====================================================
+// SCOREBOARD
+// =====================================================
+
+function updateScoreboard() {
+
+    const battingTeam =
+        getBattingTeamData();
+
+
+    const bowlingTeam =
+        getBowlingTeamData();
+
+
+    const battingRuns =
+        battingTeam.runs || 0;
+
+
+    const battingWickets =
+        battingTeam.wickets || 0;
+
+
+    const battingBalls =
+        battingTeam.balls || 0;
+
+
+    const bowlingRuns =
+        bowlingTeam.runs || 0;
+
+
+    const bowlingWickets =
+        bowlingTeam.wickets || 0;
+
+
+    const bowlingBalls =
+        bowlingTeam.balls || 0;
+
+
+    const completedOvers =
+        Math.floor(
+            battingBalls / 6
+        );
+
+
+    const ballsInOver =
+        battingBalls % 6;
+
+
+    document.getElementById(
+        "battingTeam"
+    ).textContent =
+        battingTeam.name;
+
+
+    document.getElementById(
+        "score"
+    ).textContent =
+        battingRuns +
+        "/" +
+        battingWickets;
+
+
+    document.getElementById(
+        "overs"
+    ).textContent =
+        completedOvers +
+        "." +
+        ballsInOver +
+        " / " +
+        matchData.overs +
+        " Overs";
+
+
+    document.getElementById(
+        "bowlingTeam"
+    ).textContent =
+        bowlingTeam.name;
+
+
+    document.getElementById(
+        "bowlingScore"
+    ).textContent =
+        bowlingRuns +
+        "/" +
+        bowlingWickets;
+
+
+    document.getElementById(
+        "bowlingStatus"
+    ).textContent =
+        bowlingBalls +
+        " balls";
+
+
+    document.getElementById(
+        "inningsStatus"
+    ).textContent =
+        matchData.currentInnings === 2
+
+            ? "2ND INNINGS"
+
+            : "1ST INNINGS";
+
+}
+
+
+// =====================================================
+// TARGET
+// =====================================================
+
+function updateTarget() {
+
+    const target =
+        matchData.target;
+
+
+    const battingTeam =
+        getBattingTeamData();
+
+
+    const targetElement =
         document.getElementById(
             "target"
-        ).textContent =
-            matchData.target === null
-                ? "-"
-                : matchData.target;
+        );
 
 
-        updateBallHistory();
+    const runsNeededElement =
+        document.getElementById(
+            "runsNeeded"
+        );
+
+
+    const targetBox =
+        document.getElementById(
+            "targetBox"
+        );
+
+
+    if (
+        matchData.currentInnings === 1 ||
+        target === null ||
+        target === undefined
+    ) {
+
+        targetElement.textContent =
+            "—";
+
+
+        runsNeededElement.textContent =
+            "Target will appear after 1st innings";
+
+
+        targetBox.style.opacity =
+            "0.75";
+
+
+        return;
 
     }
 
 
-    // ==========================================
-    // BALL HISTORY
-    // ==========================================
+    targetBox.style.opacity =
+        "1";
 
-    function updateBallHistory() {
 
-        const history =
-            document.getElementById(
-                "ballHistory"
+    targetElement.textContent =
+        target;
+
+
+    const runsNeeded =
+        Math.max(
+            0,
+            target -
+            battingTeam.runs
+        );
+
+
+    if (runsNeeded === 0) {
+
+        runsNeededElement.textContent =
+            "🎉 Target reached!";
+
+    } else {
+
+        runsNeededElement.textContent =
+            runsNeeded +
+            " RUNS NEEDED";
+
+    }
+
+}
+
+
+// =====================================================
+// MATCH INFORMATION
+// =====================================================
+
+function updateMatchInfo() {
+
+    const battingTeam =
+        getBattingTeamData();
+
+
+    const balls =
+        battingTeam.balls || 0;
+
+
+    const runs =
+        battingTeam.runs || 0;
+
+
+    let runRate = 0;
+
+
+    if (balls > 0) {
+
+        runRate =
+            runs /
+            (balls / 6);
+
+    }
+
+
+    document.getElementById(
+        "runRate"
+    ).textContent =
+        runRate.toFixed(2);
+
+
+    document.getElementById(
+        "ballCount"
+    ).textContent =
+        balls;
+
+
+    document.getElementById(
+        "oversLimit"
+    ).textContent =
+        matchData.overs +
+        " Overs";
+
+
+    // ---------------------------------------------
+    // REQUIRED RUN RATE
+    // ---------------------------------------------
+
+    const requiredRateElement =
+        document.getElementById(
+            "requiredRate"
+        );
+
+
+    if (
+        matchData.currentInnings !== 2 ||
+        matchData.target === null
+    ) {
+
+        requiredRateElement.textContent =
+            "—";
+
+        return;
+
+    }
+
+
+    const runsNeeded =
+        Math.max(
+            0,
+            matchData.target -
+            battingTeam.runs
+        );
+
+
+    const remainingBalls =
+        Math.max(
+            0,
+            (matchData.overs * 6) -
+            battingTeam.balls
+        );
+
+
+    if (
+        runsNeeded === 0
+    ) {
+
+        requiredRateElement.textContent =
+            "0.00";
+
+    } else if (
+        remainingBalls === 0
+    ) {
+
+        requiredRateElement.textContent =
+            "—";
+
+    } else {
+
+        const requiredRate =
+            runsNeeded /
+            (remainingBalls / 6);
+
+
+        requiredRateElement.textContent =
+            requiredRate.toFixed(2);
+
+    }
+
+}
+
+
+// =====================================================
+// INNINGS MESSAGE
+// =====================================================
+
+function updateInningsMessage() {
+
+    const banner =
+        document.getElementById(
+            "inningsBanner"
+        );
+
+
+    if (
+        matchData.status ===
+        "COMPLETED"
+    ) {
+
+        banner.textContent =
+            "🏆 Match completed • " +
+            (matchData.result || "");
+
+        return;
+
+    }
+
+
+    if (
+        matchData.currentInnings === 1
+    ) {
+
+        banner.textContent =
+            "🏏 1st innings in progress • " +
+            matchData.battingTeam +
+            " is batting.";
+
+    } else {
+
+        banner.textContent =
+            "🎯 2nd innings in progress • " +
+            matchData.battingTeam +
+            " is chasing " +
+            matchData.target +
+            ".";
+
+    }
+
+}
+
+
+// =====================================================
+// RESULT
+// =====================================================
+
+function updateResult() {
+
+    const resultBox =
+        document.getElementById(
+            "resultBox"
+        );
+
+
+    const resultText =
+        document.getElementById(
+            "resultText"
+        );
+
+
+    if (
+        matchData.status ===
+        "COMPLETED"
+    ) {
+
+        resultBox.classList.add(
+            "show"
+        );
+
+
+        resultText.textContent =
+            matchData.result ||
+            "Match completed.";
+
+    } else {
+
+        resultBox.classList.remove(
+            "show"
+        );
+
+    }
+
+}
+
+
+// =====================================================
+// BALL HISTORY
+// =====================================================
+
+function updateBallHistory() {
+
+    const history =
+        document.getElementById(
+            "ballHistory"
+        );
+
+
+    history.innerHTML = "";
+
+
+    const balls =
+        Array.isArray(matchData.balls)
+            ? matchData.balls
+            : [];
+
+
+    const recentBalls =
+        balls.slice(-12);
+
+
+    if (
+        recentBalls.length === 0
+    ) {
+
+        const empty =
+            document.createElement(
+                "span"
             );
 
 
-        if (!history) {
-            return;
-        }
+        empty.className =
+            "empty-history";
 
 
-        history.innerHTML = "";
+        empty.textContent =
+            "No balls recorded yet";
 
 
-        const balls =
-            Array.isArray(matchData.balls)
-                ? matchData.balls
-                : [];
+        history.appendChild(
+            empty
+        );
 
 
-        if (balls.length === 0) {
+        return;
 
-            const message =
+    }
+
+
+    recentBalls.forEach(
+        function (ball) {
+
+            const pill =
                 document.createElement(
                     "span"
                 );
 
 
-            message.className =
-                "feed-label";
+            pill.className =
+                "history-ball";
 
 
-            message.textContent =
-                "No balls recorded yet";
+            pill.textContent =
+                ball.display ??
+                String(
+                    ball.runs ?? 0
+                );
 
 
             history.appendChild(
-                message
+                pill
             );
 
+        }
+    );
 
-            return;
+}
+
+
+// =====================================================
+// SCORING CONTROLS
+// =====================================================
+
+function updateScoringControls() {
+
+    const buttons =
+        document.querySelectorAll(
+            ".score-button"
+        );
+
+
+    const completed =
+        matchData.status ===
+        "COMPLETED";
+
+
+    buttons.forEach(
+        function (button) {
+
+            button.disabled =
+                completed;
 
         }
+    );
 
 
-        const recentBalls =
-            balls.slice(-12);
-
-
-        recentBalls.forEach(
-            function (ball) {
-
-                const pill =
-                    document.createElement(
-                        "span"
-                    );
-
-
-                pill.className =
-                    "ball-pill";
-
-
-                pill.textContent =
-                    ball.display ||
-                    ball.runs ||
-                    "0";
-
-
-                history.appendChild(
-                    pill
-                );
-
-            }
+    const message =
+        document.getElementById(
+            "controlMessage"
         );
+
+
+    if (completed) {
+
+        message.textContent =
+            "Match completed. Reset the match to score again.";
+
+    } else if (
+        matchData.currentInnings === 2
+    ) {
+
+        message.textContent =
+            "🎯 Chase in progress. Record every ball.";
+
+    } else {
+
+        message.textContent =
+            "Record every ball. 2nd innings starts automatically.";
+
+    }
+
+}
+
+
+// =====================================================
+// ADD RUN
+// =====================================================
+
+async function addRun(value) {
+
+    if (
+        !matchData ||
+        matchData.status !== "LIVE"
+    ) {
+
+        return;
 
     }
 
 
-    // ==========================================
-    // RESET MATCH
-    // ==========================================
+    await recordBall({
 
-    async function resetMatch() {
+        runs: value,
 
-        const confirmed =
-            confirm(
-                "Are you sure you want to reset the match?"
+        wickets: 0,
+
+        display:
+            String(value)
+
+    });
+
+}
+
+
+// =====================================================
+// ADD WICKET
+// =====================================================
+
+async function addWicket() {
+
+    if (
+        !matchData ||
+        matchData.status !== "LIVE"
+    ) {
+
+        return;
+
+    }
+
+
+    await recordBall({
+
+        runs: 0,
+
+        wickets: 1,
+
+        display: "W"
+
+    });
+
+}
+
+
+// =====================================================
+// RECORD BALL
+// =====================================================
+
+async function recordBall(
+    ballData
+) {
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/matches/" +
+                encodeURIComponent(
+                    matchData.id
+                ) +
+                "/balls",
+                {
+
+                    method: "POST",
+
+                    headers: {
+
+                        "Content-Type":
+                            "application/json"
+
+                    },
+
+                    body:
+                        JSON.stringify({
+
+                            runs:
+                                ballData.runs,
+
+                            wickets:
+                                ballData.wickets,
+
+                            display:
+                                ballData.display
+
+                        })
+
+                }
             );
 
 
-        if (!confirmed) {
-            return;
+        const data =
+            await response.json();
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                data.message ||
+                "Unable to record ball."
+            );
+
         }
 
 
-        try {
-
-            const response =
-                await fetch(
-                    "/api/matches/" +
-                    encodeURIComponent(matchData.id) +
-                    "/reset",
-                    {
-                        method: "POST"
-                    }
-                );
+        matchData =
+            data;
 
 
-            const data =
-                await response.json();
+        saveLocalMatch();
 
 
-            if (!response.ok) {
+        renderMatch();
 
-                throw new Error(
-                    data.message ||
-                    "Unable to reset match."
-                );
+    } catch (error) {
 
-            }
-
-
-            matchData = data;
+        console.error(
+            "Unable to record ball:",
+            error
+        );
 
 
-            localStorage.setItem(
-                "cricPulseMatch",
-                JSON.stringify(matchData)
+        alert(
+            error.message ||
+            "Unable to record ball."
+        );
+
+    }
+
+}
+
+
+// =====================================================
+// RESET MATCH
+// =====================================================
+
+async function resetMatch() {
+
+    const confirmed =
+        confirm(
+            "Are you sure you want to reset the entire match?"
+        );
+
+
+    if (!confirmed) {
+        return;
+    }
+
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/matches/" +
+                encodeURIComponent(
+                    matchData.id
+                ) +
+                "/reset",
+                {
+
+                    method: "POST"
+
+                }
             );
 
 
-            updateMatchInformation();
-
-            updateScore();
-
-
-        } catch (error) {
-
-            console.error(
-                "Unable to reset match:",
-                error
-            );
+        const data =
+            await response.json();
 
 
-            alert(
-                error.message ||
+        if (!response.ok) {
+
+            throw new Error(
+                data.message ||
                 "Unable to reset match."
             );
 
         }
 
+
+        matchData =
+            data;
+
+
+        saveLocalMatch();
+
+
+        renderMatch();
+
+    } catch (error) {
+
+        console.error(
+            "Unable to reset match:",
+            error
+        );
+
+
+        alert(
+            error.message ||
+            "Unable to reset match."
+        );
+
     }
 
+}
 
-    // ==========================================
-    // GO HOME
-    // ==========================================
 
-    function goBackHome() {
+// =====================================================
+// GO HOME
+// =====================================================
 
-        window.location.href =
-            "index.html";
+function goBackHome() {
 
-    }
+    window.location.href =
+        "index.html";
+
+}
 
 </script>
-```
+
 
 </body>
 
