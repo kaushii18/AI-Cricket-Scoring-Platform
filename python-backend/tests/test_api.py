@@ -92,10 +92,10 @@ class ApiTests(unittest.IsolatedAsyncioTestCase):
             "team1": "Falcons",
             "team2": "Tigers",
             "overs": 5,
-            "tossWinner": "team1",
-            "tossDecision": "bat",
             "team1Players": ["A", "B"],
             "team2Players": ["C", "D"],
+            "team1Captain": "Falcons Captain",
+            "team2Captain": "Tigers Captain",
         }
         response = await self.client.post("/api/v1/matches", json=payload)
         self.assertEqual(response.status_code, 201)
@@ -132,8 +132,6 @@ class ApiTests(unittest.IsolatedAsyncioTestCase):
                 "team1": "Falcons",
                 "team2": "Falcons",
                 "overs": 7,
-                "tossWinner": "team1",
-                "tossDecision": "bat",
                 "team1Players": ["A", "B"],
                 "team2Players": ["C", "D"],
             },

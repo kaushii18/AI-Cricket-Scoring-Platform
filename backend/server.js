@@ -2,7 +2,7 @@ const express = require("express");
 const fs = require("fs");
 const path = require("path");
 const http = require("http");
-const { randomUUID } = require("crypto");
+const { randomInt, randomUUID } = require("crypto");
 const { Server } = require("socket.io");
 const supabase = require("./supabase");
 
@@ -376,32 +376,11 @@ function createMatch(data) {
         team1,
         team2,
         overs,
-        tossWinner,
-        tossDecision,
+        team1Captain,
+        team2Captain,
         team1Players,
         team2Players
     } = data;
-
-
-    const tossWinnerName =
-        tossWinner === "team1"
-            ? team1
-            : team2;
-
-
-    const battingTeam =
-        tossDecision === "bat"
-            ? tossWinnerName
-            : tossWinner === "team1"
-                ? team2
-                : team1;
-
-
-    const bowlingTeam =
-        battingTeam === team1
-            ? team2
-            : team1;
-
 
     const now =
         new Date().toISOString();
@@ -429,19 +408,33 @@ function createMatch(data) {
 
         overs,
 
-        tossWinner,
+        team1Captain,
 
-        tossWinnerName,
+        team2Captain,
 
-        tossDecision,
+        tossCaller: null,
 
-        battingTeam,
+        tossCallerTeam: null,
 
-        bowlingTeam,
+        tossCallerTeamKey: null,
+
+        tossCall: null,
+
+        tossResult: null,
+
+        tossWinner: null,
+
+        tossWinnerName: null,
+
+        tossDecision: null,
+
+        battingTeam: null,
+
+        bowlingTeam: null,
 
         currentInnings: 1,
 
-        status: "LIVE",
+        status: "TOSS_PENDING",
 
         teams: {
 
@@ -477,17 +470,11 @@ function createMatch(data) {
 
         activePlayers: {
 
-            strikerId:
-                players1[0]?.id ||
-                null,
+            strikerId: null,
 
-            nonStrikerId:
-                players1[1]?.id ||
-                null,
+            nonStrikerId: null,
 
-            bowlerId:
-                players2[0]?.id ||
-                null
+            bowlerId: null
 
         },
 
@@ -532,13 +519,15 @@ function validateMatchInput(body) {
     const overs =
         Number(body.overs);
 
+    const team1Captain =
+    typeof body.team1Captain === "string"
+        ? body.team1Captain.trim().slice(0, 80)
+        : "";
 
-    const tossWinner =
-        body.tossWinner;
-
-
-    const tossDecision =
-        body.tossDecision;
+    const team2Captain =
+    typeof body.team2Captain === "string"
+        ? body.team2Captain.trim().slice(0, 80)
+        : "";
 
 
     const team1Players =
@@ -587,32 +576,6 @@ function validateMatchInput(body) {
 
 
     if (
-        tossWinner !== "team1" &&
-        tossWinner !== "team2"
-    ) {
-
-        return {
-            error:
-                "Choose the toss winner."
-        };
-
-    }
-
-
-    if (
-        tossDecision !== "bat" &&
-        tossDecision !== "bowl"
-    ) {
-
-        return {
-            error:
-                "Choose whether the toss winner bats or bowls."
-        };
-
-    }
-
-
-    if (
         team1Players.length < 2 ||
         team2Players.length < 2
     ) {
@@ -635,9 +598,9 @@ function validateMatchInput(body) {
 
             overs,
 
-            tossWinner,
+            team1Captain,
 
-            tossDecision,
+            team2Captain,
 
             team1Players,
 
@@ -933,6 +896,243 @@ app.post(
             .status(201)
             .json(match);
 
+    }
+);
+
+
+// =====================================================
+// FLIP MATCH TOSS
+// =====================================================
+
+app.post(
+    "/api/matches/:id/toss/flip",
+    (request, response) => {
+
+        const matches =
+            readMatches();
+
+        const match =
+            matches.find(
+                (item) =>
+                    item.id ===
+                    request.params.id
+            );
+
+        if (!match) {
+            return response
+                .status(404)
+                .json({
+                    message: "Match not found."
+                });
+        }
+
+        if (match.status !== "TOSS_PENDING") {
+            return response
+                .status(409)
+                .json({
+                    message: "The match toss can no longer be changed."
+                });
+        }
+
+        if (match.tossResult) {
+            return response
+                .status(409)
+                .json({
+                    message: "The coin has already been flipped. Reload the saved match state."
+                });
+        }
+
+        const { callerTeam, call } =
+            request.body || {};
+
+        if (
+            callerTeam !== "team1" &&
+            callerTeam !== "team2"
+        ) {
+            return response
+                .status(400)
+                .json({
+                    message: "Choose which captain will call the toss."
+                });
+        }
+
+        if (call !== "heads" && call !== "tails") {
+            return response
+                .status(400)
+                .json({
+                    message: "The toss call must be heads or tails."
+                });
+        }
+
+        const callerTeamName =
+            callerTeam === "team1"
+                ? match.team1
+                : match.team2;
+
+        const tossCaller =
+            callerTeam === "team1"
+                ? match.team1Captain
+                : match.team2Captain;
+
+        const tossResult =
+            randomInt(0, 2) === 0
+                ? "heads"
+                : "tails";
+
+        const tossWinner =
+            tossResult === call
+                ? callerTeam
+                : callerTeam === "team1"
+                    ? "team2"
+                    : "team1";
+
+        match.tossCaller =
+            tossCaller || `${callerTeamName} captain`;
+
+        match.tossCallerTeam =
+            callerTeamName;
+
+        match.tossCallerTeamKey =
+            callerTeam;
+
+        match.tossCall =
+            call;
+
+        match.tossResult =
+            tossResult;
+
+        match.tossWinner =
+            tossWinner;
+
+        match.tossWinnerName =
+            tossWinner === "team1"
+                ? match.team1
+                : match.team2;
+
+        match.updatedAt =
+            new Date().toISOString();
+
+        saveMatches(matches);
+
+        io.emit(
+            "match:update",
+            match
+        );
+
+        return response.json(match);
+    }
+);
+
+
+// =====================================================
+// SAVE TOSS WINNER DECISION
+// =====================================================
+
+app.post(
+    "/api/matches/:id/toss/decision",
+    (request, response) => {
+
+        const matches =
+            readMatches();
+
+        const match =
+            matches.find(
+                (item) =>
+                    item.id ===
+                    request.params.id
+            );
+
+        if (!match) {
+            return response
+                .status(404)
+                .json({
+                    message: "Match not found."
+                });
+        }
+
+        const { actorTeam, decision } =
+            request.body || {};
+
+        if (match.tossResult !== "heads" && match.tossResult !== "tails") {
+            return response
+                .status(409)
+                .json({
+                    message: "Flip the coin before choosing to bat or bowl."
+                });
+        }
+
+        if (actorTeam !== match.tossWinner) {
+            return response
+                .status(403)
+                .json({
+                    message: "Only the toss-winning team can choose to bat or bowl."
+                });
+        }
+
+        if (decision !== "bat" && decision !== "bowl") {
+            return response
+                .status(400)
+                .json({
+                    message: "Choose whether the toss-winning team will bat or bowl."
+                });
+        }
+
+        if (match.tossDecision) {
+            if (match.tossDecision === decision) {
+                return response.json(match);
+            }
+
+            return response
+                .status(409)
+                .json({
+                    message: "The toss-winning team has already made its decision."
+                });
+        }
+
+        if (match.status !== "TOSS_PENDING") {
+            return response
+                .status(409)
+                .json({
+                    message: "The match toss can no longer be changed."
+                });
+        }
+
+        match.tossDecision =
+            decision;
+
+        const opposingTeam =
+            match.tossWinner === "team1"
+                ? "team2"
+                : "team1";
+
+        match.battingTeam =
+            decision === "bat"
+                ? match.tossWinnerName
+                : opposingTeam === "team1"
+                    ? match.team1
+                    : match.team2;
+
+        match.bowlingTeam =
+            match.battingTeam === match.team1
+                ? match.team2
+                : match.team1;
+
+        match.status =
+            "LIVE";
+
+        initializeInnings(match);
+
+        match.updatedAt =
+            new Date().toISOString();
+
+        saveMatches(matches);
+
+        io.emit(
+            "match:update",
+            match
+        );
+
+        return response.json(match);
     }
 );
 
@@ -1753,6 +1953,14 @@ app.post(
 
                 });
 
+        }
+
+        if (match.status === "TOSS_PENDING") {
+            return response
+                .status(409)
+                .json({
+                    message: "Complete the toss before resetting the match."
+                });
         }
 
 

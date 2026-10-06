@@ -11,10 +11,10 @@ class MatchCreateRequest(BaseModel):
     team1: str = Field(min_length=1, max_length=50)
     team2: str = Field(min_length=1, max_length=50)
     overs: Literal[5, 10, 20, 50]
-    toss_winner: Literal["team1", "team2"] = Field(alias="tossWinner")
-    toss_decision: Literal["bat", "bowl"] = Field(alias="tossDecision")
     team1_players: list[str] = Field(alias="team1Players", min_length=2, max_length=11)
     team2_players: list[str] = Field(alias="team2Players", min_length=2, max_length=11)
+    team1_captain: str | None = Field(default=None, alias="team1Captain", max_length=80)
+    team2_captain: str | None = Field(default=None, alias="team2Captain", max_length=80)
 
     @field_validator("team1", "team2")
     @classmethod

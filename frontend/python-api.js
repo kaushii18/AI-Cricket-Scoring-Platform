@@ -32,13 +32,47 @@
         });
     }
 
+    async function nodeRequest(path, options = {}) {
+        const response = await fetch(`${window.location.origin}/api${path}`, {
+            ...options,
+            headers: {
+                "Content-Type": "application/json",
+                ...(options.headers || {})
+            }
+        });
+        const payload = await response.json();
+
+        if (!response.ok) {
+            throw new Error(payload.message || "The match server request failed.");
+        }
+
+        return payload;
+    }
+
+    function nodePost(path, body) {
+        return nodeRequest(path, {
+            method: "POST",
+            body: JSON.stringify(body)
+        });
+    }
+
     window.CricPulsePythonAPI = Object.freeze({
         baseUrl: apiBase,
         health: () => request("/health"),
-        flipToss: (toss) => post("/toss/flip", toss),
         matches: () => request("/matches"),
         match: (matchId) => request(`/matches/${encodeURIComponent(matchId)}`),
         createMatch: (match) => post("/matches", match),
+        tossMatch: (matchId, callerTeam, call) => nodePost(
+            `/matches/${encodeURIComponent(matchId)}/toss/flip`,
+            { callerTeam, call }
+        ),
+        decideToss: (matchId, actorTeam, decision) => nodePost(
+            `/matches/${encodeURIComponent(matchId)}/toss/decision`,
+            { actorTeam, decision }
+        ),
+        matchFromNode: (matchId) => nodeRequest(
+            `/matches/${encodeURIComponent(matchId)}`
+        ),
         recordBall: (matchId, ball) => post(`/matches/${encodeURIComponent(matchId)}/balls`, ball),
         updatePlayers: (matchId, players) => post(`/matches/${encodeURIComponent(matchId)}/players`, players),
         resetMatch: (matchId) => post(`/matches/${encodeURIComponent(matchId)}/reset`, {}),

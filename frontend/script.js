@@ -6,7 +6,6 @@
 let playerSetupMode = false;
 let dashboardSocket = null;
 let dashboardMatches = [];
-let lastTossResult = null;
 
 
 // ==========================================
@@ -125,15 +124,6 @@ function syncDefaultPlayerNames() {
         team2Heading.textContent = `${team2Name} squad`;
     }
 
-    const team1TossOption = document.querySelector('#toss option[value="team1"]');
-    const team2TossOption = document.querySelector('#toss option[value="team2"]');
-    if (team1TossOption) {
-        team1TossOption.textContent = team1Name;
-    }
-    if (team2TossOption) {
-        team2TossOption.textContent = team2Name;
-    }
-
     Array.from(document.querySelectorAll(".team1-player-input")).forEach((input, index) => {
         input.setAttribute("aria-label", `${team1Name} player ${index + 1}`);
     });
@@ -143,101 +133,6 @@ function syncDefaultPlayerNames() {
     });
 
 }
-
-async function flipToss() {
-
-    const team1 = document.getElementById("team1")?.value.trim();
-    const team2 = document.getElementById("team2")?.value.trim();
-    const overs = Number(document.getElementById("overs")?.value);
-    const tossSelect = document.getElementById("toss");
-    const decisionSelect = document.getElementById("tossDecision");
-    const button = document.getElementById("flipTossButton");
-    const message = document.getElementById("tossAssistMessage");
-
-    if (!team1 || !team2 || team1.toLowerCase() === team2.toLowerCase()) {
-        if (message) {
-            message.textContent = "Enter two different team names before flipping the toss.";
-        }
-        document.getElementById("team1")?.focus();
-        return;
-    }
-
-    if (!button || !tossSelect || !decisionSelect || !message) {
-        return;
-    }
-
-    button.disabled = true;
-    button.classList.add("is-flipping");
-    message.textContent = "Flipping a fair coin and checking completed match history...";
-
-    try {
-        const result = await window.CricPulsePythonAPI.flipToss({ team1, team2, overs });
-        tossSelect.value = result.toss_winner;
-        decisionSelect.value = "";
-        lastTossResult = {
-            coinFace: result.coin_face,
-            winner: result.toss_winner_name
-        };
-        renderTossAnnouncement();
-
-        const recommendation = result.recommendation;
-        message.textContent = recommendation?.explanation
-            ? `History insight (not a prediction): ${recommendation.explanation} The toss-winning captain makes the final choice.`
-            : "No historical decision insight is available. The toss-winning captain makes the final choice.";
-    } catch (error) {
-        renderTossAnnouncement();
-        message.textContent = error.message || "Unable to flip the toss right now.";
-    } finally {
-        button.disabled = false;
-        button.classList.remove("is-flipping");
-    }
-
-}
-
-function renderTossAnnouncement() {
-    const announcement = document.getElementById("tossAnnouncement");
-    const decision = document.getElementById("tossDecision")?.value;
-
-    if (!announcement) {
-        return;
-    }
-
-    if (!lastTossResult) {
-        announcement.hidden = true;
-        announcement.textContent = "";
-        return;
-    }
-
-    const coinCall = `The coin lands on ${lastTossResult.coinFace.toUpperCase()}! ${lastTossResult.winner} have won the toss.`;
-    announcement.textContent = decision
-        ? `${coinCall} They have elected to ${decision} first.`
-        : `${coinCall} The captain will now choose whether to bat or bowl first.`;
-    announcement.hidden = false;
-}
-
-
-function initializeTossAssist() {
-
-    document.getElementById("flipTossButton")?.addEventListener("click", flipToss);
-    document.getElementById("tossDecision")?.addEventListener("change", renderTossAnnouncement);
-
-    ["team1", "team2", "overs"].forEach((id) => {
-        document.getElementById(id)?.addEventListener("change", () => {
-            lastTossResult = null;
-            const decision = document.getElementById("tossDecision");
-            if (decision) {
-                decision.value = "";
-            }
-            renderTossAnnouncement();
-            const message = document.getElementById("tossAssistMessage");
-            if (message) {
-                message.textContent = "Team or format changed. Flip again to refresh the result and history advice.";
-            }
-        });
-    });
-
-}
-
 
 function populatePlayerInputDefaults() {
 
@@ -271,19 +166,10 @@ async function handleMatchSubmit(event) {
     const oversInput =
         document.getElementById("overs");
 
-    const tossInput =
-        document.getElementById("toss");
-
-    const tossDecisionInput =
-        document.getElementById("tossDecision");
-
-
     if (
         !team1Input ||
         !team2Input ||
-        !oversInput ||
-        !tossInput ||
-        !tossDecisionInput
+        !oversInput
     ) {
 
         alert("Match setup form could not be loaded.");
@@ -305,11 +191,11 @@ async function handleMatchSubmit(event) {
     const overs =
         Number(oversInput.value);
 
-    const tossWinner =
-        tossInput.value;
+    const team1Captain =
+        document.getElementById("team1Captain")?.value.trim() || "";
 
-    const tossDecision =
-        tossDecisionInput.value;
+    const team2Captain =
+        document.getElementById("team2Captain")?.value.trim() || "";
 
 
     // ==========================================
@@ -347,56 +233,6 @@ async function handleMatchSubmit(event) {
     }
 
 
-    if (
-        tossWinner !== "team1" &&
-        tossWinner !== "team2"
-    ) {
-
-        alert(
-            "Please select the toss winner."
-        );
-
-        return;
-    }
-
-
-    if (
-        tossDecision !== "bat" &&
-        tossDecision !== "bowl"
-    ) {
-
-        alert(
-            "Please select the toss decision."
-        );
-
-        return;
-    }
-
-
-    // ==========================================
-    // TOSS
-    // ==========================================
-
-    const tossWinnerName =
-        tossWinner === "team1"
-            ? team1
-            : team2;
-
-
-    const battingTeam =
-        tossDecision === "bat"
-            ? tossWinnerName
-            : tossWinner === "team1"
-                ? team2
-                : team1;
-
-
-    const bowlingTeam =
-        battingTeam === team1
-            ? team2
-            : team1;
-
-
     // ==========================================
     // DEFAULT PLAYERS
     //
@@ -420,153 +256,22 @@ async function handleMatchSubmit(event) {
 
 
     // ==========================================
-    // MATCH DATA
-    // ==========================================
-
-    const matchData = {
-
-        team1,
-
-        team2,
-
-        overs,
-
-        tossWinner,
-
-        tossWinnerName,
-
-        tossDecision,
-
-        battingTeam,
-
-        bowlingTeam,
-
-        currentInnings: 1,
-
-        status: "LIVE",
-
-        target: null,
-
-        result: null,
-
-
-        // ======================================
-        // TEAM DATA
-        // ======================================
-
-        teams: {
-
-            team1: {
-
-                name: team1,
-
-                runs: 0,
-
-                wickets: 0,
-
-                balls: 0,
-
-                players: team1Players
-
-            },
-
-
-            team2: {
-
-                name: team2,
-
-                runs: 0,
-
-                wickets: 0,
-
-                balls: 0,
-
-                players: team2Players
-
-            }
-
-        },
-
-
-        // ======================================
-        // SCORECARD DATA
-        // ======================================
-
-        scorecard: {
-
-            currentBatters: [],
-
-            currentBowler: null,
-
-            innings: {
-
-                first: {
-
-                    battingTeam: battingTeam,
-
-                    runs: 0,
-
-                    wickets: 0,
-
-                    balls: 0,
-
-                    overs: overs,
-
-                    completed: false
-
-                },
-
-                second: {
-
-                    battingTeam: bowlingTeam,
-
-                    runs: 0,
-
-                    wickets: 0,
-
-                    balls: 0,
-
-                    overs: overs,
-
-                    completed: false
-
-                }
-
-            }
-
-        },
-
-
-        // ======================================
-        // BALL DATA
-        // ======================================
-
-        balls: [],
-
-        recentBalls: [],
-
-
-        createdAt:
-            new Date().toISOString(),
-
-        updatedAt:
-            new Date().toISOString()
-
-    };
-
-
-    // ==========================================
     // SEND TO BACKEND
     // ==========================================
 
     try {
 
+        const createButton = document.getElementById("createMatchButton");
+        if (createButton) {
+            createButton.disabled = true;
+        }
+
         const savedMatch = await window.CricPulsePythonAPI.createMatch({
             team1,
             team2,
             overs,
-            tossWinner,
-            tossDecision,
+            team1Captain,
+            team2Captain,
             team1Players,
             team2Players
         });
@@ -612,6 +317,11 @@ async function handleMatchSubmit(event) {
         );
 
         return;
+    } finally {
+        const createButton = document.getElementById("createMatchButton");
+        if (createButton) {
+            createButton.disabled = false;
+        }
     }
 
 
@@ -1214,7 +924,6 @@ document.addEventListener(
     "DOMContentLoaded",
     function () {
         populatePlayerInputDefaults();
-        initializeTossAssist();
         initializeLiveDashboard();
     }
 );
