@@ -46,6 +46,15 @@ SAMPLE_MATCH = {
     "balls": [
         {"innings": 1, "runs": 4, "wickets": 0, "display": "4", "battingTeam": "Falcons"},
         {"innings": 1, "runs": 1, "wickets": 1, "display": "W", "battingTeam": "Falcons"},
+        {
+            "innings": 1,
+            "runs": 0,
+            "extras": 1,
+            "legalDelivery": False,
+            "wickets": 0,
+            "display": "WD",
+            "battingTeam": "Falcons",
+        },
     ],
 }
 
@@ -63,7 +72,7 @@ class AnalyticsTests(unittest.TestCase):
     def test_over_summary_groups_deliveries_by_innings_and_over(self) -> None:
         summary = over_summary(SAMPLE_MATCH)
         self.assertEqual(len(summary), 1)
-        self.assertEqual(summary[0]["runs"], 5)
+        self.assertEqual(summary[0]["runs"], 6)
         self.assertEqual(summary[0]["wickets"], 1)
 
     def test_insights_are_explicitly_rule_based(self) -> None:

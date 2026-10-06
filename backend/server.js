@@ -444,6 +444,8 @@ function createMatch(data) {
 
                 runs: 0,
 
+                extras: 0,
+
                 wickets: 0,
 
                 balls: 0,
@@ -457,6 +459,8 @@ function createMatch(data) {
                 name: team2,
 
                 runs: 0,
+
+                extras: 0,
 
                 wickets: 0,
 
@@ -481,6 +485,8 @@ function createMatch(data) {
         balls: [],
 
         recentBalls: [],
+
+        undoStack: [],
 
         target: null,
 
@@ -1196,6 +1202,14 @@ app.post(
                 request.body.wickets
             );
 
+        const extras =
+            Number(
+                request.body.extras ?? 0
+            );
+
+        const extraType =
+            request.body.extraType ?? null;
+
 
         const strikerId =
             request.body.strikerId ||
@@ -1246,6 +1260,44 @@ app.post(
                 });
 
         }
+
+        if (
+            !Number.isInteger(extras) ||
+            extras < 0 ||
+            extras > 6
+        ) {
+
+            return response
+                .status(400)
+                .json({
+
+                    message:
+                        "Extras must be between 0 and 6."
+
+                });
+
+        }
+
+        if (
+            (extraType !== null && !["wide", "no-ball"].includes(extraType)) ||
+            (extraType === null && extras !== 0) ||
+            (extraType !== null && extras < 1) ||
+            (extraType !== null && wickets !== 0)
+        ) {
+
+            return response
+                .status(400)
+                .json({
+
+                    message:
+                        "Choose a valid wide or no-ball extra."
+
+                });
+
+        }
+
+        const legalDelivery =
+            extraType === null;
 
 
         const battingTeam =
@@ -1372,6 +1424,21 @@ app.post(
 
         }
 
+        if (!Array.isArray(match.undoStack)) {
+            match.undoStack = [];
+        }
+
+        match.undoStack.push({
+            teams: JSON.parse(JSON.stringify(match.teams)),
+            activePlayers: JSON.parse(JSON.stringify(match.activePlayers)),
+            status: match.status,
+            currentInnings: match.currentInnings,
+            battingTeam: match.battingTeam,
+            bowlingTeam: match.bowlingTeam,
+            target: match.target,
+            result: match.result
+        });
+
 
         // =================================================
         // BATTING UPDATE
@@ -1379,7 +1446,9 @@ app.post(
 
         striker.runs += runs;
 
-        striker.balls += 1;
+        if (legalDelivery) {
+            striker.balls += 1;
+        }
 
 
         if (runs === 4) {
@@ -1396,9 +1465,11 @@ app.post(
         // BOWLING UPDATE
         // =================================================
 
-        bowler.bowlerBalls += 1;
+        if (legalDelivery) {
+            bowler.bowlerBalls += 1;
+        }
 
-        bowler.runsConceded += runs;
+        bowler.runsConceded += runs + extras;
 
 
         if (wickets === 1) {
@@ -1412,9 +1483,14 @@ app.post(
         }
 
 
-        battingTeam.runs += runs;
+        battingTeam.runs += runs + extras;
 
-        battingTeam.balls += 1;
+        battingTeam.extras =
+            (battingTeam.extras || 0) + extras;
+
+        if (legalDelivery) {
+            battingTeam.balls += 1;
+        }
 
 
         // =================================================
@@ -1536,6 +1612,12 @@ app.post(
 
             runs,
 
+            extras,
+
+            extraType,
+
+            legalDelivery,
+
             wickets,
 
             display:
@@ -1544,7 +1626,11 @@ app.post(
                     ? request.body.display
                     : wickets
                         ? "W"
-                        : String(runs),
+                        : extraType === "wide"
+                            ? "WD"
+                            : extraType === "no-ball"
+                                ? "NB"
+                                : String(runs),
 
             timestamp:
                 new Date().toISOString()
@@ -1564,6 +1650,7 @@ app.post(
         // =================================================
 
         const overFinished =
+            legalDelivery &&
             battingTeam.balls % 6 === 0;
 
 
@@ -1923,6 +2010,57 @@ app.post(
 
 
 // =====================================================
+// UNDO LAST DELIVERY
+// =====================================================
+
+app.post(
+    "/api/matches/:id/undo",
+    (request, response) => {
+
+        const matches = readMatches();
+        const match = matches.find(
+            (item) => item.id === request.params.id
+        );
+
+        if (!match) {
+            return response.status(404).json({
+                message: "Match not found."
+            });
+        }
+
+        if (
+            !Array.isArray(match.balls) ||
+            match.balls.length === 0 ||
+            !Array.isArray(match.undoStack) ||
+            match.undoStack.length === 0
+        ) {
+            return response.status(400).json({
+                message: "There is no recorded delivery available to undo."
+            });
+        }
+
+        const previousState = match.undoStack.pop();
+        match.balls.pop();
+        match.teams = previousState.teams;
+        match.activePlayers = previousState.activePlayers;
+        match.status = previousState.status;
+        match.currentInnings = previousState.currentInnings;
+        match.battingTeam = previousState.battingTeam;
+        match.bowlingTeam = previousState.bowlingTeam;
+        match.target = previousState.target;
+        match.result = previousState.result;
+        match.recentBalls = match.balls.slice(-12);
+        match.updatedAt = new Date().toISOString();
+
+        saveMatches(matches);
+        io.emit("match:update", match);
+
+        return response.json(match);
+    }
+);
+
+
+// =====================================================
 // SET PLAYER OF THE MATCH
 // =====================================================
 
@@ -2022,11 +2160,13 @@ app.post(
 
 
         match.teams.team1.runs = 0;
+        match.teams.team1.extras = 0;
         match.teams.team1.wickets = 0;
         match.teams.team1.balls = 0;
 
 
         match.teams.team2.runs = 0;
+        match.teams.team2.extras = 0;
         match.teams.team2.wickets = 0;
         match.teams.team2.balls = 0;
 
@@ -2046,6 +2186,8 @@ app.post(
         match.balls = [];
 
         match.recentBalls = [];
+
+        match.undoStack = [];
 
 
         const originalBattingTeam =

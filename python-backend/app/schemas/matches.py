@@ -42,7 +42,20 @@ class MatchCreateRequest(BaseModel):
 class BallRecordRequest(BaseModel):
     runs: int = Field(ge=0, le=6)
     wickets: int = Field(default=0, ge=0, le=1)
+    extras: int = Field(default=0, ge=0, le=6)
+    extra_type: Literal["wide", "no-ball"] | None = Field(
+        default=None,
+        alias="extraType",
+    )
     display: str | None = Field(default=None, max_length=12)
+
+    @model_validator(mode="after")
+    def validate_extras(self) -> "BallRecordRequest":
+        if (self.extra_type is None) != (self.extras == 0):
+            raise ValueError("A wide or no-ball must include at least one extra run.")
+        if self.extra_type is not None and self.wickets:
+            raise ValueError("A wide or no-ball cannot be recorded with a wicket.")
+        return self
 
 
 class ActivePlayersRequest(BaseModel):

@@ -119,7 +119,8 @@ All endpoints use JSON where a request body is required.
 | `POST` | `/api/matches` | Create a toss-pending match. Provide `team1`, `team2`, `overs`, `team1Players`, `team2Players`, and optional `team1Captain` / `team2Captain`. |
 | `POST` | `/api/matches/:id/toss/flip` | Securely flip the coin on the server. Provide `callerTeam` (`team1` or `team2`) and `call` (`heads` or `tails`). |
 | `POST` | `/api/matches/:id/toss/decision` | Save the winner's innings choice. Provide `actorTeam` (the server-recorded toss-winning team key) and `decision` (`bat` or `bowl`). |
-| `POST` | `/api/matches/:id/balls` | Record a delivery. Provide `runs` and `wickets`; active player IDs can be provided or set using the players endpoint. |
+| `POST` | `/api/matches/:id/balls` | Record a delivery. Provide `runs` and `wickets`; `extras` and `extraType` (`wide` or `no-ball`) record an illegal delivery without advancing the over. Active player IDs can be provided or set using the players endpoint. |
+| `POST` | `/api/matches/:id/undo` | Undo the most recently recorded delivery and restore the prior innings, score, and player state. |
 | `POST` | `/api/matches/:id/players` | Set `strikerId`, `nonStrikerId`, and `bowlerId` for the live innings. |
 | `POST` | `/api/matches/:id/reset` | Reset a match to its initial live state. |
 | `GET` | `/api/teams` | List teams from Supabase. |
@@ -138,6 +139,7 @@ FastAPI exposes the following versioned routes under `/api/v1`. Match writes are
 | `GET`, `POST` | `/api/v1/matches` | List/create matches. |
 | `GET` | `/api/v1/matches/:id` | Get a match. |
 | `POST` | `/api/v1/matches/:id/balls` | Record a ball through the Node scoring logic. |
+| `POST` | `/api/v1/matches/:id/undo` | Undo the most recently recorded delivery. |
 | `POST` | `/api/v1/matches/:id/players` | Update active striker, non-striker, and bowler. |
 | `POST` | `/api/v1/matches/:id/reset` | Reset a match through the existing scoring logic. |
 | `POST` | `/api/v1/matches/:id/player-of-the-match` | Save the selected award after a match is completed. |

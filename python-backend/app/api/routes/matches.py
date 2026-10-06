@@ -73,7 +73,21 @@ async def record_ball(
         return await client.request(
             "POST",
             f"/matches/{quote(match_id, safe='')}/balls",
-            json=payload.model_dump(exclude_none=True),
+            json=payload.model_dump(by_alias=True, exclude_none=True),
+        )
+    finally:
+        await client.close()
+
+
+@router.post("/{match_id}/undo")
+async def undo_last_delivery(
+    match_id: str,
+    client: NodeApiClient = Depends(get_node_client),
+) -> Any:
+    try:
+        return await client.request(
+            "POST",
+            f"/matches/{quote(match_id, safe='')}/undo",
         )
     finally:
         await client.close()

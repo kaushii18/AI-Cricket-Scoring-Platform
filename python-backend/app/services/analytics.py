@@ -66,6 +66,7 @@ def score_summary(match: dict[str, Any]) -> dict[str, Any]:
             {
                 "name": team.get("name"),
                 "runs": int(team.get("runs", 0) or 0),
+                "extras": int(team.get("extras", 0) or 0),
                 "wickets": int(team.get("wickets", 0) or 0),
                 "balls": int(team.get("balls", 0) or 0),
                 "overs": f"{int(team.get('balls', 0) or 0) // 6}.{int(team.get('balls', 0) or 0) % 6}",
@@ -91,8 +92,9 @@ def over_summary(match: dict[str, Any]) -> list[dict[str, Any]]:
             continue
         innings = int(ball.get("innings", 1) or 1)
         delivery_number = ball_counts.get(innings, 0)
-        ball_counts[innings] = delivery_number + 1
         over_number = delivery_number // 6 + 1
+        if ball.get("legalDelivery", True):
+            ball_counts[innings] = delivery_number + 1
         key = (innings, over_number)
         over = grouped.setdefault(
             key,
@@ -105,7 +107,9 @@ def over_summary(match: dict[str, Any]) -> list[dict[str, Any]]:
                 "deliveries": [],
             },
         )
-        over["runs"] += int(ball.get("runs", 0) or 0)
+        over["runs"] += int(ball.get("runs", 0) or 0) + int(
+            ball.get("extras", 0) or 0
+        )
         over["wickets"] += int(ball.get("wickets", 0) or 0)
         over["deliveries"].append(ball.get("display", str(ball.get("runs", 0))))
 

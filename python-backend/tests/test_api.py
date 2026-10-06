@@ -102,7 +102,7 @@ class ApiTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(self.node_client.calls[-1], ("POST", "/matches", payload))
 
     async def test_ball_recording_is_forwarded_to_node(self) -> None:
-        payload = {"runs": 4, "wickets": 0, "display": "4"}
+        payload = {"runs": 4, "wickets": 0, "extras": 0, "display": "4"}
         response = await self.client.post(
             "/api/v1/matches/match-1/balls",
             json=payload,
@@ -112,6 +112,39 @@ class ApiTests(unittest.IsolatedAsyncioTestCase):
             self.node_client.calls[-1],
             ("POST", "/matches/match-1/balls", payload),
         )
+
+    async def test_extra_delivery_is_forwarded_to_node(self) -> None:
+        payload = {
+            "runs": 0,
+            "wickets": 0,
+            "extras": 1,
+            "extraType": "wide",
+            "display": "WD",
+        }
+        response = await self.client.post(
+            "/api/v1/matches/match-1/balls",
+            json=payload,
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            self.node_client.calls[-1],
+            ("POST", "/matches/match-1/balls", payload),
+        )
+
+    async def test_undo_delivery_is_forwarded_to_node(self) -> None:
+        response = await self.client.post("/api/v1/matches/match-1/undo")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            self.node_client.calls[-1],
+            ("POST", "/matches/match-1/undo", None),
+        )
+
+    async def test_invalid_extra_delivery_is_rejected(self) -> None:
+        response = await self.client.post(
+            "/api/v1/matches/match-1/balls",
+            json={"runs": 0, "extras": 1},
+        )
+        self.assertEqual(response.status_code, 422)
 
     async def test_player_of_match_selection_is_forwarded_to_node(self) -> None:
         payload = {"playerId": "player-1"}

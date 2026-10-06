@@ -561,6 +561,33 @@
             transform: none;
         }
 
+        .extras-buttons {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 10px;
+            margin-top: 12px;
+        }
+
+        .extra-button {
+            min-height: 48px;
+            border: 1px solid rgba(245,196,81,0.32);
+            border-radius: 12px;
+            background: rgba(245,196,81,0.08);
+            color: inherit;
+            font-size: 14px;
+            font-weight: 800;
+            cursor: pointer;
+        }
+
+        .extra-button:disabled {
+            opacity: 0.35;
+            cursor: not-allowed;
+        }
+
+        .undo-button {
+            margin-top: 12px;
+        }
+
         .wicket-button {
             border-color: rgba(255,80,80,0.35);
         }
@@ -1064,24 +1091,177 @@
 
         .live-action-grid {
             display: grid;
-            grid-template-columns: minmax(0, 1.15fr) minmax(300px, 0.85fr);
+            grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
             align-items: start;
             gap: 14px;
         }
 
         .scoring-card {
             grid-column: 1;
-            grid-row: 1 / span 2;
+            grid-row: 1;
+        }
+
+        .live-snapshot {
+            grid-column: 2;
+            grid-row: 1;
+            min-width: 0;
+            padding: 18px;
+            border: 1px solid rgba(221, 239, 225, 0.1);
+            border-radius: 12px;
+            background: rgba(18, 31, 24, 0.9);
         }
 
         .history-card {
-            grid-column: 2;
-            grid-row: 1;
+            grid-column: 1;
+            grid-row: 2;
         }
 
         .controls-card {
             grid-column: 2;
             grid-row: 2;
+        }
+
+        .live-snapshot-header {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .live-snapshot-header h2 {
+            margin: 0;
+            color: #f1f5f0;
+            font-size: 17px;
+        }
+
+        .live-snapshot-innings {
+            color: #9fe8b4;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 0.06em;
+        }
+
+        .live-snapshot-score {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 12px 14px;
+            border: 1px solid rgba(156, 242, 191, 0.14);
+            border-radius: 9px;
+            background: rgba(32, 200, 120, 0.05);
+        }
+
+        .live-snapshot-team {
+            min-width: 0;
+            overflow-wrap: anywhere;
+            color: #b8c8bb;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .live-snapshot-total {
+            flex: 0 0 auto;
+            color: #b5f2c5;
+            font-size: 25px;
+            font-weight: 900;
+            font-variant-numeric: tabular-nums;
+            line-height: 1.1;
+        }
+
+        .live-snapshot-over {
+            margin-top: 7px;
+            color: #aab6ac;
+            font-size: 11px;
+        }
+
+        .snapshot-over-balls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            min-height: 25px;
+            margin-top: 7px;
+        }
+
+        .snapshot-ball {
+            min-width: 25px;
+            height: 25px;
+            padding: 0 6px;
+            display: grid;
+            place-items: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.06);
+            color: #eaf3eb;
+            font-size: 10px;
+            font-weight: 800;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .snapshot-ball.extra {
+            border-color: rgba(245, 196, 81, 0.28);
+            color: #f5d781;
+        }
+
+        .snapshot-section-title {
+            margin: 14px 0 5px;
+            color: #aab6ac;
+            font-size: 9px;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .snapshot-table-wrap {
+            overflow-x: auto;
+        }
+
+        .snapshot-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: right;
+            white-space: nowrap;
+            font-size: 11px;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .snapshot-table th,
+        .snapshot-table td {
+            padding: 7px 6px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .snapshot-table th {
+            color: #87988b;
+            font-size: 8px;
+            font-weight: 800;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+
+        .snapshot-table th:first-child,
+        .snapshot-table td:first-child {
+            text-align: left;
+        }
+
+        .snapshot-table tbody tr:last-child td {
+            border-bottom: 0;
+        }
+
+        .snapshot-player-name {
+            color: #eaf3eb;
+            font-weight: 700;
+        }
+
+        .snapshot-active {
+            color: #a5eabd;
+        }
+
+        .snapshot-empty {
+            padding: 7px 6px;
+            color: #87988b;
+            text-align: left !important;
         }
 
         .scoring-heading {
@@ -1100,11 +1280,27 @@
             gap: 8px;
         }
 
+        .extras-buttons {
+            gap: 8px;
+        }
+
+        .extra-button {
+            min-height: 44px;
+            border-radius: 9px;
+            font-size: 13px;
+        }
+
         .score-button {
             min-height: 54px;
             border-radius: 9px;
             background: #1a2a20;
             font-size: 18px;
+        }
+
+        .extra-button {
+            min-height: 44px;
+            border-radius: 9px;
+            font-size: 13px;
         }
 
         .history-card .status-subtitle {
@@ -1275,6 +1471,7 @@
             }
 
             .scoring-card,
+            .live-snapshot,
             .history-card,
             .controls-card {
                 grid-column: 1;
@@ -1860,6 +2057,57 @@
 
         </div>
 
+        <div class="extras-buttons">
+            <button type="button" class="score-button extra-button" onclick="addExtraBall('wide')">
+                Wide +1
+            </button>
+            <button type="button" class="score-button extra-button" onclick="addExtraBall('no-ball')">
+                No ball +1
+            </button>
+        </div>
+
+        <button
+            id="undoBallButton"
+            type="button"
+            class="secondary-button undo-button"
+            onclick="undoLastBall()"
+            disabled>
+            Undo last delivery
+        </button>
+
+    </section>
+
+    <section class="live-snapshot" aria-labelledby="liveSnapshotTitle">
+        <div class="live-snapshot-header">
+            <h2 id="liveSnapshotTitle">Live match</h2>
+            <span id="snapshotInnings" class="live-snapshot-innings">1ST INNINGS</span>
+        </div>
+        <div class="live-snapshot-score">
+            <span id="snapshotBattingTeam" class="live-snapshot-team">Batting team</span>
+            <strong id="snapshotScore" class="live-snapshot-total" aria-live="polite">0/0</strong>
+        </div>
+        <p id="snapshotOver" class="live-snapshot-over">0.0 overs</p>
+        <div id="snapshotOverBalls" class="snapshot-over-balls" aria-label="Deliveries in current over"></div>
+
+        <h3 class="snapshot-section-title">At the crease</h3>
+        <div class="snapshot-table-wrap">
+            <table class="snapshot-table">
+                <thead>
+                    <tr><th scope="col">Batter</th><th scope="col">Runs</th><th scope="col">Balls</th></tr>
+                </thead>
+                <tbody id="snapshotBatters"></tbody>
+            </table>
+        </div>
+
+        <h3 class="snapshot-section-title">Bowling figures · whole match</h3>
+        <div class="snapshot-table-wrap">
+            <table class="snapshot-table">
+                <thead>
+                    <tr><th scope="col">Bowler</th><th scope="col">Overs</th><th scope="col">Runs</th><th scope="col">Wkts</th><th scope="col">Econ</th></tr>
+                </thead>
+                <tbody id="snapshotBowlers"></tbody>
+            </table>
+        </div>
     </section>
 
 
@@ -2632,6 +2880,8 @@ function renderMatch() {
 
     updateBattingCard();
 
+    updateLiveSnapshot();
+
     updateTarget();
 
     updateMatchInfo();
@@ -2986,6 +3236,175 @@ function updateBattingCard() {
 
 }
 
+function updateLiveSnapshot() {
+
+    const battingTeam = getBattingTeamData();
+    const bowlingTeam = getBowlingTeamData();
+    const activePlayers = matchData.activePlayers || {};
+    const battingPlayers = Array.isArray(battingTeam.players)
+        ? battingTeam.players
+        : [];
+    const bowlingPlayers = Array.isArray(bowlingTeam.players)
+        ? bowlingTeam.players
+        : [];
+    const balls = Array.isArray(matchData.balls)
+        ? matchData.balls
+        : [];
+    const battingBalls = Number(battingTeam.balls) || 0;
+
+    document.getElementById("snapshotInnings").textContent =
+        matchData.currentInnings === 2 ? "2ND INNINGS" : "1ST INNINGS";
+    document.getElementById("snapshotBattingTeam").textContent =
+        battingTeam.name || "Batting team";
+    document.getElementById("snapshotScore").textContent =
+        `${Number(battingTeam.runs) || 0}/${Number(battingTeam.wickets) || 0}`;
+    document.getElementById("snapshotOver").textContent =
+        `${Math.floor(battingBalls / 6)}.${battingBalls % 6} / ${matchData.overs} overs`;
+
+    const overBalls = [];
+    let legalDeliveries = 0;
+    balls.forEach((ball) => {
+        if (Number(ball.innings) !== Number(matchData.currentInnings)) {
+            return;
+        }
+        overBalls.push(ball);
+        if (ball.legalDelivery !== false) {
+            legalDeliveries += 1;
+            if (legalDeliveries % 6 === 0) {
+                overBalls.length = 0;
+            }
+        }
+    });
+
+    const overDisplay = document.getElementById("snapshotOverBalls");
+    overDisplay.replaceChildren();
+    if (!overBalls.length) {
+        const empty = document.createElement("span");
+        empty.className = "snapshot-empty";
+        empty.textContent = "No deliveries in this over yet.";
+        overDisplay.appendChild(empty);
+    } else {
+        overBalls.forEach((ball) => {
+            const delivery = document.createElement("span");
+            delivery.className = "snapshot-ball";
+            delivery.textContent = ball.display || String(ball.runs || 0);
+            delivery.title = ball.extraType
+                ? `${ball.extraType} · ${ball.extras || 0} extra`
+                : ball.wickets
+                    ? "Wicket"
+                    : `${ball.runs || 0} run${Number(ball.runs) === 1 ? "" : "s"}`;
+            if (ball.legalDelivery === false || ball.extraType) {
+                delivery.classList.add("extra");
+            }
+            overDisplay.appendChild(delivery);
+        });
+    }
+
+    const batterBody = document.getElementById("snapshotBatters");
+    batterBody.replaceChildren();
+    [
+        { id: activePlayers.strikerId, role: "STRIKER" },
+        { id: activePlayers.nonStrikerId, role: "NON-STRIKER" }
+    ].forEach(({ id, role }) => {
+        const player = battingPlayers.find((item) => item.id === id);
+        if (!player) {
+            return;
+        }
+        const row = document.createElement("tr");
+        const nameCell = document.createElement("td");
+        const runsCell = document.createElement("td");
+        const ballsCell = document.createElement("td");
+        nameCell.className = "snapshot-player-name snapshot-active";
+        nameCell.textContent = `${player.name || "Unnamed batter"} · ${role}`;
+        runsCell.textContent = String(Number(player.runs) || 0);
+        ballsCell.textContent = String(Number(player.balls) || 0);
+        row.append(nameCell, runsCell, ballsCell);
+        batterBody.appendChild(row);
+    });
+    if (!batterBody.children.length) {
+        const row = document.createElement("tr");
+        const cell = document.createElement("td");
+        cell.className = "snapshot-empty";
+        cell.colSpan = 3;
+        cell.textContent = "Select the batters at the crease.";
+        row.appendChild(cell);
+        batterBody.appendChild(row);
+    }
+
+    const bowlerBody = document.getElementById("snapshotBowlers");
+    bowlerBody.replaceChildren();
+    const figuresByBowler = new Map();
+    balls.forEach((ball) => {
+        if (!ball.bowlerId) {
+            return;
+        }
+        const figure = figuresByBowler.get(ball.bowlerId) || {
+            id: ball.bowlerId,
+            name: ball.bowler || "Unknown bowler",
+            balls: 0,
+            runs: 0,
+            wickets: 0
+        };
+        if (ball.legalDelivery !== false) {
+            figure.balls += 1;
+        }
+        figure.runs += (Number(ball.runs) || 0) + (Number(ball.extras) || 0);
+        figure.wickets += Number(ball.wickets) || 0;
+        figuresByBowler.set(ball.bowlerId, figure);
+    });
+    const activeBowler = bowlingPlayers.find(
+        (player) => player.id === activePlayers.bowlerId
+    );
+    if (activeBowler && !figuresByBowler.has(activeBowler.id)) {
+        figuresByBowler.set(activeBowler.id, {
+            id: activeBowler.id,
+            name: activeBowler.name || "Unnamed bowler",
+            balls: 0,
+            runs: 0,
+            wickets: 0
+        });
+    }
+    const figures = [...figuresByBowler.values()].sort((first, second) =>
+        second.balls - first.balls || second.wickets - first.wickets
+    );
+    figures.forEach((player) => {
+        const row = document.createElement("tr");
+        const nameCell = document.createElement("td");
+        const oversCell = document.createElement("td");
+        const runsCell = document.createElement("td");
+        const wicketsCell = document.createElement("td");
+        const economyCell = document.createElement("td");
+        const bowlerBalls = player.balls;
+        const runsConceded = player.runs;
+        const wickets = player.wickets;
+        const economy = bowlerBalls
+            ? (runsConceded / (bowlerBalls / 6)).toFixed(1)
+            : "—";
+
+        nameCell.className = "snapshot-player-name";
+        if (player.id === activePlayers.bowlerId) {
+            nameCell.classList.add("snapshot-active");
+        }
+        nameCell.textContent = player.name || "Unnamed bowler";
+        oversCell.textContent = `${Math.floor(bowlerBalls / 6)}.${bowlerBalls % 6}`;
+        runsCell.textContent = String(runsConceded);
+        wicketsCell.textContent = String(wickets);
+        economyCell.textContent = economy;
+        row.append(nameCell, oversCell, runsCell, wicketsCell, economyCell);
+        bowlerBody.appendChild(row);
+    });
+    if (!bowlerBody.children.length) {
+        const row = document.createElement("tr");
+        const cell = document.createElement("td");
+        cell.className = "snapshot-empty";
+        cell.colSpan = 5;
+        cell.textContent = "Bowling figures will appear after the first delivery.";
+        row.appendChild(cell);
+        bowlerBody.appendChild(row);
+    }
+
+}
+
 
 // =====================================================
 // TARGET
@@ -3331,7 +3750,9 @@ function renderMatchSummary() {
                 balls: 0
             };
             batter.runs += Number(ball.runs) || 0;
-            batter.balls += 1;
+            if (ball.legalDelivery !== false) {
+                batter.balls += 1;
+            }
             battingFigures.set(ball.strikerId, batter);
         }
 
@@ -3343,9 +3764,11 @@ function renderMatchSummary() {
                 wickets: 0,
                 balls: 0
             };
-            bowler.runs += Number(ball.runs) || 0;
+            bowler.runs += (Number(ball.runs) || 0) + (Number(ball.extras) || 0);
             bowler.wickets += Number(ball.wickets) || 0;
-            bowler.balls += 1;
+            if (ball.legalDelivery !== false) {
+                bowler.balls += 1;
+            }
             bowlingFigures.set(ball.bowlerId, bowler);
         }
     });
@@ -3554,6 +3977,13 @@ function updateScoringControls() {
         }
     );
 
+    const undoButton = document.getElementById("undoBallButton");
+    if (undoButton) {
+        undoButton.disabled =
+            !Array.isArray(matchData.undoStack) ||
+            matchData.undoStack.length === 0;
+    }
+
 
     const message =
         document.getElementById(
@@ -3628,7 +4058,6 @@ async function addWicket() {
 
     }
 
-
     await recordBall({
 
         runs: 0,
@@ -3637,6 +4066,27 @@ async function addWicket() {
 
         display: "W"
 
+    });
+
+}
+
+async function addExtraBall(extraType) {
+
+    if (
+        !matchData ||
+        matchData.status !== "LIVE"
+    ) {
+        return;
+    }
+
+    const display = extraType === "wide" ? "WD" : "NB";
+
+    await recordBall({
+        runs: 0,
+        wickets: 0,
+        extras: 1,
+        extraType,
+        display
     });
 
 }
@@ -3657,6 +4107,8 @@ async function recordBall(
             {
                 runs: ballData.runs,
                 wickets: ballData.wickets,
+                extras: ballData.extras || 0,
+                extraType: ballData.extraType || null,
                 display: ballData.display
             }
         );
@@ -3684,6 +4136,28 @@ async function recordBall(
             "Unable to record ball."
         );
 
+    }
+
+}
+
+async function undoLastBall() {
+
+    if (!matchData || !matchData.undoStack?.length) {
+        return;
+    }
+
+    const undoButton = document.getElementById("undoBallButton");
+    undoButton.disabled = true;
+
+    try {
+        matchData = await window.CricPulsePythonAPI.undoBall(matchData.id);
+        saveLocalMatch();
+        renderMatch();
+    } catch (error) {
+        console.error("Unable to undo last delivery:", error);
+        alert(error.message || "Unable to undo the last delivery.");
+    } finally {
+        updateScoringControls();
     }
 
 }
