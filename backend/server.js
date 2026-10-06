@@ -5,6 +5,7 @@ const http = require("http");
 const { randomInt, randomUUID } = require("crypto");
 const { Server } = require("socket.io");
 const supabase = require("./supabase");
+const { undoLegacyDelivery } = require("./undo");
 
 const app = express();
 
@@ -2028,34 +2029,45 @@ app.post(
             });
         }
 
-        if (
-            !Array.isArray(match.balls) ||
-            match.balls.length === 0 ||
-            !Array.isArray(match.undoStack) ||
-            match.undoStack.length === 0
-        ) {
+        if (!Array.isArray(match.balls) || match.balls.length === 0) {
             return response.status(400).json({
                 message: "There is no recorded delivery available to undo."
             });
         }
 
-        const previousState = match.undoStack.pop();
-        match.balls.pop();
-        match.teams = previousState.teams;
-        match.activePlayers = previousState.activePlayers;
-        match.status = previousState.status;
-        match.currentInnings = previousState.currentInnings;
-        match.battingTeam = previousState.battingTeam;
-        match.bowlingTeam = previousState.bowlingTeam;
-        match.target = previousState.target;
-        match.result = previousState.result;
+        if (!Array.isArray(match.undoStack)) {
+            match.undoStack = [];
+        }
+
+        if (match.undoStack.length > 0) {
+            const previousState = match.undoStack.pop();
+            match.balls.pop();
+            match.teams = previousState.teams;
+            match.activePlayers = previousState.activePlayers;
+            match.status = previousState.status;
+            match.currentInnings = previousState.currentInnings;
+            match.battingTeam = previousState.battingTeam;
+            match.bowlingTeam = previousState.bowlingTeam;
+            match.target = previousState.target;
+            match.result = previousState.result;
+        } else {
+            const undoError = undoLegacyDelivery(match);
+            if (undoError) {
+                return response.status(409).json({ message: undoError });
+            }
+        }
+
+        if (match.status !== "COMPLETED") {
+            match.playerOfMatch = null;
+        }
+
         match.recentBalls = match.balls.slice(-12);
         match.updatedAt = new Date().toISOString();
-
         saveMatches(matches);
         io.emit("match:update", match);
 
         return response.json(match);
+
     }
 );
 
@@ -2068,13 +2080,10 @@ app.post(
     "/api/matches/:id/player-of-the-match",
     (request, response) => {
 
-        const matches =
-            readMatches();
-
-        const match =
-            matches.find(
-                (item) => item.id === request.params.id
-            );
+        const matches = readMatches();
+        const match = matches.find(
+            (item) => item.id === request.params.id
+        );
 
         if (!match) {
             return response.status(404).json({

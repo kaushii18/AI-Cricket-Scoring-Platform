@@ -1865,35 +1865,38 @@ td strong {
    ========================================================= */
 
 :root {
-    --bg-dark: #080e0b;
-    --bg-main: #0b1410;
-    --bg-surface: rgba(17, 27, 22, 0.94);
-    --bg-surface-light: rgba(23, 36, 29, 0.98);
-    --bg-input: #101a14;
-    --primary: #9cf2bf;
-    --primary-dark: #68d996;
-    --primary-light: #b7ffd0;
-    --primary-glow: rgba(127, 231, 165, 0.16);
-    --accent-blue: #86b7f4;
-    --accent-gold: #e7c681;
-    --text-main: #f3f5ef;
-    --text-secondary: #c2c9c0;
-    --text-muted: #89958c;
-    --border: rgba(221, 239, 225, 0.09);
-    --border-light: rgba(221, 239, 225, 0.14);
-    --border-green: rgba(156, 242, 191, 0.3);
-    --gradient-primary: linear-gradient(135deg, #b6ffd0 0%, #79dda1 100%);
-    --gradient-score: linear-gradient(145deg, #15241b 0%, #101813 100%);
+    --bg-dark: #101414;
+    --bg-main: #151b1b;
+    --bg-surface: rgba(28, 37, 38, 0.96);
+    --bg-surface-light: rgba(37, 48, 48, 0.98);
+    --bg-input: #161f20;
+    --primary: #64d9d0;
+    --primary-dark: #2aaba8;
+    --primary-light: #9bf0e7;
+    --primary-glow: rgba(100, 217, 208, 0.2);
+    --accent-blue: #a9c4f2;
+    --accent-gold: #f2c96d;
+    --accent-red: #ff806f;
+    --accent-orange: #ff9a71;
+    --text-main: #f5f2ea;
+    --text-secondary: #cbd1cb;
+    --text-muted: #96a19e;
+    --text-dark: #101414;
+    --border: rgba(225, 237, 230, 0.1);
+    --border-light: rgba(225, 237, 230, 0.17);
+    --border-green: rgba(100, 217, 208, 0.34);
+    --gradient-primary: linear-gradient(120deg, #6ce2d7 0%, #b9e28c 100%);
+    --gradient-score: linear-gradient(135deg, #183536 0%, #1a2527 65%, #302421 100%);
     --shadow-card: 0 28px 80px rgba(0, 0, 0, 0.34);
-    --shadow-green: 0 12px 30px rgba(115, 222, 155, 0.12);
+    --shadow-green: 0 12px 30px rgba(100, 217, 208, 0.15);
 }
 
 body {
     font-family: "DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     background:
-        radial-gradient(ellipse at 76% 7%, rgba(122, 207, 153, 0.1), transparent 32rem),
-        radial-gradient(ellipse at 6% 42%, rgba(123, 158, 117, 0.055), transparent 30rem),
-        #080e0b;
+        radial-gradient(ellipse at 78% 4%, rgba(91, 206, 198, 0.14), transparent 34rem),
+        radial-gradient(ellipse at 4% 54%, rgba(255, 128, 111, 0.075), transparent 31rem),
+        #101414;
 }
 
 h1,
@@ -1908,8 +1911,8 @@ h3,
 .top-header {
     min-height: 76px;
     padding: 12px max(4vw, calc((100vw - 1240px) / 2));
-    background: rgba(8, 14, 11, 0.82);
-    border-color: rgba(221, 239, 225, 0.08);
+    background: rgba(16, 20, 20, 0.86);
+    border-color: rgba(225, 237, 230, 0.1);
     backdrop-filter: blur(22px);
 }
 
@@ -1922,10 +1925,10 @@ h3,
 .brand-icon {
     width: 40px;
     height: 40px;
-    border: 1px solid rgba(183, 255, 208, 0.24);
+    border: 1px solid rgba(155, 240, 231, 0.28);
     border-radius: 13px;
-    color: #dcffe8;
-    background: linear-gradient(145deg, #294535, #15271c);
+    color: #e2fffa;
+    background: linear-gradient(145deg, #276665, #3e4540 64%, #795343);
     box-shadow: inset 0 1px rgba(255, 255, 255, 0.11), 0 8px 24px rgba(0, 0, 0, 0.24);
     font: 800 20px "Manrope", sans-serif;
 }
@@ -1961,11 +1964,11 @@ h3,
 }
 
 .status-dot {
-    background: #83e6a7;
+    background: #64d9d0;
 }
 
 .status-dot::after {
-    border-color: #83e6a7;
+    border-color: #64d9d0;
 }
 
 .status-dot.offline,
@@ -2039,7 +2042,7 @@ h3,
 
 .dashboard-hero h1 span {
     display: block;
-    color: #a5eabd;
+    color: #75e4d9;
 }
 
 .dashboard-hero .hero-content > p {
@@ -2624,11 +2627,11 @@ h3,
     align-self: center;
     padding: 25px;
     overflow: hidden;
-    border: 1px solid rgba(178, 236, 191, 0.2);
+    border: 1px solid rgba(115, 223, 209, 0.23);
     border-radius: 16px;
     background:
-        linear-gradient(135deg, rgba(31, 60, 40, 0.88), rgba(14, 25, 18, 0.97) 70%),
-        #111a14;
+        linear-gradient(135deg, rgba(27, 70, 69, 0.88), rgba(24, 32, 33, 0.98) 65%, rgba(65, 42, 36, 0.92)),
+        #171e1e;
     box-shadow: 0 22px 58px rgba(0, 0, 0, 0.28);
 }
 
@@ -2660,7 +2663,7 @@ h3,
 
 .setup-board-head .section-kicker {
     margin: 0;
-    color: #a2d9ae;
+    color: #81e2d7;
 }
 
 .setup-board-mark {
@@ -2668,9 +2671,9 @@ h3,
     width: 35px;
     aspect-ratio: 1;
     place-items: center;
-    border: 1px solid rgba(191, 238, 201, 0.22);
+    border: 1px solid rgba(191, 238, 232, 0.24);
     border-radius: 10px;
-    color: #c6f1ce;
+    color: #c1fff6;
     font-size: 17px;
     font-weight: 800;
 }
@@ -2682,7 +2685,7 @@ h3,
 }
 
 .setup-team-code {
-    color: #87b894;
+    color: #70d8d0;
     font-size: 12px;
     font-weight: 700;
     font-variant-numeric: tabular-nums;
@@ -2696,7 +2699,7 @@ h3,
 }
 
 .setup-team-status {
-    color: #9fd8ac;
+    color: #f2c96d;
     font-size: 9px;
     font-weight: 800;
     letter-spacing: 0.1em;
@@ -2735,7 +2738,7 @@ h3,
 }
 
 .player-team-header h3 {
-    color: #edf6ee;
+    color: #eef5ef;
     font-size: 16px;
     font-weight: 700;
 }
@@ -2754,27 +2757,27 @@ h3,
 .player-name-input {
     min-height: 52px;
     padding: 12px 13px;
-    border-color: rgba(201, 227, 205, 0.2);
-    background: #101a14;
+    border-color: rgba(196, 225, 220, 0.22);
+    background: #151e1f;
     font-size: 16px;
     font-weight: 600;
 }
 
 .player-name-input::placeholder {
-    color: #9eafa2;
+    color: #a5b8b3;
     font-size: 13px;
     font-weight: 500;
     opacity: 1;
 }
 
 .player-name-input:focus {
-    border-color: #8be5a7;
-    background: #14251a;
-    box-shadow: 0 0 0 3px rgba(139, 229, 167, 0.13);
+    border-color: #64d9d0;
+    background: #192b2b;
+    box-shadow: 0 0 0 3px rgba(100, 217, 208, 0.15);
 }
 
 .selection-grid label {
-    color: #d0ddd2;
+    color: #d0d9d5;
     font-size: 14px;
 }
 
@@ -2782,10 +2785,10 @@ h3,
     width: 100%;
     min-height: 52px;
     padding: 10px 12px;
-    border: 1px solid rgba(201, 227, 205, 0.2);
+    border: 1px solid rgba(196, 225, 220, 0.22);
     border-radius: var(--radius-md);
-    color: #f0f6f1;
-    background: #101a14;
+    color: #f1f5ef;
+    background: #151e1f;
     font: 600 15px "DM Sans", sans-serif;
 }
 
@@ -2829,5 +2832,150 @@ h3,
 
     .player-name-input::placeholder {
         font-size: 11px;
+    }
+}
+
+.dashboard-page .live-status {
+    color: #cfdbd7;
+}
+
+.dashboard-page .hero-badge {
+    color: #79e1d7;
+}
+
+.dashboard-page .setup-team-row strong,
+.dashboard-page .setup-board-foot strong {
+    color: #f2f4ed;
+}
+
+.dashboard-page .setup-board-foot span {
+    color: #a9b8b3;
+}
+
+.dashboard-page .toss-assist-panel {
+    border-color: rgba(100, 217, 208, 0.2);
+    background: linear-gradient(110deg, rgba(100, 217, 208, 0.05), rgba(255, 128, 111, 0.035));
+}
+
+.dashboard-page .toss-flip-button {
+    border-color: rgba(100, 217, 208, 0.3);
+    background: #1b2929;
+}
+
+.dashboard-page .toss-assist-label {
+    color: #79e1d7;
+}
+
+.score-page .match-overview,
+.score-page .batting-card,
+.score-page .scoring-card,
+.score-page .history-card,
+.score-page .controls-card,
+.score-page .live-snapshot {
+    border-color: rgba(174, 211, 206, 0.14);
+    background-color: rgba(26, 35, 36, 0.9);
+}
+
+.score-page .match-overview {
+    background: linear-gradient(110deg, rgba(28, 57, 56, 0.62), rgba(31, 34, 33, 0.92) 66%, rgba(71, 43, 37, 0.36));
+}
+
+.score-page .scoreboard {
+    border-color: rgba(100, 217, 208, 0.28);
+    background: linear-gradient(112deg, #1a3939 0%, #202c2d 58%, #3b2c28 100%);
+}
+
+.score-page .score-team:first-child .main-score {
+    color: #86e7de;
+    text-shadow: 0 0 34px rgba(100, 217, 208, 0.17);
+}
+
+.score-page .team-label,
+.score-page .status-subtitle,
+.score-page .batting-card-header p {
+    color: #aab8b4;
+}
+
+.score-page .status-card.live {
+    border-color: rgba(100, 217, 208, 0.34);
+}
+
+.score-page .status-card.live .status-label .dot {
+    background: #64d9d0;
+    box-shadow: 0 0 12px rgba(100, 217, 208, 0.7);
+    animation: liveSignal 1.8s ease-in-out infinite;
+}
+
+.score-page .batting-card-team,
+.score-page .batter-status.active,
+.score-page .selection-header span {
+    color: #74e0d5;
+}
+
+.score-page .summary-team-current .summary-team-score,
+.score-page .summary-kicker {
+    color: #f2c96d;
+}
+
+.score-page .live-snapshot-score {
+    border-color: rgba(100, 217, 208, 0.18);
+    background: linear-gradient(110deg, rgba(100, 217, 208, 0.08), rgba(255, 128, 111, 0.045));
+}
+
+.score-page .snapshot-ball {
+    border-color: rgba(100, 217, 208, 0.23);
+    background: rgba(100, 217, 208, 0.1);
+}
+
+.score-page .snapshot-ball.extra {
+    border-color: rgba(242, 201, 109, 0.38);
+    color: #f2c96d;
+}
+
+.score-page .score-button {
+    border-color: rgba(174, 211, 206, 0.2);
+    background: linear-gradient(150deg, #293b3b, #202a2b);
+    transition: transform 150ms ease, border-color 150ms ease, background 150ms ease;
+}
+
+.score-page .score-button:hover:not(:disabled) {
+    transform: translateY(-2px);
+    border-color: rgba(100, 217, 208, 0.6);
+    background: linear-gradient(150deg, #315352, #293a3a);
+}
+
+.score-page .score-buttons .score-button:nth-child(5) {
+    border-color: rgba(100, 217, 208, 0.38);
+    color: #9af0e6;
+}
+
+.score-page .score-buttons .score-button:nth-child(6) {
+    border-color: rgba(242, 201, 109, 0.4);
+    color: #f2d27e;
+}
+
+.score-page .score-buttons .wicket-button {
+    border-color: rgba(255, 128, 111, 0.45);
+    color: #ff9a88;
+}
+
+.score-page .score-update {
+    animation: scoreUpdate 620ms cubic-bezier(0.2, 0.85, 0.25, 1);
+}
+
+@keyframes liveSignal {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(100, 217, 208, 0.22); }
+    50% { box-shadow: 0 0 0 6px rgba(100, 217, 208, 0); }
+}
+
+@keyframes scoreUpdate {
+    0% { transform: scale(1); color: #f5f2ea; }
+    36% { transform: scale(1.08); color: #f2c96d; text-shadow: 0 0 26px rgba(242, 201, 109, 0.42); }
+    100% { transform: scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .score-page .status-card.live .status-label .dot {
+        animation: none;
     }
 }

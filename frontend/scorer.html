@@ -131,8 +131,10 @@
         .batting-table {
             width: 100%;
             border-collapse: collapse;
+            table-layout: fixed;
             text-align: right;
             white-space: nowrap;
+            font-variant-numeric: tabular-nums;
         }
 
         .batting-table th,
@@ -152,7 +154,15 @@
 
         .batting-table th:first-child,
         .batting-table td:first-child {
+            width: 42%;
             text-align: left;
+        }
+
+        .batting-table th:not(:first-child),
+        .batting-table td:not(:first-child) {
+            width: 11.6%;
+            text-align: right;
+            vertical-align: middle;
         }
 
         .batting-table tbody tr:last-child td {
@@ -1220,6 +1230,7 @@
         .snapshot-table {
             width: 100%;
             border-collapse: collapse;
+            table-layout: fixed;
             text-align: right;
             white-space: nowrap;
             font-size: 11px;
@@ -1243,6 +1254,32 @@
         .snapshot-table th:first-child,
         .snapshot-table td:first-child {
             text-align: left;
+        }
+
+        .snapshot-table th:not(:first-child),
+        .snapshot-table td:not(:first-child) {
+            text-align: right;
+            vertical-align: middle;
+        }
+
+        .snapshot-batting-table th:first-child,
+        .snapshot-batting-table td:first-child {
+            width: 60%;
+        }
+
+        .snapshot-batting-table th:not(:first-child),
+        .snapshot-batting-table td:not(:first-child) {
+            width: 20%;
+        }
+
+        .snapshot-bowling-table th:first-child,
+        .snapshot-bowling-table td:first-child {
+            width: 40%;
+        }
+
+        .snapshot-bowling-table th:not(:first-child),
+        .snapshot-bowling-table td:not(:first-child) {
+            width: 15%;
         }
 
         .snapshot-table tbody tr:last-child td {
@@ -2091,7 +2128,7 @@
 
         <h3 class="snapshot-section-title">At the crease</h3>
         <div class="snapshot-table-wrap">
-            <table class="snapshot-table">
+            <table class="snapshot-table snapshot-batting-table">
                 <thead>
                     <tr><th scope="col">Batter</th><th scope="col">Runs</th><th scope="col">Balls</th></tr>
                 </thead>
@@ -2101,7 +2138,7 @@
 
         <h3 class="snapshot-section-title">Bowling figures · whole match</h3>
         <div class="snapshot-table-wrap">
-            <table class="snapshot-table">
+            <table class="snapshot-table snapshot-bowling-table">
                 <thead>
                     <tr><th scope="col">Bowler</th><th scope="col">Overs</th><th scope="col">Runs</th><th scope="col">Wkts</th><th scope="col">Econ</th></tr>
                 </thead>
@@ -3096,12 +3133,12 @@ function updateScoreboard() {
         battingTeam.name;
 
 
-    document.getElementById(
-        "score"
-    ).textContent =
+    setAnimatedScore(
+        document.getElementById("score"),
         battingRuns +
         "/" +
-        battingWickets;
+        battingWickets
+    );
 
 
     document.getElementById(
@@ -3121,12 +3158,12 @@ function updateScoreboard() {
         bowlingTeam.name;
 
 
-    document.getElementById(
-        "bowlingScore"
-    ).textContent =
+    setAnimatedScore(
+        document.getElementById("bowlingScore"),
         bowlingRuns +
         "/" +
-        bowlingWickets;
+        bowlingWickets
+    );
 
 
     document.getElementById(
@@ -3144,6 +3181,21 @@ function updateScoreboard() {
             ? "2ND INNINGS"
 
             : "1ST INNINGS";
+
+}
+
+
+function setAnimatedScore(element, value) {
+
+    const nextValue = String(value);
+    if (!element || element.textContent.trim() === nextValue) {
+        return;
+    }
+
+    element.textContent = nextValue;
+    element.classList.remove("score-update");
+    void element.offsetWidth;
+    element.classList.add("score-update");
 
 }
 
@@ -3256,8 +3308,10 @@ function updateLiveSnapshot() {
         matchData.currentInnings === 2 ? "2ND INNINGS" : "1ST INNINGS";
     document.getElementById("snapshotBattingTeam").textContent =
         battingTeam.name || "Batting team";
-    document.getElementById("snapshotScore").textContent =
-        `${Number(battingTeam.runs) || 0}/${Number(battingTeam.wickets) || 0}`;
+    setAnimatedScore(
+        document.getElementById("snapshotScore"),
+        `${Number(battingTeam.runs) || 0}/${Number(battingTeam.wickets) || 0}`
+    );
     document.getElementById("snapshotOver").textContent =
         `${Math.floor(battingBalls / 6)}.${battingBalls % 6} / ${matchData.overs} overs`;
 
@@ -3980,8 +4034,9 @@ function updateScoringControls() {
     const undoButton = document.getElementById("undoBallButton");
     if (undoButton) {
         undoButton.disabled =
-            !Array.isArray(matchData.undoStack) ||
-            matchData.undoStack.length === 0;
+            matchData.status === "TOSS_PENDING" ||
+            !Array.isArray(matchData.balls) ||
+            matchData.balls.length === 0;
     }
 
 
@@ -4142,7 +4197,7 @@ async function recordBall(
 
 async function undoLastBall() {
 
-    if (!matchData || !matchData.undoStack?.length) {
+    if (!matchData || !matchData.balls?.length) {
         return;
     }
 
