@@ -88,3 +88,7 @@ class TossFlipRequest(BaseModel):
         if self.team1.casefold() == self.team2.casefold():
             raise ValueError("The two teams must be different.")
         return self
+
+
+class PlayerOfMatchRequest(BaseModel):
+    player_id: str = Field(alias="playerId", min_length=1)

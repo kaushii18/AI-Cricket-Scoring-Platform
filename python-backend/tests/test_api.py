@@ -113,6 +113,18 @@ class ApiTests(unittest.IsolatedAsyncioTestCase):
             ("POST", "/matches/match-1/balls", payload),
         )
 
+    async def test_player_of_match_selection_is_forwarded_to_node(self) -> None:
+        payload = {"playerId": "player-1"}
+        response = await self.client.post(
+            "/api/v1/matches/match-1/player-of-the-match",
+            json=payload,
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            self.node_client.calls[-1],
+            ("POST", "/matches/match-1/player-of-the-match", payload),
+        )
+
     async def test_toss_flip_returns_random_result_and_history_advice(self) -> None:
         with patch("app.api.routes.toss.secrets.choice", return_value="heads"):
             response = await self.client.post(

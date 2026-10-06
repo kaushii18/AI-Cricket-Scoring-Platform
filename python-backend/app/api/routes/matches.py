@@ -10,6 +10,7 @@ from app.schemas.matches import (
     ActivePlayersRequest,
     BallRecordRequest,
     MatchCreateRequest,
+    PlayerOfMatchRequest,
 )
 from app.services.analytics import (
     match_insights,
@@ -158,5 +159,21 @@ async def get_insights(
 ) -> dict[str, Any]:
     try:
         return match_insights(await _match(client, match_id))
+    finally:
+        await client.close()
+
+
+@router.post("/{match_id}/player-of-the-match")
+async def set_player_of_match(
+    match_id: str,
+    payload: PlayerOfMatchRequest,
+    client: NodeApiClient = Depends(get_node_client),
+) -> Any:
+    try:
+        return await client.request(
+            "POST",
+            f"/matches/{quote(match_id, safe='')}/player-of-the-match",
+            json=payload.model_dump(by_alias=True),
+        )
     finally:
         await client.close()

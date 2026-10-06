@@ -310,12 +310,11 @@
 
         .result-box {
             display: none;
-            margin-top: 18px;
+            margin: 0 0 18px;
             padding: 22px;
-            text-align: center;
-            border-radius: 18px;
-            background: rgba(245,196,81,0.08);
-            border: 1px solid rgba(245,196,81,0.28);
+            border-radius: 14px;
+            background: linear-gradient(130deg, rgba(245,196,81,0.08), rgba(18,31,24,0.9) 68%);
+            border: 1px solid rgba(245,196,81,0.24);
         }
 
         .result-box.show {
@@ -323,19 +322,192 @@
         }
 
         .result-icon {
-            font-size: 32px;
+            display: grid;
+            width: 48px;
+            height: 48px;
+            flex: 0 0 48px;
+            place-items: center;
+            border: 1px solid rgba(245,196,81,0.25);
+            border-radius: 12px;
+            background: rgba(245,196,81,0.08);
+            font-size: 23px;
         }
 
         .result-title {
-            margin: 5px 0;
-            font-size: 24px;
-            font-weight: 900;
+            margin: 1px 0 3px;
+            color: #f5f7f2;
+            font-size: 21px;
+            font-weight: 750;
         }
 
         .result-text {
             margin: 0;
-            opacity: 0.75;
-            font-weight: 700;
+            color: #dfd7b9;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .summary-heading {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 17px;
+        }
+
+        .summary-kicker {
+            display: block;
+            margin-bottom: 3px;
+            color: #d8bd6b;
+            font-size: 9px;
+            font-weight: 800;
+            letter-spacing: 0.13em;
+        }
+
+        .summary-score-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 10px;
+        }
+
+        .summary-team {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto;
+            align-items: center;
+            gap: 3px 12px;
+            padding: 13px 15px;
+            border: 1px solid rgba(221,239,225,0.1);
+            border-radius: 9px;
+            background: rgba(7,17,13,0.28);
+        }
+
+        .summary-team-current {
+            border-color: rgba(245,196,81,0.2);
+        }
+
+        .summary-team-name {
+            overflow: hidden;
+            color: #c6d1c8;
+            font-size: 12px;
+            font-weight: 650;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .summary-team-score {
+            grid-column: 2;
+            grid-row: 1 / span 2;
+            color: #f4f5ef;
+            font-size: 24px;
+            font-weight: 800;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .summary-team-current .summary-team-score {
+            color: #f3d77f;
+        }
+
+        .summary-team-details {
+            color: #929f94;
+            font-size: 10px;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .summary-highlights {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .summary-highlight {
+            display: grid;
+            gap: 3px;
+            padding: 12px 15px;
+            border-left: 2px solid rgba(245,196,81,0.44);
+            background: rgba(255,255,255,0.025);
+        }
+
+        .summary-highlight > span:first-child {
+            color: #9aa69c;
+            font-size: 10px;
+        }
+
+        .summary-highlight strong {
+            color: #eef3ed;
+            font-size: 13px;
+        }
+
+        .summary-highlight > span:last-child {
+            color: #c1cabc;
+            font-size: 11px;
+        }
+
+        .player-award {
+            display: grid;
+            grid-template-columns: minmax(0, 0.8fr) minmax(250px, 1fr);
+            align-items: center;
+            gap: 18px;
+            margin-top: 14px;
+            padding: 15px;
+            border: 1px solid rgba(245,196,81,0.19);
+            border-radius: 10px;
+            background: rgba(245,196,81,0.035);
+        }
+
+        .player-award h3 {
+            margin: 0;
+            color: #f2ead0;
+            font-size: 15px;
+        }
+
+        .player-award p {
+            margin-top: 3px;
+            color: #a8a895;
+            font-size: 11px;
+        }
+
+        .player-award-controls {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .player-award-controls select {
+            min-width: 0;
+            min-height: 42px;
+            flex: 1;
+            padding: 8px 10px;
+            border: 1px solid rgba(221,239,225,0.15);
+            border-radius: 7px;
+            color: #eef4ee;
+            background: #111a14;
+            font-family: inherit;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .player-award-controls .primary-button {
+            min-height: 42px;
+            flex: 0 0 auto;
+            padding: 8px 12px;
+            border-radius: 7px;
+            font-size: 11px;
+        }
+
+        .player-award-controls .primary-button:disabled {
+            cursor: wait;
+            opacity: 0.65;
+        }
+
+        .visually-hidden {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
         }
 
         .innings-banner {
@@ -1112,8 +1284,46 @@
             .batting-card,
             .scoring-card,
             .history-card,
-            .controls-card {
+            .controls-card,
+            .result-box {
                 padding: 14px;
+            }
+
+            .summary-heading {
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .result-icon {
+                width: 40px;
+                height: 40px;
+                flex-basis: 40px;
+                font-size: 19px;
+            }
+
+            .result-title {
+                font-size: 18px;
+            }
+
+            .summary-score-grid,
+            .summary-highlights {
+                grid-template-columns: 1fr;
+                gap: 8px;
+            }
+
+            .player-award {
+                grid-template-columns: 1fr;
+                gap: 10px;
+                padding: 12px;
+            }
+
+            .player-award-controls {
+                align-items: stretch;
+                flex-direction: column;
+            }
+
+            .player-award-controls .primary-button {
+                justify-content: center;
             }
 
             .batting-card-header h2 {
@@ -1528,23 +1738,30 @@
         id="resultBox"
         class="result-box">
 
-        <div class="result-icon">
-            🏆
+        <div class="summary-heading">
+            <div class="result-icon" aria-hidden="true">🏆</div>
+            <div>
+                <span class="summary-kicker">FINAL SCORECARD</span>
+                <h2 class="result-title">Match Summary</h2>
+                <p id="resultText" class="result-text">—</p>
+            </div>
         </div>
 
+        <div id="summaryScores" class="summary-score-grid"></div>
+        <div id="summaryHighlights" class="summary-highlights"></div>
 
-        <h2 class="result-title">
-            MATCH WINNER
-        </h2>
-
-
-        <p
-            id="resultText"
-            class="result-text">
-
-            —
-
-        </p>
+        <section class="player-award" aria-labelledby="playerAwardTitle">
+            <div>
+                <span class="summary-kicker">MATCH HONOUR</span>
+                <h3 id="playerAwardTitle">Man of the Match</h3>
+                <p id="playerAwardMessage" role="status" aria-live="polite">Choose the standout player from either team.</p>
+            </div>
+            <div class="player-award-controls">
+                <label class="visually-hidden" for="playerOfMatchSelect">Select man of the match</label>
+                <select id="playerOfMatchSelect"></select>
+                <button id="savePlayerOfMatchButton" type="button" class="primary-button" onclick="savePlayerOfMatch()">Save award</button>
+            </div>
+        </section>
 
     </section>
 
@@ -3050,10 +3267,11 @@ function updateResult() {
             "show"
         );
 
-
         resultText.textContent =
             matchData.result ||
             "Match completed.";
+
+        renderMatchSummary();
 
     } else {
 
@@ -3061,6 +3279,167 @@ function updateResult() {
             "show"
         );
 
+    }
+
+}
+
+
+function renderMatchSummary() {
+
+    const scoreGrid = document.getElementById("summaryScores");
+    const highlights = document.getElementById("summaryHighlights");
+    const playerSelect = document.getElementById("playerOfMatchSelect");
+    const awardMessage = document.getElementById("playerAwardMessage");
+    const saveButton = document.getElementById("savePlayerOfMatchButton");
+
+    if (!scoreGrid || !highlights || !playerSelect || !awardMessage || !saveButton) {
+        return;
+    }
+
+    scoreGrid.replaceChildren();
+    highlights.replaceChildren();
+
+    Object.entries(matchData.teams || {}).forEach(([teamKey, team]) => {
+        const card = document.createElement("div");
+        const heading = document.createElement("span");
+        const score = document.createElement("strong");
+        const details = document.createElement("span");
+        const balls = Number(team.balls) || 0;
+        const runs = Number(team.runs) || 0;
+        const wickets = Number(team.wickets) || 0;
+        const runRate = balls ? (runs / (balls / 6)).toFixed(2) : "0.00";
+
+        card.className = `summary-team${team.name === matchData.battingTeam ? " summary-team-current" : ""}`;
+        heading.className = "summary-team-name";
+        heading.textContent = team.name || teamKey;
+        score.className = "summary-team-score";
+        score.textContent = `${runs}/${wickets}`;
+        details.className = "summary-team-details";
+        details.textContent = `${Math.floor(balls / 6)}.${balls % 6} overs  ·  RR ${runRate}`;
+        card.append(heading, score, details);
+        scoreGrid.appendChild(card);
+    });
+
+    const battingFigures = new Map();
+    const bowlingFigures = new Map();
+    (Array.isArray(matchData.balls) ? matchData.balls : []).forEach((ball) => {
+        if (ball.strikerId) {
+            const batter = battingFigures.get(ball.strikerId) || {
+                id: ball.strikerId,
+                name: ball.striker || "Unknown batter",
+                runs: 0,
+                balls: 0
+            };
+            batter.runs += Number(ball.runs) || 0;
+            batter.balls += 1;
+            battingFigures.set(ball.strikerId, batter);
+        }
+
+        if (ball.bowlerId) {
+            const bowler = bowlingFigures.get(ball.bowlerId) || {
+                id: ball.bowlerId,
+                name: ball.bowler || "Unknown bowler",
+                runs: 0,
+                wickets: 0,
+                balls: 0
+            };
+            bowler.runs += Number(ball.runs) || 0;
+            bowler.wickets += Number(ball.wickets) || 0;
+            bowler.balls += 1;
+            bowlingFigures.set(ball.bowlerId, bowler);
+        }
+    });
+
+    const topBatter = [...battingFigures.values()].sort((first, second) =>
+        second.runs - first.runs || first.balls - second.balls
+    )[0];
+    const topBowler = [...bowlingFigures.values()].sort((first, second) =>
+        second.wickets - first.wickets || first.runs - second.runs
+    )[0];
+
+    [
+        topBatter && {
+            label: "Top scorer",
+            name: topBatter.name,
+            figure: `${topBatter.runs} runs (${topBatter.balls} balls)`
+        },
+        topBowler && {
+            label: "Leading bowler",
+            name: topBowler.name,
+            figure: `${topBowler.wickets} wickets · ${topBowler.runs} runs`
+        }
+    ].filter(Boolean).forEach((item) => {
+        const stat = document.createElement("div");
+        const label = document.createElement("span");
+        const name = document.createElement("strong");
+        const figure = document.createElement("span");
+        stat.className = "summary-highlight";
+        label.textContent = item.label;
+        name.textContent = item.name;
+        figure.textContent = item.figure;
+        stat.append(label, name, figure);
+        highlights.appendChild(stat);
+    });
+
+    const selectedId = matchData.playerOfMatch?.id || playerSelect.value;
+    const players = Object.values(matchData.teams || {}).flatMap((team) =>
+        (team.players || []).map((player) => ({ ...player, teamName: team.name }))
+    );
+    playerSelect.replaceChildren();
+
+    const placeholder = document.createElement("option");
+    placeholder.value = "";
+    placeholder.textContent = "Select a player";
+    playerSelect.appendChild(placeholder);
+
+    players.forEach((player) => {
+        const option = document.createElement("option");
+        option.value = player.id;
+        option.textContent = `${player.name} · ${player.teamName}`;
+        playerSelect.appendChild(option);
+    });
+
+    if (players.some((player) => player.id === selectedId)) {
+        playerSelect.value = selectedId;
+    }
+
+    if (matchData.playerOfMatch?.name) {
+        awardMessage.textContent = `Awarded to ${matchData.playerOfMatch.name} (${matchData.playerOfMatch.team}).`;
+        saveButton.textContent = "Update award";
+    } else {
+        awardMessage.textContent = "Choose the standout player from either team.";
+        saveButton.textContent = "Save award";
+    }
+
+}
+
+
+async function savePlayerOfMatch() {
+
+    const playerSelect = document.getElementById("playerOfMatchSelect");
+    const saveButton = document.getElementById("savePlayerOfMatchButton");
+    const awardMessage = document.getElementById("playerAwardMessage");
+
+    if (!playerSelect?.value) {
+        awardMessage.textContent = "Select a player before saving the award.";
+        playerSelect?.focus();
+        return;
+    }
+
+    saveButton.disabled = true;
+    awardMessage.textContent = "Saving player of the match...";
+
+    try {
+        matchData = await window.CricPulsePythonAPI.setPlayerOfMatch(
+            matchData.id,
+            playerSelect.value
+        );
+        saveLocalMatch();
+        renderMatch();
+    } catch (error) {
+        awardMessage.textContent = error.message || "Unable to save the award.";
+    } finally {
+        saveButton.disabled = false;
     }
 
 }
