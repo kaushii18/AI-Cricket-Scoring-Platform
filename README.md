@@ -9,6 +9,7 @@ CricPulse is a real-time cricket scoring app for setting up matches, entering te
 - Select the striker, non-striker, and bowler by name.
 - Record runs and wickets and view the live score and recent balls.
 - Track player and innings statistics, including overs and run rate.
+- See a final match summary with both team totals, top scorer, and leading bowler; save a man-of-the-match award after completion.
 - Persist match data locally in a JSON file.
 - Receive live match events over Socket.IO.
 - Optionally connect Supabase for team management.
@@ -85,7 +86,7 @@ The Python API is available at [http://127.0.0.1:8000](http://127.0.0.1:8000); i
 2. Enter the two team names, select the overs, then set toss details manually or use **Flip toss** for a fair random result and historical bat/bowl advice. Provide player names for each team.
 3. Start the match. On the scorer page, select the striker, non-striker, and bowler.
 4. Record each delivery using the run or wicket controls. The scorecard and recent-ball list update as the match progresses.
-5. Use the match controls to reset the current match when needed.
+5. When the match ends, review both innings and leading performances, then select and save the man of the match. Use the match controls to reset when needed.
 
 Player lists accept up to 11 names per team; default player names are generated from the team names and can be edited. The available over lengths are 5, 10, 20, and 50 overs.
 
@@ -134,6 +135,7 @@ FastAPI exposes the following versioned routes under `/api/v1`. Match writes are
 | `POST` | `/api/v1/matches/:id/balls` | Record a ball through the Node scoring logic. |
 | `POST` | `/api/v1/matches/:id/players` | Update active striker, non-striker, and bowler. |
 | `POST` | `/api/v1/matches/:id/reset` | Reset a match through the existing scoring logic. |
+| `POST` | `/api/v1/matches/:id/player-of-the-match` | Save the selected award after a match is completed. |
 | `GET` | `/api/v1/matches/:id/players` | Get derived player batting and bowling figures. |
 | `GET` | `/api/v1/matches/:id/scores` | Get team totals, overs, run rates, and innings state. |
 | `GET` | `/api/v1/matches/:id/overs` | Get per-over runs, wickets, and deliveries. |

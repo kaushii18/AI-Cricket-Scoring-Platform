@@ -42,6 +42,7 @@
         recordBall: (matchId, ball) => post(`/matches/${encodeURIComponent(matchId)}/balls`, ball),
         updatePlayers: (matchId, players) => post(`/matches/${encodeURIComponent(matchId)}/players`, players),
         resetMatch: (matchId) => post(`/matches/${encodeURIComponent(matchId)}/reset`, {}),
+        setPlayerOfMatch: (matchId, playerId) => post(`/matches/${encodeURIComponent(matchId)}/player-of-the-match`, { playerId }),
         teams: () => request("/teams"),
         createTeam: (team) => post("/teams", team),
         players: (matchId) => request(`/matches/${encodeURIComponent(matchId)}/players`),

@@ -1723,6 +1723,63 @@ app.post(
 
 
 // =====================================================
+// SET PLAYER OF THE MATCH
+// =====================================================
+
+app.post(
+    "/api/matches/:id/player-of-the-match",
+    (request, response) => {
+
+        const matches =
+            readMatches();
+
+        const match =
+            matches.find(
+                (item) => item.id === request.params.id
+            );
+
+        if (!match) {
+            return response.status(404).json({
+                message: "Match not found."
+            });
+        }
+
+        if (match.status !== "COMPLETED") {
+            return response.status(400).json({
+                message: "Player of the match can only be selected after the match is complete."
+            });
+        }
+
+        const playerId = request.body?.playerId;
+        const playerEntry = Object.entries(match.teams)
+            .flatMap(([, team]) =>
+                (team.players || []).map((player) => ({ player, team }))
+            )
+            .find(({ player }) => player.id === playerId);
+
+        if (!playerEntry) {
+            return response.status(400).json({
+                message: "Choose a player from one of the teams in this match."
+            });
+        }
+
+        match.playerOfMatch = {
+            id: playerEntry.player.id,
+            name: playerEntry.player.name,
+            team: playerEntry.team.name
+        };
+        match.updatedAt = new Date().toISOString();
+
+        saveMatches(matches);
+        io.emit("match:update", match);
+
+        return response.json(match);
+
+    }
+);
+
+
+// =====================================================
 // RESET MATCH
 // =====================================================
 
@@ -1813,6 +1870,8 @@ app.post(
         match.target = null;
 
         match.result = null;
+
+        match.playerOfMatch = null;
 
 
         initializeInnings(match);
