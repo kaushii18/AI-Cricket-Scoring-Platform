@@ -1908,6 +1908,69 @@ h3,
     font-family: "Manrope", "DM Sans", sans-serif;
 }
 
+.dashboard-page {
+    position: relative;
+    isolation: isolate;
+    background: #0b1b11;
+}
+
+.dashboard-page::before {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background:
+        linear-gradient(90deg, rgba(5, 19, 11, 0.58) 0%, rgba(5, 20, 12, 0.36) 48%, rgba(4, 17, 10, 0.54) 100%),
+        linear-gradient(0deg, rgba(3, 15, 9, 0.48), rgba(6, 20, 12, 0.18) 58%, rgba(7, 18, 12, 0.4)),
+        url("./stadium-background.jpg") center 52% / cover no-repeat;
+    content: "";
+    pointer-events: none;
+}
+
+.dashboard-page .top-header {
+    background:
+        linear-gradient(105deg, rgba(8, 27, 17, 0.76), rgba(7, 23, 15, 0.52) 52%, rgba(7, 24, 15, 0.7));
+    border-bottom-color: rgba(181, 229, 188, 0.15);
+    box-shadow: 0 10px 32px rgba(2, 10, 6, 0.12), inset 0 -1px rgba(220, 255, 225, 0.035);
+    backdrop-filter: blur(20px) saturate(135%);
+    -webkit-backdrop-filter: blur(20px) saturate(135%);
+}
+
+.dashboard-page .brand-icon {
+    border-color: rgba(171, 237, 188, 0.36);
+    color: #edfff1;
+    background: linear-gradient(145deg, rgba(73, 151, 96, 0.96), rgba(32, 91, 57, 0.96));
+    box-shadow: inset 0 1px rgba(255, 255, 255, 0.2), 0 7px 20px rgba(2, 12, 7, 0.28);
+}
+
+.dashboard-page .brand small {
+    color: #a9c9b0;
+}
+
+.dashboard-page .live-status {
+    color: #d6eee0;
+    background: rgba(19, 65, 40, 0.38);
+    border-color: rgba(148, 219, 165, 0.24);
+    box-shadow: inset 0 1px rgba(229, 255, 235, 0.05);
+}
+
+.dashboard-page .status-dot,
+.dashboard-page .status-dot::after {
+    background: #79e2a0;
+    border-color: #79e2a0;
+}
+
+.dashboard-page .header-actions .compact-btn {
+    color: #f0fff3;
+    background: linear-gradient(135deg, #388b59, #286b45);
+    border: 1px solid rgba(182, 244, 195, 0.32);
+    box-shadow: inset 0 1px rgba(255, 255, 255, 0.15), 0 7px 20px rgba(1, 13, 6, 0.25);
+}
+
+.dashboard-page .header-actions .compact-btn:hover {
+    background: linear-gradient(135deg, #45a369, #307c50);
+    box-shadow: inset 0 1px rgba(255, 255, 255, 0.2), 0 10px 25px rgba(19, 88, 46, 0.35);
+}
+
 .top-header {
     min-height: 76px;
     padding: 12px max(4vw, calc((100vw - 1240px) / 2));
@@ -2630,9 +2693,11 @@ h3,
     border: 1px solid rgba(115, 223, 209, 0.23);
     border-radius: 16px;
     background:
-        linear-gradient(135deg, rgba(27, 70, 69, 0.88), rgba(24, 32, 33, 0.98) 65%, rgba(65, 42, 36, 0.92)),
-        #171e1e;
+        linear-gradient(135deg, rgba(13, 42, 26, 0.68), rgba(11, 25, 17, 0.72) 65%, rgba(19, 35, 23, 0.68)),
+        rgba(13, 29, 19, 0.7);
     box-shadow: 0 22px 58px rgba(0, 0, 0, 0.28);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
 }
 
 .setup-board::after {
