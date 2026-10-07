@@ -24,6 +24,7 @@ class Settings:
     node_api_base_url: str = os.getenv(
         "NODE_API_BASE_URL", "http://127.0.0.1:3000/api"
     ).rstrip("/")
+    cricketdata_api_key: str = os.getenv("CRICKETDATA_API_KEY", "")
     cors_origins: list[str] | None = None
 
     def __post_init__(self) -> None:
