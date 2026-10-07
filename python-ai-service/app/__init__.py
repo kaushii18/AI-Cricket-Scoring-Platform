@@ -1,0 +1,1 @@
+"""CricPulse AI service application."""

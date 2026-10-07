@@ -160,6 +160,33 @@ Run the Python analytics tests from `python-backend/` with:
 python -m unittest discover -s tests
 ```
 
+### Start the AI Service Foundation
+
+The independent AI service currently provides only a health endpoint; it does not make predictions or participate in scoring. From the project root, create its environment and install its minimal dependencies:
+
+```bash
+cd python-ai-service
+python -m venv .venv
+```
+
+Activate the environment, then install and run the service:
+
+```powershell
+# Windows PowerShell
+.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+python run.py
+```
+
+```bash
+# macOS / Linux
+source .venv/bin/activate
+pip install -r requirements.txt
+python run.py
+```
+
+The service loads `python-ai-service/.env` for its host and port and defaults to `http://127.0.0.1:8001`. Verify it with `GET http://127.0.0.1:8001/health`; its interactive API documentation is at `http://127.0.0.1:8001/docs`. The local `.env` is ignored by Git; `.env.example` contains safe defaults.
+
 ## Project Structure
 
 ```text
@@ -175,6 +202,10 @@ python-backend/
   app/services/       Node API gateway and cricket analytics
   tests/              Python analytics tests
   requirements.txt    FastAPI service dependencies
+python-ai-service/
+  app/main.py         Independent AI service health endpoint
+  run.py              Loads .env and starts the service
+  requirements.txt    Minimal AI service dependencies
 docs/
   ui-update.md        UI update notes
 frontend/
