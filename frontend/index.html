@@ -18,12 +18,25 @@
 
     <header class="top-header">
         <a class="brand" href="./index.html" aria-label="CricPulse home">
-            <span class="brand-icon" aria-hidden="true">C</span>
+            <span class="brand-icon" aria-hidden="true">🏏</span>
             <span>
                 <strong>CricPulse</strong>
-                <small>LIVE SCORING</small>
+                <small>CRICKET, IN PLAY</small>
             </span>
         </a>
+
+        <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="primaryNav" aria-label="Open navigation menu">
+            <span></span><span></span><span></span>
+        </button>
+
+        <nav id="primaryNav" class="primary-nav" aria-label="Main navigation">
+            <a href="#main-content" aria-current="page">Home</a>
+            <a href="#matches">Matches</a>
+            <a href="#teams">Teams</a>
+            <a href="#tournaments">Tournaments</a>
+            <a href="#players">Players</a>
+            <a href="#analytics">Analytics</a>
+        </nav>
 
         <div class="header-actions">
             <div class="live-status" aria-live="polite">
@@ -39,43 +52,91 @@
     <main id="main-content" class="main-content">
         <section class="dashboard-hero">
             <div class="hero-content">
-                <span class="hero-badge"><span class="eyebrow-mark"></span> CRICPULSE MATCH DESK</span>
-                <h1>Make this match <span>yours.</span></h1>
-                <p>Set your teams and lineups, complete the toss, then follow every ball live.</p>
+                <span class="hero-badge"><span class="eyebrow-mark"></span> LIVE CRICKET SCORING</span>
+                <h1>Score. Track. <span>Analyze.</span></h1>
+                <p>Your match desk for every innings. Set the teams, make the toss, and follow each delivery as it happens.</p>
                 <button type="button" class="primary-button hero-cta" onclick="openMatchModal()">
-                    <span aria-hidden="true">+</span> Start a new match <span aria-hidden="true">↗</span>
+                    <span aria-hidden="true">+</span> Create new match <span aria-hidden="true">↗</span>
                 </button>
+                <a class="secondary-button hero-secondary" href="#matches">View matches <span aria-hidden="true">↓</span></a>
             </div>
 
-            <aside class="setup-board" aria-label="New match overview">
+            <aside class="setup-board dashboard-summary" aria-label="Your CricPulse match desk">
                 <div class="setup-board-head">
-                    <span class="section-kicker">FRESH FIXTURE</span>
-                    <span class="setup-board-mark" aria-hidden="true">C</span>
+                    <span class="section-kicker">YOUR MATCH DESK</span>
+                    <span class="setup-board-mark" aria-hidden="true">🏏</span>
                 </div>
-                <div class="setup-team-row">
-                    <span class="setup-team-code">01</span>
-                    <strong>Your first team</strong>
-                    <span class="setup-team-status">READY</span>
+                <div class="summary-count">
+                    <span id="activeMatchCount" class="summary-number" aria-live="polite">—</span>
+                    <span class="summary-count-label">matches in progress</span>
                 </div>
-                <div class="setup-team-row">
-                    <span class="setup-team-code">02</span>
-                    <strong>Your second team</strong>
-                    <span class="setup-team-status">READY</span>
-                </div>
+                <div class="summary-divider"></div>
                 <div class="setup-board-foot">
-                    <span>TEAM LINEUPS</span>
-                    <strong>Up to 11 players each</strong>
+                    <span>BUILT FOR THE GAME</span>
+                    <strong>Every ball. Every detail.</strong>
                 </div>
             </aside>
+        </section>
+
+        <section id="matches" class="matches-section" aria-labelledby="matchesHeading">
+            <div class="section-heading">
+                <div>
+                    <span class="section-kicker">YOUR FIXTURES</span>
+                    <h2 id="matchesHeading">Matches</h2>
+                </div>
+                <span id="matchListUpdated" class="updated-label" aria-live="polite">Connecting to match desk…</span>
+            </div>
+            <div id="dashboardMatchList" class="live-match-list" aria-live="polite" aria-busy="true">
+                <div class="match-state-card">
+                    <span class="loading-spinner" aria-hidden="true"></span>
+                    <strong>Loading matches</strong>
+                    <p>Checking your match desk.</p>
+                </div>
+            </div>
+            <button id="toggleMatchesButton" class="matches-more" type="button" aria-expanded="false" hidden>Show all matches</button>
+            <p id="matchListError" class="inline-error" role="alert" hidden></p>
+        </section>
+
+        <section class="dashboard-note" aria-label="CricPulse platform status">
+            <span class="note-mark" aria-hidden="true">✦</span>
+            <p><strong>Your cricket, in focus.</strong> Live scoring and match statistics are shown from your saved match data. Tools without connected records are clearly marked below.</p>
+            <a class="text-action" href="#matches">Explore matches <span aria-hidden="true">→</span></a>
+        </section>
+
+        <section class="workspace-grid" aria-label="CricPulse workspaces">
+            <article id="teams" class="workspace-card">
+                <span class="workspace-index">01 / SETUP</span>
+                <h2>Teams</h2>
+                <p>Set team names, captains, and player lineups when creating a match.</p>
+                <button type="button" class="workspace-link" onclick="openMatchModal()">Set up a match <span aria-hidden="true">→</span></button>
+            </article>
+            <article id="tournaments" class="workspace-card">
+                <span class="workspace-index">02 / COMPETITION</span>
+                <h2>Tournaments</h2>
+                <p>Tournament management is not connected yet. Your existing matches remain available above.</p>
+                <span class="workspace-status">NOT CONNECTED</span>
+            </article>
+            <article id="players" class="workspace-card">
+                <span class="workspace-index">03 / SQUADS</span>
+                <h2>Players</h2>
+                <p>Manage player names in match setup and update active roles from the scorer.</p>
+                <button type="button" class="workspace-link" onclick="openMatchModal()">Manage a lineup <span aria-hidden="true">→</span></button>
+            </article>
+            <article id="analytics" class="workspace-card">
+                <span class="workspace-index">04 / INSIGHTS</span>
+                <h2>Analytics</h2>
+                <p>Scorecards and run rates use match data. AI projections will appear after an AI service is connected.</p>
+                <span class="workspace-status">MATCH DATA ONLY</span>
+            </article>
         </section>
     </main>
 
     <footer class="site-footer">
         <a class="brand footer-brand" href="./index.html" aria-label="CricPulse home">
-            <span class="brand-icon" aria-hidden="true">C</span>
+            <span class="brand-icon" aria-hidden="true">🏏</span>
             <strong>CricPulse</strong>
         </a>
-        <span>Live cricket scoring</span>
+        <span>Score. Track. Analyze.</span>
     </footer>
 
     <div id="matchModal" class="modal-overlay" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
@@ -151,4 +212,3 @@
 </body>
 
 </html>
-npm start

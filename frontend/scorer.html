@@ -11,6 +11,9 @@
 
     <title>CricPulse | Live Scorer</title>
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 
     <style>
@@ -637,10 +640,9 @@
         }
 
         .live-connection {
-            position: fixed;
-            right: 18px;
-            bottom: 18px;
-            z-index: 100;
+            position: static;
+            width: fit-content;
+            margin: 12px max(5%, calc((100% - 1120px) / 2)) 0 auto;
             padding: 10px 14px;
             border-radius: 50px;
             font-size: 12px;
@@ -1590,6 +1592,286 @@
             }
         }
 
+        .score-page {
+            width: min(1180px, 100%);
+            padding: 28px clamp(14px, 3vw, 30px) 52px;
+        }
+
+        .score-page .score-section-nav {
+            position: sticky;
+            top: 0;
+            z-index: 4;
+            display: flex;
+            gap: 5px;
+            margin: 0 0 18px;
+            padding: 7px;
+            overflow-x: auto;
+            border: 1px solid rgba(221, 239, 225, 0.1);
+            border-radius: 13px;
+            background: rgba(11, 20, 14, 0.92);
+            backdrop-filter: blur(14px);
+        }
+
+        .score-section-nav a {
+            flex: 0 0 auto;
+            padding: 10px 14px;
+            border-radius: 9px;
+            color: #a6b3a8;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-decoration: none;
+            transition: color 160ms ease, background 160ms ease;
+        }
+
+        .score-section-nav a:hover,
+        .score-section-nav a:focus-visible {
+            color: #f2f6ef;
+            background: rgba(116, 201, 141, 0.1);
+        }
+
+        .score-section-nav a:focus-visible {
+            outline: 2px solid #dfc77b;
+            outline-offset: 2px;
+        }
+
+        .score-page .scoreboard {
+            background:
+                radial-gradient(ellipse at 50% 0%, rgba(142, 192, 132, 0.12), transparent 55%),
+                linear-gradient(145deg, rgba(20, 38, 26, 0.98), rgba(12, 20, 15, 0.98));
+            border-color: rgba(174, 211, 174, 0.15);
+            box-shadow: 0 24px 58px rgba(0, 0, 0, 0.22), inset 0 1px rgba(255, 255, 255, 0.04);
+        }
+
+        .score-page .main-score,
+        .score-page .live-snapshot-total {
+            color: #e4ce83;
+            font-variant-numeric: tabular-nums;
+            letter-spacing: -0.055em;
+        }
+
+        .score-page .target-box {
+            background: linear-gradient(135deg, rgba(155, 126, 51, 0.14), rgba(18, 30, 20, 0.8));
+            border-color: rgba(226, 197, 110, 0.25);
+        }
+
+        .score-page .scoring-card,
+        .score-page .history-card,
+        .score-page .controls-card,
+        .score-page .batting-card,
+        .score-page .live-snapshot,
+        .score-page .status-card {
+            border-color: rgba(193, 222, 195, 0.12);
+            background: linear-gradient(145deg, rgba(23, 34, 25, 0.94), rgba(14, 21, 16, 0.96));
+            box-shadow: 0 14px 36px rgba(0, 0, 0, 0.16);
+        }
+
+        .score-page .score-button {
+            min-height: 64px;
+            border-radius: 13px;
+            background: linear-gradient(145deg, rgba(42, 64, 44, 0.72), rgba(27, 42, 30, 0.82));
+            border-color: rgba(179, 215, 175, 0.15);
+            font-size: 22px;
+        }
+
+        .score-page .score-button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            border-color: rgba(177, 222, 174, 0.38);
+            background: linear-gradient(145deg, rgba(57, 91, 59, 0.82), rgba(31, 57, 37, 0.9));
+        }
+
+        .score-page .score-button:active:not(:disabled) {
+            transform: scale(0.97);
+        }
+
+        .score-page .score-button:focus-visible,
+        .score-page .secondary-button:focus-visible,
+        .score-page .primary-button:focus-visible,
+        .score-page select:focus-visible {
+            outline: 2px solid #ddc77b;
+            outline-offset: 3px;
+        }
+
+        .score-page .score-buttons .wicket-button {
+            color: #ffaaa0;
+            background: linear-gradient(145deg, rgba(109, 48, 42, 0.56), rgba(59, 31, 29, 0.78));
+        }
+
+        .score-page .innings-banner {
+            border-color: rgba(116, 201, 141, 0.24);
+            background: linear-gradient(100deg, rgba(33, 86, 49, 0.2), rgba(15, 33, 20, 0.58));
+            scroll-margin-top: 86px;
+        }
+
+        .score-page #live,
+        .score-page #scorecard,
+        .score-page #commentary,
+        .score-page #analytics {
+            scroll-margin-top: 84px;
+        }
+
+        .score-page .snapshot-ball.boundary {
+            color: #e7d286;
+            border-color: rgba(226, 197, 110, 0.4);
+            background: rgba(226, 197, 110, 0.12);
+        }
+
+        .score-page .snapshot-ball.wicket {
+            color: #ffb0a4;
+            border-color: rgba(255, 128, 111, 0.42);
+            background: rgba(255, 128, 111, 0.12);
+        }
+
+        .score-page .current-bowler {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto;
+            align-items: center;
+            gap: 3px 12px;
+            margin: 15px 0;
+            padding: 12px 14px;
+            border: 1px solid rgba(174, 211, 174, 0.12);
+            border-radius: 11px;
+            background: rgba(116, 201, 141, 0.045);
+        }
+
+        .current-bowler-label {
+            color: #8eaa91;
+            font-size: 8px;
+            font-weight: 800;
+            letter-spacing: 0.13em;
+        }
+
+        .current-bowler-name {
+            grid-column: 1;
+            color: #f0f5ed;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .current-bowler-figures {
+            grid-column: 2;
+            grid-row: 1 / span 2;
+            color: #e2ce8b;
+            font-size: 10px;
+            text-align: right;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .score-page .ai-insights-card {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto;
+            align-items: center;
+            gap: 10px 20px;
+            margin: 18px 0;
+            padding: 20px 22px;
+            border: 1px solid rgba(220, 195, 115, 0.17);
+            border-radius: 15px;
+            background: linear-gradient(115deg, rgba(68, 55, 26, 0.22), rgba(19, 26, 18, 0.82) 68%);
+        }
+
+        .ai-insights-card .ai-kicker {
+            color: #d8c47f;
+            font-size: 9px;
+            font-weight: 800;
+            letter-spacing: 0.13em;
+        }
+
+        .ai-insights-card h2 {
+            margin: 6px 0 4px;
+            color: #edf1e8;
+            font-size: 16px;
+        }
+
+        .ai-insights-card p {
+            margin: 0;
+            color: #9da69a;
+            font-size: 11px;
+            line-height: 1.6;
+        }
+
+        .ai-insights-card .ai-status {
+            padding: 7px 10px;
+            border: 1px solid rgba(220, 195, 115, 0.2);
+            border-radius: 999px;
+            color: #d8c47f;
+            font-size: 8px;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            white-space: nowrap;
+        }
+
+        @media (max-width: 640px) {
+            .score-page {
+                padding: 14px 12px 36px;
+            }
+
+            .score-page .score-section-nav {
+                margin-right: -12px;
+                margin-left: -12px;
+                padding-right: 12px;
+                padding-left: 12px;
+                border-right: 0;
+                border-left: 0;
+                border-radius: 0;
+            }
+
+            .score-page .scoreboard {
+                gap: 9px;
+                padding: 17px 10px;
+            }
+
+            .score-page .vs-area {
+                min-width: 60px;
+            }
+
+            .score-page .vs-circle {
+                width: 40px;
+                height: 40px;
+            }
+
+            .score-page .team-name {
+                overflow-wrap: anywhere;
+                font-size: clamp(14px, 4vw, 21px);
+            }
+
+            .score-page .main-score {
+                font-size: clamp(33px, 10vw, 48px);
+            }
+
+            .score-page .score-buttons {
+                grid-template-columns: repeat(4, minmax(0, 1fr));
+                gap: 8px;
+            }
+
+            .score-page .score-button {
+                min-height: 58px;
+            }
+
+            .score-page .extras-buttons {
+                gap: 8px;
+            }
+
+            .score-page .extras-buttons .score-button {
+                min-height: 50px;
+                font-size: 13px;
+            }
+
+            .score-page .ai-insights-card {
+                grid-template-columns: 1fr;
+                padding: 17px;
+            }
+
+            .score-page .ai-insights-card .ai-status {
+                justify-self: start;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .score-section-nav a {
+                transition: none;
+            }
+        }
+
     </style>
 
 </head>
@@ -1696,6 +1978,15 @@
 
 </header>
 
+<div
+    id="liveConnection"
+    class="live-connection"
+    aria-live="polite">
+
+    Connecting...
+
+</div>
+
 
 <main class="score-page">
 
@@ -1717,10 +2008,16 @@
         </section>
     </section>
 
+    <nav class="score-section-nav" aria-label="Match sections">
+        <a href="#live">LIVE</a>
+        <a href="#scorecard">SCORECARD</a>
+        <a href="#commentary">COMMENTARY</a>
+        <a href="#analytics">ANALYTICS</a>
+    </nav>
 
     <!-- SCOREBOARD -->
 
-    <section class="scoreboard">
+    <section id="live" class="scoreboard" aria-label="Live match score">
 
 
         <div
@@ -1819,7 +2116,7 @@
 
     <!-- LIVE BATTER SCORECARD -->
 
-    <section class="batting-card" aria-labelledby="battingCardTitle">
+    <section id="scorecard" class="batting-card" aria-labelledby="battingCardTitle">
         <div class="batting-card-header">
             <div>
                 <h2 id="battingCardTitle">Batting scorecard</h2>
@@ -1846,7 +2143,7 @@
     </section>
 
 
-    <section class="match-metrics" aria-label="Match figures">
+    <section id="analytics" class="match-metrics" aria-label="Match figures">
         <section id="targetBox" class="target-box">
 
         <span class="target-label">
@@ -1952,6 +2249,15 @@
 
     </section>
 
+    </section>
+
+    <section class="ai-insights-card" aria-labelledby="aiInsightsTitle">
+        <div>
+            <span class="ai-kicker">CRICPULSE AI INSIGHTS</span>
+            <h2 id="aiInsightsTitle">Match intelligence, when connected.</h2>
+            <p>AI predictions are not enabled for this match. No projected scores or win probabilities are shown until an AI service is connected.</p>
+        </div>
+        <span class="ai-status">AI NOT CONNECTED</span>
     </section>
 
 
@@ -2124,6 +2430,12 @@
             <strong id="snapshotScore" class="live-snapshot-total" aria-live="polite">0/0</strong>
         </div>
         <p id="snapshotOver" class="live-snapshot-over">0.0 overs</p>
+        <div class="current-bowler" aria-live="polite">
+            <span class="current-bowler-label">CURRENT BOWLER</span>
+            <strong id="snapshotCurrentBowler" class="current-bowler-name">Choose a bowler</strong>
+            <span id="snapshotBowlerFigures" class="current-bowler-figures">Figures will appear here</span>
+        </div>
+        <h3 class="snapshot-section-title">This over</h3>
         <div id="snapshotOverBalls" class="snapshot-over-balls" aria-label="Deliveries in current over"></div>
 
         <h3 class="snapshot-section-title">At the crease</h3>
@@ -2150,15 +2462,15 @@
 
     <!-- BALL HISTORY -->
 
-    <section class="history-card">
+    <section id="commentary" class="history-card">
 
         <h2>
-            Recent Balls
+            Ball-by-ball
         </h2>
 
 
         <p class="status-subtitle">
-            Latest 12 deliveries
+            Latest 12 deliveries · commentary details are not available for this match
         </p>
 
 
@@ -2234,15 +2546,6 @@
     </div>
 
 </main>
-
-
-<div
-    id="liveConnection"
-    class="live-connection">
-
-    Connecting...
-
-</div>
 
 
 <!-- SOCKET.IO -->
@@ -3347,8 +3650,14 @@ function updateLiveSnapshot() {
                 : ball.wickets
                     ? "Wicket"
                     : `${ball.runs || 0} run${Number(ball.runs) === 1 ? "" : "s"}`;
+            delivery.setAttribute("aria-label", delivery.title);
             if (ball.legalDelivery === false || ball.extraType) {
                 delivery.classList.add("extra");
+            }
+            if (Number(ball.wickets) > 0) {
+                delivery.classList.add("wicket");
+            } else if (Number(ball.runs) >= 4) {
+                delivery.classList.add("boundary");
             }
             overDisplay.appendChild(delivery);
         });
@@ -3421,6 +3730,34 @@ function updateLiveSnapshot() {
     const figures = [...figuresByBowler.values()].sort((first, second) =>
         second.balls - first.balls || second.wickets - first.wickets
     );
+    const currentBowlerName = document.getElementById("snapshotCurrentBowler");
+    const currentBowlerFigures = document.getElementById("snapshotBowlerFigures");
+    const currentBowler = bowlingPlayers.find(
+        (player) => player.id === activePlayers.bowlerId
+    );
+    const currentBowlerDeliveries = balls.filter((ball) =>
+        Number(ball.innings) === Number(matchData.currentInnings) &&
+        ball.bowlerId === activePlayers.bowlerId
+    );
+    const currentBowlerBalls = currentBowlerDeliveries.filter(
+        (ball) => ball.legalDelivery !== false
+    ).length;
+    const currentBowlerRuns = currentBowlerDeliveries.reduce(
+        (total, ball) => total + (Number(ball.runs) || 0) + (Number(ball.extras) || 0),
+        0
+    );
+    const currentBowlerWickets = currentBowlerDeliveries.reduce(
+        (total, ball) => total + (Number(ball.wickets) || 0),
+        0
+    );
+
+    if (currentBowlerName && currentBowlerFigures) {
+        currentBowlerName.textContent = currentBowler?.name || "Choose a bowler";
+        currentBowlerFigures.textContent = currentBowler
+            ? `${Math.floor(currentBowlerBalls / 6)}.${currentBowlerBalls % 6} ov · ${currentBowlerRuns} runs · ${currentBowlerWickets} wkts`
+            : "Select the current bowler in match controls";
+    }
+
     figures.forEach((player) => {
         const row = document.createElement("tr");
         const nameCell = document.createElement("td");

@@ -70,6 +70,7 @@
             `/matches/${encodeURIComponent(matchId)}/toss/decision`,
             { actorTeam, decision }
         ),
+        matchesFromNode: () => nodeRequest("/matches"),
         matchFromNode: (matchId) => nodeRequest(
             `/matches/${encodeURIComponent(matchId)}`
         ),
