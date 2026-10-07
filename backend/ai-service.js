@@ -167,9 +167,68 @@ async function requestMatchInsights(match, options = {}) {
     };
 }
 
+async function analyzeMatchMomentum(match, options = {}) {
+    const result = await requestAiService("/analyze/momentum", {
+        ...options,
+        method: "POST",
+        body: match
+    });
+    return result.available
+        ? { available: true, analysis: result.payload }
+        : result;
+}
+
+async function analyzePlayers(match, options = {}) {
+    const result = await requestAiService("/ai/player-analysis", {
+        ...options,
+        method: "POST",
+        body: match
+    });
+    return result.available
+        ? { available: true, analysis: result.payload }
+        : result;
+}
+
+async function summarizeMatch(match, options = {}) {
+    const result = await requestAiService("/ai/match-summary", {
+        ...options,
+        method: "POST",
+        body: match
+    });
+    return result.available
+        ? { available: true, summary: result.payload }
+        : result;
+}
+
+async function analyzeTournament(matches, options = {}) {
+    const result = await requestAiService("/tournament/analytics", {
+        ...options,
+        method: "POST",
+        body: { matches }
+    });
+    return result.available
+        ? { available: true, analytics: result.payload }
+        : result;
+}
+
+async function getPredictionHistory(matchId, options = {}) {
+    const result = await requestAiService(
+        `/predict/win/history/${encodeURIComponent(matchId)}`,
+        options
+    );
+    return result.available
+        ? { available: true, history: result.payload }
+        : result;
+}
+
 module.exports = {
     analyzeMatch,
+    analyzeMatchMomentum,
+    analyzePlayers,
+    analyzeTournament,
     checkAiHealth,
+    getPredictionHistory,
     predictMatchWin,
-    requestMatchInsights
+    requestMatchInsights,
+    summarizeMatch
 };

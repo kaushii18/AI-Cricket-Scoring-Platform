@@ -34,6 +34,26 @@ class MatchInsights(BaseModel):
         return [value.strip() for value in values]
 
 
+class PlayerObservation(BaseModel):
+    model_config = ConfigDict(extra="forbid", str_strip_whitespace=True)
+
+    player_id: str = Field(min_length=1)
+    observation: str = Field(min_length=4, max_length=240)
+
+
+class PlayerAnalysisResponse(BaseModel):
+    model_config = ConfigDict(extra="forbid", str_strip_whitespace=True)
+
+    headline: str = Field(min_length=4, max_length=160)
+    observations: list[PlayerObservation] = Field(min_length=1, max_length=8)
+
+
+class MatchNarrative(BaseModel):
+    model_config = ConfigDict(extra="forbid", str_strip_whitespace=True)
+
+    overall_summary: str = Field(min_length=20, max_length=600)
+
+
 def _overs_notation(balls: int) -> str:
     return f"{balls // 6}.{balls % 6}"
 
@@ -170,3 +190,114 @@ async def generate_match_insights(client: Any, context: dict[str, Any]) -> dict[
     insights = MatchInsights.model_validate_json(message.content)
     _validate_numeric_claims(insights, context)
     return insights.model_dump()
+
+
+async def generate_player_analysis(
+    client: Any,
+    context: dict[str, Any],
+) -> dict[str, Any]:
+    schema = {
+        "type": "json_schema",
+        "json_schema": {
+            "name": "cricpulse_player_analysis",
+            "strict": True,
+            "schema": {
+                "type": "object",
+                "properties": {
+                    "headline": {"type": "string"},
+                    "observations": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "player_id": {"type": "string"},
+                                "observation": {"type": "string"},
+                            },
+                            "required": ["player_id", "observation"],
+                            "additionalProperties": False,
+                        },
+                    },
+                },
+                "required": ["headline", "observations"],
+                "additionalProperties": False,
+            },
+        },
+    }
+    content = await _request_json(
+        client,
+        context,
+        schema,
+        "Analyze the supplied CricPulse player scorecard. Only refer to player IDs "
+        "and numeric facts supplied. Never infer unsupplied ability, reputation, "
+        "conditions, or events. Discuss strike rate, boundaries, bowling economy, "
+        "wickets, and recent form only where those fields are present. Return a "
+        "short headline and observations linked to exact supplied player IDs.",
+    )
+    result = PlayerAnalysisResponse.model_validate_json(content)
+    known_ids = {
+        player["id"] for player in context.get("players", [])
+        if isinstance(player, dict) and isinstance(player.get("id"), str)
+    }
+    if any(observation.player_id not in known_ids for observation in result.observations):
+        raise ValueError("The LLM returned an unknown player ID.")
+    _validate_numeric_claims(result.model_dump(), context)
+    return result.model_dump()
+
+
+async def generate_match_narrative(
+    client: Any,
+    context: dict[str, Any],
+) -> dict[str, str]:
+    schema = {
+        "type": "json_schema",
+        "json_schema": {
+            "name": "cricpulse_match_summary",
+            "strict": True,
+            "schema": {
+                "type": "object",
+                "properties": {
+                    "overall_summary": {"type": "string"},
+                },
+                "required": ["overall_summary"],
+                "additionalProperties": False,
+            },
+        },
+    }
+    content = await _request_json(
+        client,
+        context,
+        schema,
+        "Write a concise overall cricket match summary from the supplied final "
+        "scorecard facts. Do not invent players, events, statistics, or causes. "
+        "Mention an unavailable turning point as unavailable; do not guess. Use "
+        "only numeric values present in the context. Return JSON with only "
+        "overall_summary.",
+    )
+    result = MatchNarrative.model_validate_json(content)
+    _validate_numeric_claims(result.model_dump(), context)
+    return result.model_dump()
+
+
+async def _request_json(
+    client: Any,
+    context: dict[str, Any],
+    response_format: dict[str, Any],
+    system_prompt: str,
+) -> str:
+    completion = await client.chat.completions.create(
+        model=OPENAI_MODEL,
+        messages=[
+            {"role": "system", "content": system_prompt},
+            {
+                "role": "user",
+                "content": json.dumps(context, ensure_ascii=True, separators=(",", ":")),
+            },
+        ],
+        response_format=response_format,
+        temperature=0.2,
+        max_tokens=500,
+    )
+    message = completion.choices[0].message
+    if message.refusal or not message.content:
+        raise ValueError("The LLM did not return a structured response.")
+    return message.content

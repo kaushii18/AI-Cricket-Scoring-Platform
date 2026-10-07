@@ -31,3 +31,11 @@ INSIGHTS_CACHE_TTL_SECONDS = max(
     0,
     int(os.getenv("INSIGHTS_CACHE_TTL_SECONDS", "120")),
 )
+configured_history_path = Path(
+    os.getenv("PREDICTION_HISTORY_PATH", "data/prediction_history.json")
+).expanduser()
+PREDICTION_HISTORY_PATH = (
+    configured_history_path
+    if configured_history_path.is_absolute()
+    else SERVICE_DIRECTORY / configured_history_path
+)

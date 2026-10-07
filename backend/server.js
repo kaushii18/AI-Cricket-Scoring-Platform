@@ -8,9 +8,14 @@ const supabase = require("./supabase");
 const { undoLegacyDelivery } = require("./undo");
 const {
     analyzeMatch,
+    analyzeMatchMomentum,
+    analyzePlayers,
+    analyzeTournament,
     checkAiHealth,
+    getPredictionHistory,
     predictMatchWin,
-    requestMatchInsights
+    requestMatchInsights,
+    summarizeMatch
 } = require("./ai-service");
 
 const app = express();
@@ -724,6 +729,63 @@ app.post(
         });
         return respondWithAiResult(response, result, "insights");
 
+    }
+);
+
+
+app.post(
+    "/api/ai/momentum",
+    async (request, response) => {
+        const match = findSavedMatchForAi(request, response);
+        if (!match) return;
+        const result = await analyzeMatchMomentum(match);
+        return respondWithAiResult(response, result, "analysis");
+    }
+);
+
+
+app.post(
+    "/api/ai/player-analysis",
+    async (request, response) => {
+        const match = findSavedMatchForAi(request, response);
+        if (!match) return;
+        const result = await analyzePlayers(match);
+        return respondWithAiResult(response, result, "analysis");
+    }
+);
+
+
+app.post(
+    "/api/ai/match-summary",
+    async (request, response) => {
+        const match = findSavedMatchForAi(request, response);
+        if (!match) return;
+        const result = await summarizeMatch(match);
+        return respondWithAiResult(response, result, "summary");
+    }
+);
+
+
+app.get(
+    "/api/ai/prediction-history/:id",
+    async (request, response) => {
+        const match = readMatches().find(
+            (item) => item.id === request.params.id
+        );
+        if (!match) {
+            return response.status(404).json({ message: "Match not found." });
+        }
+        const result = await getPredictionHistory(match.id);
+        return respondWithAiResult(response, result, "history");
+    }
+);
+
+
+app.get(
+    "/api/ai/tournament",
+    async (request, response) => {
+        const result = await analyzeTournament(readMatches());
+        return respondWithAiResult(response, result, "analytics");
     }
 );
 

@@ -8,6 +8,7 @@ from fastapi import FastAPI
 from openai import AsyncOpenAI
 
 from app.api.routes.analytics import router as analytics_router
+from app.api.routes.advanced import router as advanced_router
 from app.api.routes.insights import router as insights_router
 from app.api.routes.predictions import router as predictions_router
 from app.core.config import OPENAI_API_KEY, OPENAI_TIMEOUT_SECONDS
@@ -49,6 +50,7 @@ app = FastAPI(
     lifespan=lifespan,
 )
 app.include_router(analytics_router)
+app.include_router(advanced_router)
 app.include_router(insights_router)
 app.include_router(predictions_router)
 

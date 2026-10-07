@@ -7,6 +7,7 @@ from fastapi import APIRouter, HTTPException, Request
 
 from app.core.config import MIN_TRAINING_MATCHES
 from app.services.cricket_analytics import calculate_match_analytics
+from app.services.prediction_history import list_match_snapshots, record_over_snapshot
 from app.services.win_prediction import extract_win_features, feature_vector
 
 logger = logging.getLogger(__name__)
@@ -54,6 +55,11 @@ async def predict_win(match: dict[str, Any], request: Request) -> dict[str, Any]
         probabilities = model.predict_proba([feature_vector(features)])[0]
         classes = list(model.classes_)
         batting_probability = float(probabilities[classes.index(1)])
+        record_over_snapshot(
+            match,
+            batting_probability,
+            model_version=bundle["model_version"],
+        )
     except Exception as error:
         logger.exception("Win prediction failed")
         raise HTTPException(
@@ -67,4 +73,12 @@ async def predict_win(match: dict[str, Any], request: Request) -> dict[str, Any]
         "batting_team_win_probability": batting_probability,
         "bowling_team_win_probability": 1.0 - batting_probability,
         "model_version": bundle["model_version"],
+    }
+
+
+@router.get("/predict/win/history/{match_id}")
+async def prediction_history(match_id: str) -> dict[str, Any]:
+    return {
+        "match_id": match_id,
+        "snapshots": list_match_snapshots(match_id),
     }

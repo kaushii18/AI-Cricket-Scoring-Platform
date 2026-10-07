@@ -95,6 +95,22 @@
             "/ai/insights",
             { matchId }
         ),
+        matchMomentum: (matchId) => nodePost(
+            "/ai/momentum",
+            { matchId }
+        ),
+        playerAnalysis: (matchId) => nodePost(
+            "/ai/player-analysis",
+            { matchId }
+        ),
+        matchSummary: (matchId) => nodePost(
+            "/ai/match-summary",
+            { matchId }
+        ),
+        predictionHistory: (matchId) => nodeRequest(
+            `/ai/prediction-history/${encodeURIComponent(matchId)}`
+        ),
+        tournamentAnalytics: () => nodeRequest("/ai/tournament"),
         recordBall: (matchId, ball) => post(`/matches/${encodeURIComponent(matchId)}/balls`, ball),
         undoBall: (matchId) => post(`/matches/${encodeURIComponent(matchId)}/undo`, {}),
         updatePlayers: (matchId, players) => post(`/matches/${encodeURIComponent(matchId)}/players`, players),

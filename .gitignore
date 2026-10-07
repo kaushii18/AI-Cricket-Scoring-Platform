@@ -8,3 +8,4 @@ __pycache__/
 !.env.example
 *.log
 python-ai-service/models/*.joblib
+python-ai-service/data/*.json
