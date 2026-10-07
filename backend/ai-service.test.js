@@ -1,6 +1,6 @@
 const test = require("node:test");
 const assert = require("node:assert/strict");
-const { checkAiHealth } = require("./ai-service");
+const { analyzeMatch, checkAiHealth } = require("./ai-service");
 
 function mockResponse(status, payload) {
     return {
@@ -83,4 +83,28 @@ test("returns an unavailable fallback when the health check times out", async (c
 
     assert.equal(health.available, false);
     assert.match(health.error, /timed out after 5 ms/);
+});
+
+test("posts the supplied CricPulse match record for analysis", async () => {
+    const match = {
+        id: "saved-match",
+        overs: 5,
+        currentInnings: 1,
+        battingTeam: "Falcons"
+    };
+    const analysis = await analyzeMatch(match, {
+        serviceUrl: "http://ai.test",
+        fetchImpl: async (url, options) => {
+            assert.equal(url, "http://ai.test/analyze/match");
+            assert.equal(options.method, "POST");
+            assert.equal(options.headers["content-type"], "application/json");
+            assert.deepEqual(JSON.parse(options.body), match);
+            return mockResponse(200, { current_run_rate: 6.5 });
+        }
+    });
+
+    assert.deepEqual(analysis, {
+        available: true,
+        analysis: { current_run_rate: 6.5 }
+    });
 });

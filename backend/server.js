@@ -6,7 +6,7 @@ const { randomInt, randomUUID } = require("crypto");
 const { Server } = require("socket.io");
 const supabase = require("./supabase");
 const { undoLegacyDelivery } = require("./undo");
-const { checkAiHealth } = require("./ai-service");
+const { analyzeMatch, checkAiHealth } = require("./ai-service");
 
 const app = express();
 
@@ -646,6 +646,46 @@ app.get(
         return response
             .status(health.available ? 200 : 503)
             .json(health);
+
+    }
+);
+
+
+app.post(
+    "/api/ai/analyze/match",
+    async (request, response) => {
+
+        const matchId = request.body?.matchId;
+        if (typeof matchId !== "string" || !matchId.trim()) {
+            return response
+                .status(400)
+                .json({
+                    message: "A saved matchId is required."
+                });
+        }
+
+        const match = readMatches().find(
+            (item) => item.id === matchId
+        );
+        if (!match) {
+            return response
+                .status(404)
+                .json({
+                    message: "Match not found."
+                });
+        }
+
+        const result = await analyzeMatch(match);
+        if (!result.available) {
+            const statusCode = result.upstream_status === 422
+                ? 422
+                : 503;
+            return response
+                .status(statusCode)
+                .json(result);
+        }
+
+        return response.json(result.analysis);
 
     }
 );

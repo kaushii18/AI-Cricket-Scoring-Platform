@@ -107,7 +107,7 @@ SUPABASE_PUBLISHABLE_KEY=your-publishable-key
 
 `SUPABASE_ANON_KEY` is also accepted in place of `SUPABASE_PUBLISHABLE_KEY`. The Supabase `teams` table should provide the `name`, `short_name`, and `created_at` fields used by the API. Without Supabase configuration, the app can still run and score matches, but team API requests will not be backed by Supabase.
 
-The Node backend can optionally check the independent AI service using `AI_SERVICE_URL` (default `http://127.0.0.1:8001`) and `AI_SERVICE_TIMEOUT_MS` (default `2000`). Add these settings to `backend/.env`; `backend/.env.example` contains safe defaults. `GET /api/ai/health` reports availability. A failed health check is logged and returned as unavailable; scoring requests do not call the AI service and continue independently.
+The Node backend can optionally communicate with the independent AI service using `AI_SERVICE_URL` (default `http://127.0.0.1:8001`) and `AI_SERVICE_TIMEOUT_MS` (default `2000`). Add these settings to `backend/.env`; `backend/.env.example` contains safe defaults. `GET /api/ai/health` reports availability. `POST /api/ai/analyze/match` accepts `{ "matchId": "..." }`; Node loads the saved CricPulse record and forwards it to Python's `POST /analyze/match`. AI failures are logged and returned as unavailable; scoring requests do not call the AI service and continue independently.
 
 ## API
 
@@ -117,6 +117,7 @@ All endpoints use JSON where a request body is required.
 | --- | --- | --- |
 | `GET` | `/api/health` | Check that the server is running. |
 | `GET` | `/api/ai/health` | Check whether the independent Python AI service is available. |
+| `POST` | `/api/ai/analyze/match` | Analyze a saved match by `matchId` using the deterministic Python analytics service. |
 | `GET` | `/api/matches` | List locally saved matches. |
 | `GET` | `/api/matches/:id` | Get a match by ID. |
 | `POST` | `/api/matches` | Create a toss-pending match. Provide `team1`, `team2`, `overs`, `team1Players`, `team2Players`, and optional `team1Captain` / `team2Captain`. |
@@ -165,7 +166,7 @@ python -m unittest discover -s tests
 
 ### Start the AI Service Foundation
 
-The independent AI service currently provides only a health endpoint; it does not make predictions or participate in scoring. From the project root, create its environment and install its minimal dependencies:
+The independent AI service provides deterministic match analytics from the saved CricPulse match structure. It does not use an LLM or ML model, and it does not participate in or modify scoring. `POST /analyze/match` accepts a full match record; the Node proxy accepts a saved `matchId` at `POST /api/ai/analyze/match` and forwards the Node-owned record. Unavailable chase metrics and projections are returned as `null`; `overs_remaining` uses cricket notation such as `7.2` for seven overs and two balls. From the project root, create its environment and install its minimal dependencies:
 
 ```bash
 cd python-ai-service
@@ -206,7 +207,10 @@ python-backend/
   tests/              Python analytics tests
   requirements.txt    FastAPI service dependencies
 python-ai-service/
-  app/main.py         Independent AI service health endpoint
+  app/api/routes/     Deterministic match analysis endpoint
+  app/services/       Cricket rate, chase, and projection calculations
+  tests/              Analytics edge-case tests
+  app/main.py         Independent FastAPI application
   run.py              Loads .env and starts the service
   requirements.txt    Minimal AI service dependencies
 docs/

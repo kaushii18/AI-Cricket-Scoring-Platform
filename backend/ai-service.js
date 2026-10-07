@@ -1,16 +1,22 @@
 const DEFAULT_AI_SERVICE_URL = "http://127.0.0.1:8001";
 const DEFAULT_TIMEOUT_MS = 2000;
 
-function unavailable(message) {
-    return {
+function unavailable(message, upstreamStatus) {
+    const result = {
         available: false,
         status: "unavailable",
         service: "cricpulse-ai",
         error: message
     };
+
+    if (upstreamStatus) {
+        result.upstream_status = upstreamStatus;
+    }
+
+    return result;
 }
 
-async function checkAiHealth(options = {}) {
+async function requestAiService(path, options = {}) {
     const serviceUrl = (
         options.serviceUrl ||
         process.env.AI_SERVICE_URL ||
@@ -27,7 +33,7 @@ async function checkAiHealth(options = {}) {
     if (typeof fetchImpl !== "function") {
         const message = "Node.js fetch is unavailable; use Node.js 18 or later.";
         console.error(`[AI service] ${message}`);
-        return unavailable(message);
+        return { ...unavailable(message), payload: null };
     }
 
     const controller = new AbortController();
@@ -37,16 +43,26 @@ async function checkAiHealth(options = {}) {
     );
 
     try {
-        const response = await fetchImpl(`${serviceUrl}/health`, {
-            method: "GET",
-            headers: { accept: "application/json" },
+        const headers = { accept: "application/json" };
+        const requestOptions = {
+            method: options.method || "GET",
+            headers,
             signal: controller.signal
+        };
+
+        if (options.body !== undefined) {
+            headers["content-type"] = "application/json";
+            requestOptions.body = JSON.stringify(options.body);
+        }
+
+        const response = await fetchImpl(`${serviceUrl}${path}`, {
+            ...requestOptions,
         });
 
         if (!response.ok) {
             const message = `AI service returned HTTP ${response.status}.`;
             console.warn(`[AI service] ${message}`);
-            return unavailable(message);
+            return { ...unavailable(message, response.status), payload: null };
         }
 
         let payload;
@@ -55,30 +71,59 @@ async function checkAiHealth(options = {}) {
         } catch (error) {
             const message = "AI service returned an invalid health response.";
             console.warn(`[AI service] ${message}`, error.message);
-            return unavailable(message);
+            return { ...unavailable(message), payload: null };
         }
 
-        if (payload?.status !== "ok" || payload?.service !== "cricpulse-ai") {
-            const message = "AI service returned an unexpected health response.";
-            console.warn(`[AI service] ${message}`);
-            return unavailable(message);
-        }
-
-        return {
-            available: true,
-            status: payload.status,
-            service: payload.service
-        };
+        return { available: true, payload };
     } catch (error) {
         const timedOut = controller.signal.aborted;
         const message = timedOut
             ? `AI service health check timed out after ${timeoutMs} ms.`
             : "Unable to connect to the AI service.";
         console.warn(`[AI service] ${message}`, error.message);
-        return unavailable(message);
+        return { ...unavailable(message), payload: null };
     } finally {
         clearTimeout(timeout);
     }
 }
 
-module.exports = { checkAiHealth };
+async function checkAiHealth(options = {}) {
+    const result = await requestAiService("/health", options);
+    if (!result.available) {
+        return result;
+    }
+
+    if (
+        result.payload?.status !== "ok" ||
+        result.payload?.service !== "cricpulse-ai"
+    ) {
+        const message = "AI service returned an unexpected health response.";
+        console.warn(`[AI service] ${message}`);
+        return unavailable(message);
+    }
+
+    return {
+        available: true,
+        status: result.payload.status,
+        service: result.payload.service
+    };
+}
+
+async function analyzeMatch(match, options = {}) {
+    const result = await requestAiService("/analyze/match", {
+        ...options,
+        method: "POST",
+        body: match
+    });
+
+    if (!result.available) {
+        return result;
+    }
+
+    return {
+        available: true,
+        analysis: result.payload
+    };
+}
+
+module.exports = { analyzeMatch, checkAiHealth };
