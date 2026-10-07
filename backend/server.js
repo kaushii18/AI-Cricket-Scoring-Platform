@@ -6,6 +6,7 @@ const { randomInt, randomUUID } = require("crypto");
 const { Server } = require("socket.io");
 const supabase = require("./supabase");
 const { undoLegacyDelivery } = require("./undo");
+const { checkAiHealth } = require("./ai-service");
 
 const app = express();
 
@@ -631,6 +632,20 @@ app.get(
         response.json({
             status: "ok"
         });
+
+    }
+);
+
+
+app.get(
+    "/api/ai/health",
+    async (request, response) => {
+
+        const health = await checkAiHealth();
+
+        return response
+            .status(health.available ? 200 : 503)
+            .json(health);
 
     }
 );

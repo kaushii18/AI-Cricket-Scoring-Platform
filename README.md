@@ -107,6 +107,8 @@ SUPABASE_PUBLISHABLE_KEY=your-publishable-key
 
 `SUPABASE_ANON_KEY` is also accepted in place of `SUPABASE_PUBLISHABLE_KEY`. The Supabase `teams` table should provide the `name`, `short_name`, and `created_at` fields used by the API. Without Supabase configuration, the app can still run and score matches, but team API requests will not be backed by Supabase.
 
+The Node backend can optionally check the independent AI service using `AI_SERVICE_URL` (default `http://127.0.0.1:8001`) and `AI_SERVICE_TIMEOUT_MS` (default `2000`). Add these settings to `backend/.env`; `backend/.env.example` contains safe defaults. `GET /api/ai/health` reports availability. A failed health check is logged and returned as unavailable; scoring requests do not call the AI service and continue independently.
+
 ## API
 
 All endpoints use JSON where a request body is required.
@@ -114,6 +116,7 @@ All endpoints use JSON where a request body is required.
 | Method | Endpoint | Purpose |
 | --- | --- | --- |
 | `GET` | `/api/health` | Check that the server is running. |
+| `GET` | `/api/ai/health` | Check whether the independent Python AI service is available. |
 | `GET` | `/api/matches` | List locally saved matches. |
 | `GET` | `/api/matches/:id` | Get a match by ID. |
 | `POST` | `/api/matches` | Create a toss-pending match. Provide `team1`, `team2`, `overs`, `team1Players`, `team2Players`, and optional `team1Captain` / `team2Captain`. |
