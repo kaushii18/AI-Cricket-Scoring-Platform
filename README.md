@@ -166,7 +166,11 @@ python -m unittest discover -s tests
 
 ### Start the AI Service Foundation
 
-The independent AI service provides deterministic match analytics from the saved CricPulse match structure. It does not use an LLM or ML model, and it does not participate in or modify scoring. `POST /analyze/match` accepts a full match record; the Node proxy accepts a saved `matchId` at `POST /api/ai/analyze/match` and forwards the Node-owned record. Unavailable chase metrics and projections are returned as `null`; `overs_remaining` uses cricket notation such as `7.2` for seven overs and two balls. From the project root, create its environment and install its minimal dependencies:
+The independent AI service provides deterministic match analytics and a supervised Logistic Regression win-prediction pipeline. It does not use an LLM or participate in scoring. `POST /analyze/match` accepts a full match record; the Node proxy accepts a saved `matchId` at `POST /api/ai/analyze/match` and forwards the Node-owned record. Unavailable chase metrics and projections are returned as `null`; `overs_remaining` uses cricket notation such as `7.2` for seven overs and two balls.
+
+The current local history has 9 decisive completed matches with both innings and ball-by-ball data, which is not enough for a credible match-grouped evaluation. Training requires at least 30 such matches. `POST /predict/win` accepts the current full CricPulse match record and returns HTTP 503 rather than inventing probabilities until a trained model is available. To train when more real CricPulse history is available, keep Node running, start the AI service environment, and run `python -m app.train_model` from `python-ai-service/`. The command fetches matches from Node, evaluates a grouped holdout using accuracy, log loss, Brier score, and ROC-AUC, then saves the model under `models/`; restart the AI service to load it.
+
+For the AI service, create its environment and install the required dependencies:
 
 ```bash
 cd python-ai-service
@@ -207,10 +211,11 @@ python-backend/
   tests/              Python analytics tests
   requirements.txt    FastAPI service dependencies
 python-ai-service/
-  app/api/routes/     Deterministic match analysis endpoint
-  app/services/       Cricket rate, chase, and projection calculations
-  tests/              Analytics edge-case tests
+  app/api/routes/     Match analysis and live win prediction endpoints
+  app/services/       Cricket analytics, prediction features, and model training
+  tests/              Analytics and prediction pipeline tests
   app/main.py         Independent FastAPI application
+  app/train_model.py  Fetch, evaluate, and save the win model
   run.py              Loads .env and starts the service
   requirements.txt    Minimal AI service dependencies
 docs/
@@ -229,5 +234,5 @@ frontend/
 - `backend/.env` and `node_modules/` are excluded from Git.
 - Match records are stored in a local JSON file, so they persist across server restarts on the same machine but are not shared across deployments.
 - Python is a separate REST facade used by the current frontend for match setup and scoring requests; run it alongside Node for the complete browser flow. The toss itself is handled by Express.
-- The initial Python insights are deterministic, rule-based summaries. Prediction and recommendation models can be added behind the analytics service without altering the current scoring engine.
+- The Python AI service includes deterministic match summaries and a supervised win-model pipeline. Its current historical archive is below the minimum training threshold, so win predictions remain unavailable until more completed match data is collected.
 - The match toss is generated once with Node's cryptographic random source and cannot be rerolled after saving. The saved toss winner and decision initialize both innings; historical toss-advice routes are not part of the live match flow.
