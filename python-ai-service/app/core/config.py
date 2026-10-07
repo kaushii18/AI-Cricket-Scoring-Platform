@@ -24,3 +24,10 @@ MODEL_PATH = (
 )
 
 MIN_TRAINING_MATCHES = int(os.getenv("WIN_MIN_TRAINING_MATCHES", "30"))
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "").strip()
+OPENAI_MODEL = os.getenv("OPENAI_MODEL", "gpt-4o-mini").strip()
+OPENAI_TIMEOUT_SECONDS = float(os.getenv("OPENAI_TIMEOUT_SECONDS", "20"))
+INSIGHTS_CACHE_TTL_SECONDS = max(
+    0,
+    int(os.getenv("INSIGHTS_CACHE_TTL_SECONDS", "120")),
+)

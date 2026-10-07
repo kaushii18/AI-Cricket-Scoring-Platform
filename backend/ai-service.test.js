@@ -1,6 +1,11 @@
 const test = require("node:test");
 const assert = require("node:assert/strict");
-const { analyzeMatch, checkAiHealth } = require("./ai-service");
+const {
+    analyzeMatch,
+    checkAiHealth,
+    predictMatchWin,
+    requestMatchInsights
+} = require("./ai-service");
 
 function mockResponse(status, payload) {
     return {
@@ -107,4 +112,44 @@ test("posts the supplied CricPulse match record for analysis", async () => {
         available: true,
         analysis: { current_run_rate: 6.5 }
     });
+});
+
+test("posts a saved match to the win prediction endpoint", async () => {
+    const match = { id: "saved-match", status: "LIVE" };
+    const result = await predictMatchWin(match, {
+        serviceUrl: "http://ai.test",
+        fetchImpl: async (url, options) => {
+            assert.equal(url, "http://ai.test/predict/win");
+            assert.equal(options.method, "POST");
+            assert.deepEqual(JSON.parse(options.body), match);
+            return mockResponse(200, {
+                batting_team_win_probability: 0.61,
+                bowling_team_win_probability: 0.39,
+                model_version: "v1"
+            });
+        }
+    });
+
+    assert.equal(result.available, true);
+    assert.equal(result.prediction.batting_team_win_probability, 0.61);
+});
+
+test("gives LLM insight requests a longer provider timeout", async () => {
+    const match = { id: "saved-match", status: "LIVE" };
+    const result = await requestMatchInsights(match, {
+        serviceUrl: "http://ai.test",
+        timeoutMs: 25000,
+        fetchImpl: async (url, options) => {
+            assert.equal(url, "http://ai.test/ai/insights");
+            assert.equal(options.signal.aborted, false);
+            assert.deepEqual(JSON.parse(options.body), match);
+            return mockResponse(200, {
+                headline: "A close contest",
+                insights: ["The chase is active.", "Recent deliveries are even."]
+            });
+        }
+    });
+
+    assert.equal(result.available, true);
+    assert.equal(result.insights.headline, "A close contest");
 });

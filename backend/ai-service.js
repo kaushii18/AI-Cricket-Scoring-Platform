@@ -78,7 +78,7 @@ async function requestAiService(path, options = {}) {
     } catch (error) {
         const timedOut = controller.signal.aborted;
         const message = timedOut
-            ? `AI service health check timed out after ${timeoutMs} ms.`
+            ? `AI service request timed out after ${timeoutMs} ms.`
             : "Unable to connect to the AI service.";
         console.warn(`[AI service] ${message}`, error.message);
         return { ...unavailable(message), payload: null };
@@ -126,4 +126,50 @@ async function analyzeMatch(match, options = {}) {
     };
 }
 
-module.exports = { analyzeMatch, checkAiHealth };
+async function predictMatchWin(match, options = {}) {
+    const result = await requestAiService("/predict/win", {
+        ...options,
+        method: "POST",
+        body: match
+    });
+
+    if (!result.available) {
+        return result;
+    }
+
+    return {
+        available: true,
+        prediction: result.payload
+    };
+}
+
+async function requestMatchInsights(match, options = {}) {
+    const configuredTimeout = Number(process.env.AI_INSIGHTS_TIMEOUT_MS);
+    const timeoutMs = options.timeoutMs || (
+        Number.isFinite(configuredTimeout) && configuredTimeout > 0
+            ? configuredTimeout
+            : 25000
+    );
+    const result = await requestAiService("/ai/insights", {
+        ...options,
+        timeoutMs,
+        method: "POST",
+        body: match
+    });
+
+    if (!result.available) {
+        return result;
+    }
+
+    return {
+        available: true,
+        insights: result.payload
+    };
+}
+
+module.exports = {
+    analyzeMatch,
+    checkAiHealth,
+    predictMatchWin,
+    requestMatchInsights
+};

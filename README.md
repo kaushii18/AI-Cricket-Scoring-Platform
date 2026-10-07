@@ -107,7 +107,7 @@ SUPABASE_PUBLISHABLE_KEY=your-publishable-key
 
 `SUPABASE_ANON_KEY` is also accepted in place of `SUPABASE_PUBLISHABLE_KEY`. The Supabase `teams` table should provide the `name`, `short_name`, and `created_at` fields used by the API. Without Supabase configuration, the app can still run and score matches, but team API requests will not be backed by Supabase.
 
-The Node backend can optionally communicate with the independent AI service using `AI_SERVICE_URL` (default `http://127.0.0.1:8001`) and `AI_SERVICE_TIMEOUT_MS` (default `2000`). Add these settings to `backend/.env`; `backend/.env.example` contains safe defaults. `GET /api/ai/health` reports availability. `POST /api/ai/analyze/match` accepts `{ "matchId": "..." }`; Node loads the saved CricPulse record and forwards it to Python's `POST /analyze/match`. AI failures are logged and returned as unavailable; scoring requests do not call the AI service and continue independently.
+The Node backend can optionally communicate with the independent AI service using `AI_SERVICE_URL` (default `http://127.0.0.1:8001`) and `AI_SERVICE_TIMEOUT_MS` (default `2000`). Add these settings to `backend/.env`; `backend/.env.example` contains safe defaults. `GET /api/ai/health` reports availability. The scorer uses the same-origin `/api/ai/analyze/match` and `/api/ai/predict/win` routes for numeric match metrics; Node loads the saved CricPulse record before forwarding it. `POST /api/ai/insights` invokes the LLM only when requested, with identical context cached for 120 seconds. It is not triggered by scoring or Socket.IO events. AI failures are shown as unavailable; scoring requests do not depend on the AI service.
 
 ## API
 
@@ -118,6 +118,8 @@ All endpoints use JSON where a request body is required.
 | `GET` | `/api/health` | Check that the server is running. |
 | `GET` | `/api/ai/health` | Check whether the independent Python AI service is available. |
 | `POST` | `/api/ai/analyze/match` | Analyze a saved match by `matchId` using the deterministic Python analytics service. |
+| `POST` | `/api/ai/predict/win` | Get live win probabilities for a saved match when a trained model is available. |
+| `POST` | `/api/ai/insights` | Request cached, fact-grounded LLM insights for a saved match. |
 | `GET` | `/api/matches` | List locally saved matches. |
 | `GET` | `/api/matches/:id` | Get a match by ID. |
 | `POST` | `/api/matches` | Create a toss-pending match. Provide `team1`, `team2`, `overs`, `team1Players`, `team2Players`, and optional `team1Captain` / `team2Captain`. |
@@ -167,6 +169,8 @@ python -m unittest discover -s tests
 ### Start the AI Service Foundation
 
 The independent AI service provides deterministic match analytics and a supervised Logistic Regression win-prediction pipeline. It does not use an LLM or participate in scoring. `POST /analyze/match` accepts a full match record; the Node proxy accepts a saved `matchId` at `POST /api/ai/analyze/match` and forwards the Node-owned record. Unavailable chase metrics and projections are returned as `null`; `overs_remaining` uses cricket notation such as `7.2` for seven overs and two balls.
+
+`POST /ai/insights` accepts a full CricPulse match record and generates structured natural-language observations using OpenAI. The endpoint is on-demand only; it is not connected to scoring or Socket.IO, and identical match contexts are cached for 120 seconds. Add your OpenAI key to the ignored local `python-ai-service/.env` as `OPENAI_API_KEY=...`; never put it in frontend files or commit it. Without a configured key, the endpoint returns HTTP 503. LLM observations are separate from ML win probabilities.
 
 The current local history has 9 decisive completed matches with both innings and ball-by-ball data, which is not enough for a credible match-grouped evaluation. Training requires at least 30 such matches. `POST /predict/win` accepts the current full CricPulse match record and returns HTTP 503 rather than inventing probabilities until a trained model is available. To train when more real CricPulse history is available, keep Node running, start the AI service environment, and run `python -m app.train_model` from `python-ai-service/`. The command fetches matches from Node, evaluates a grouped holdout using accuracy, log loss, Brier score, and ROC-AUC, then saves the model under `models/`; restart the AI service to load it.
 

@@ -6,7 +6,12 @@ const { randomInt, randomUUID } = require("crypto");
 const { Server } = require("socket.io");
 const supabase = require("./supabase");
 const { undoLegacyDelivery } = require("./undo");
-const { analyzeMatch, checkAiHealth } = require("./ai-service");
+const {
+    analyzeMatch,
+    checkAiHealth,
+    predictMatchWin,
+    requestMatchInsights
+} = require("./ai-service");
 
 const app = express();
 
@@ -37,6 +42,8 @@ const VALID_OVERS = new Set([
     20,
     50
 ]);
+
+const AI_INSIGHTS_TIMEOUT_MS = Number(process.env.AI_INSIGHTS_TIMEOUT_MS) || 25000;
 
 app.use(
     express.json({
@@ -625,6 +632,32 @@ function validateMatchInput(body) {
 // HEALTH
 // =====================================================
 
+function findSavedMatchForAi(request, response) {
+    const matchId = request.body?.matchId;
+    if (typeof matchId !== "string" || !matchId.trim()) {
+        response.status(400).json({ message: "A saved matchId is required." });
+        return null;
+    }
+
+    const match = readMatches().find((item) => item.id === matchId);
+    if (!match) {
+        response.status(404).json({ message: "Match not found." });
+        return null;
+    }
+
+    return match;
+}
+
+
+function respondWithAiResult(response, result, resultKey) {
+    if (!result.available) {
+        const statusCode = result.upstream_status === 422 ? 422 : 503;
+        return response.status(statusCode).json(result);
+    }
+
+    return response.json(result[resultKey]);
+}
+
 app.get(
     "/api/health",
     (request, response) => {
@@ -655,37 +688,41 @@ app.post(
     "/api/ai/analyze/match",
     async (request, response) => {
 
-        const matchId = request.body?.matchId;
-        if (typeof matchId !== "string" || !matchId.trim()) {
-            return response
-                .status(400)
-                .json({
-                    message: "A saved matchId is required."
-                });
-        }
-
-        const match = readMatches().find(
-            (item) => item.id === matchId
-        );
-        if (!match) {
-            return response
-                .status(404)
-                .json({
-                    message: "Match not found."
-                });
-        }
+        const match = findSavedMatchForAi(request, response);
+        if (!match) return;
 
         const result = await analyzeMatch(match);
-        if (!result.available) {
-            const statusCode = result.upstream_status === 422
-                ? 422
-                : 503;
-            return response
-                .status(statusCode)
-                .json(result);
-        }
+        return respondWithAiResult(response, result, "analysis");
 
-        return response.json(result.analysis);
+    }
+);
+
+
+app.post(
+    "/api/ai/predict/win",
+    async (request, response) => {
+
+        const match = findSavedMatchForAi(request, response);
+        if (!match) return;
+
+        const result = await predictMatchWin(match);
+        return respondWithAiResult(response, result, "prediction");
+
+    }
+);
+
+
+app.post(
+    "/api/ai/insights",
+    async (request, response) => {
+
+        const match = findSavedMatchForAi(request, response);
+        if (!match) return;
+
+        const result = await requestMatchInsights(match, {
+            timeoutMs: AI_INSIGHTS_TIMEOUT_MS
+        });
+        return respondWithAiResult(response, result, "insights");
 
     }
 );

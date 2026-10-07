@@ -1757,47 +1757,242 @@
             font-variant-numeric: tabular-nums;
         }
 
-        .score-page .ai-insights-card {
-            display: grid;
-            grid-template-columns: minmax(0, 1fr) auto;
-            align-items: center;
-            gap: 10px 20px;
-            margin: 18px 0;
-            padding: 20px 22px;
-            border: 1px solid rgba(220, 195, 115, 0.17);
-            border-radius: 15px;
-            background: linear-gradient(115deg, rgba(68, 55, 26, 0.22), rgba(19, 26, 18, 0.82) 68%);
+        .ai-analytics-section {
+            margin: 20px 0;
+            animation: ai-section-in 360ms ease both;
         }
 
-        .ai-insights-card .ai-kicker {
-            color: #d8c47f;
+        @keyframes ai-section-in {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .ai-analytics-heading,
+        .ai-panel-top,
+        .ai-insight-heading {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .ai-analytics-heading {
+            margin-bottom: 12px;
+        }
+
+        .ai-kicker,
+        .ai-panel-kicker {
+            color: #d7bd66;
             font-size: 9px;
             font-weight: 800;
-            letter-spacing: 0.13em;
+            letter-spacing: 0.12em;
         }
 
-        .ai-insights-card h2 {
-            margin: 6px 0 4px;
-            color: #edf1e8;
-            font-size: 16px;
+        .ai-analytics-heading h2 {
+            margin: 4px 0 0;
+            color: #eef2e9;
+            font-size: 17px;
+            font-weight: 750;
         }
 
-        .ai-insights-card p {
-            margin: 0;
-            color: #9da69a;
+        .ai-analytics-status {
+            color: #9aab9b;
+            font-size: 10px;
+            text-align: right;
+        }
+
+        .ai-analytics-status.is-unavailable {
+            color: #e0c36c;
+        }
+
+        .ai-analytics-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 11px;
+        }
+
+        .ai-panel {
+            min-width: 0;
+            padding: 15px 16px;
+            border: 1px solid rgba(156, 185, 155, 0.14);
+            border-radius: 10px;
+            background: linear-gradient(145deg, rgba(20, 43, 30, 0.96), rgba(11, 25, 19, 0.98));
+        }
+
+        .ai-win-panel {
+            grid-column: span 2;
+            border-color: rgba(215, 189, 102, 0.22);
+            background: linear-gradient(125deg, rgba(37, 53, 32, 0.98), rgba(13, 29, 21, 0.98));
+        }
+
+        .ai-panel-top small {
+            color: #89988b;
+            font-size: 9px;
+            font-weight: 700;
+        }
+
+        .ai-win-sides {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+            gap: 18px;
+            margin: 14px 0 11px;
+        }
+
+        .ai-win-side {
+            display: grid;
+            gap: 4px;
+            min-width: 0;
+        }
+
+        .ai-win-side:last-child {
+            text-align: right;
+        }
+
+        .ai-win-team {
+            overflow-wrap: anywhere;
+            color: #b3c0b2;
             font-size: 11px;
-            line-height: 1.6;
         }
 
-        .ai-insights-card .ai-status {
-            padding: 7px 10px;
-            border: 1px solid rgba(220, 195, 115, 0.2);
-            border-radius: 999px;
-            color: #d8c47f;
-            font-size: 8px;
+        .ai-win-probability {
+            color: #f2f1e8;
+            font-size: 25px;
             font-weight: 800;
-            letter-spacing: 0.08em;
-            white-space: nowrap;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .ai-probability-bar {
+            display: flex;
+            overflow: hidden;
+            height: 7px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .ai-probability-bar span {
+            display: block;
+            height: 100%;
+            transition: width 260ms ease;
+        }
+
+        .ai-probability-batting {
+            background: #d7bd66;
+        }
+
+        .ai-probability-bowling {
+            background: #4d825d;
+        }
+
+        .ai-panel-note,
+        .ai-insight-status {
+            margin: 9px 0 0;
+            color: #92a093;
+            font-size: 10px;
+            line-height: 1.5;
+        }
+
+        .ai-metric-label {
+            display: block;
+            color: #a6b3a5;
+            font-size: 10px;
+        }
+
+        .ai-metric-value {
+            display: block;
+            margin-top: 11px;
+            color: #f0f2ea;
+            font-size: 27px;
+            font-weight: 800;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .ai-metric-footnote {
+            display: block;
+            margin-top: 4px;
+            color: #879589;
+            font-size: 9px;
+        }
+
+        .ai-required-panel {
+            grid-column: span 2;
+        }
+
+        .ai-required-rows {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 10px;
+            margin-top: 14px;
+        }
+
+        .ai-required-rows strong {
+            display: block;
+            margin-top: 5px;
+            color: #f0f2ea;
+            font-size: 18px;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .ai-momentum-value {
+            display: block;
+            margin-top: 12px;
+            color: #e5ce7b;
+            font-size: 17px;
+            font-weight: 750;
+        }
+
+        .ai-insight-panel {
+            grid-column: 1 / -1;
+            border-color: rgba(215, 189, 102, 0.2);
+        }
+
+        .ai-insight-heading h3 {
+            margin: 0;
+            color: #eff2e9;
+            font-size: 13px;
+        }
+
+        .ai-insight-button {
+            min-height: 34px;
+            padding: 0 12px;
+            border: 1px solid rgba(215, 189, 102, 0.45);
+            border-radius: 7px;
+            background: rgba(215, 189, 102, 0.1);
+            color: #e7d58f;
+            font-size: 10px;
+            font-weight: 750;
+            cursor: pointer;
+            transition: background 160ms ease, border-color 160ms ease;
+        }
+
+        .ai-insight-button:hover:not(:disabled) {
+            border-color: #d7bd66;
+            background: rgba(215, 189, 102, 0.19);
+        }
+
+        .ai-insight-button:disabled {
+            opacity: 0.55;
+            cursor: wait;
+        }
+
+        .ai-insight-headline {
+            margin: 13px 0 5px;
+            color: #f0f2ea;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .ai-insight-list {
+            display: grid;
+            gap: 6px;
+            margin: 8px 0 0;
+            padding-left: 18px;
+            color: #b7c1b5;
+            font-size: 11px;
+            line-height: 1.55;
+        }
+
+        .ai-insight-list li::marker {
+            color: #d7bd66;
         }
 
         @media (max-width: 640px) {
@@ -1856,18 +2051,69 @@
                 font-size: 13px;
             }
 
-            .score-page .ai-insights-card {
-                grid-template-columns: 1fr;
-                padding: 17px;
+            .score-page .ai-analytics-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
             }
 
-            .score-page .ai-insights-card .ai-status {
-                justify-self: start;
+            .score-page .ai-win-panel,
+            .score-page .ai-required-panel {
+                grid-column: span 2;
+            }
+
+            .score-page .ai-insight-panel {
+                grid-column: 1 / -1;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .score-page .ai-analytics-heading {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .score-page .ai-analytics-status {
+                text-align: left;
+            }
+
+            .score-page .ai-analytics-grid {
+                grid-template-columns: minmax(0, 1fr);
+            }
+
+            .score-page .ai-win-panel,
+            .score-page .ai-required-panel,
+            .score-page .ai-insight-panel {
+                grid-column: auto;
+            }
+
+            .score-page .ai-panel {
+                padding: 14px;
+            }
+
+            .score-page .ai-required-rows {
+                gap: 6px;
+            }
+
+            .score-page .ai-required-rows strong {
+                font-size: 16px;
+            }
+
+            .score-page .ai-insight-heading {
+                align-items: flex-start;
+                flex-direction: column;
             }
         }
 
         @media (prefers-reduced-motion: reduce) {
             .score-section-nav a {
+                transition: none;
+            }
+
+            .ai-analytics-section {
+                animation: none;
+            }
+
+            .ai-probability-bar span,
+            .ai-insight-button {
                 transition: none;
             }
         }
@@ -2251,13 +2497,88 @@
 
     </section>
 
-    <section class="ai-insights-card" aria-labelledby="aiInsightsTitle">
-        <div>
-            <span class="ai-kicker">CRICPULSE AI INSIGHTS</span>
-            <h2 id="aiInsightsTitle">Match intelligence, when connected.</h2>
-            <p>AI predictions are not enabled for this match. No projected scores or win probabilities are shown until an AI service is connected.</p>
+    <section class="ai-analytics-section" aria-labelledby="aiAnalyticsTitle">
+        <header class="ai-analytics-heading">
+            <div>
+                <span class="ai-kicker">CRICPULSE AI</span>
+                <h2 id="aiAnalyticsTitle">Match analytics</h2>
+            </div>
+            <span id="aiServiceStatus" class="ai-analytics-status" role="status" aria-live="polite">
+                Waiting for match data
+            </span>
+        </header>
+
+        <div class="ai-analytics-grid">
+            <article class="ai-panel ai-win-panel" aria-labelledby="aiWinTitle">
+                <div class="ai-panel-top">
+                    <span id="aiWinTitle" class="ai-panel-kicker">WIN PROBABILITY</span>
+                    <small id="aiModelVersion">MODEL —</small>
+                </div>
+                <div class="ai-win-sides">
+                    <div class="ai-win-side">
+                        <span id="aiBattingTeam" class="ai-win-team">Batting team</span>
+                        <strong id="aiBattingProbability" class="ai-win-probability">—</strong>
+                    </div>
+                    <div class="ai-win-side">
+                        <span id="aiBowlingTeam" class="ai-win-team">Bowling team</span>
+                        <strong id="aiBowlingProbability" class="ai-win-probability">—</strong>
+                    </div>
+                </div>
+                <div id="aiProbabilityBar" class="ai-probability-bar" role="img" aria-label="Win probability unavailable">
+                    <span id="aiBattingProbabilityBar" class="ai-probability-batting" style="width: 0%"></span>
+                    <span id="aiBowlingProbabilityBar" class="ai-probability-bowling" style="width: 0%"></span>
+                </div>
+                <p id="aiWinNote" class="ai-panel-note">Model probability will appear when a trained model is available.</p>
+            </article>
+
+            <article class="ai-panel" aria-labelledby="aiProjectionTitle">
+                <span id="aiProjectionTitle" class="ai-metric-label">PROJECTED SCORE</span>
+                <strong id="aiProjectedScore" class="ai-metric-value">—</strong>
+                <small id="aiProjectionNote" class="ai-metric-footnote">Current innings projection</small>
+            </article>
+
+            <article class="ai-panel" aria-labelledby="aiMomentumTitle">
+                <span id="aiMomentumTitle" class="ai-metric-label">MOMENTUM</span>
+                <strong id="aiMomentumValue" class="ai-momentum-value">—</strong>
+                <p id="aiMomentumDetail" class="ai-panel-note">Recent delivery data will appear here.</p>
+            </article>
+
+            <article class="ai-panel ai-required-panel" aria-labelledby="aiRequiredTitle">
+                <span id="aiRequiredTitle" class="ai-panel-kicker">REQUIRED RUN RATE</span>
+                <div class="ai-required-rows">
+                    <div>
+                        <span class="ai-metric-label">Runs required</span>
+                        <strong id="aiRunsRequired">—</strong>
+                    </div>
+                    <div>
+                        <span class="ai-metric-label">Balls remaining</span>
+                        <strong id="aiBallsRemaining">—</strong>
+                    </div>
+                    <div>
+                        <span class="ai-metric-label">Required rate</span>
+                        <strong id="aiRequiredRate">—</strong>
+                    </div>
+                </div>
+                <small id="aiRequiredNote" class="ai-metric-footnote">Available after the first innings.</small>
+            </article>
+
+            <article class="ai-panel ai-insight-panel" aria-labelledby="aiInsightTitle">
+                <div class="ai-insight-heading">
+                    <div>
+                        <span class="ai-panel-kicker">AI INSIGHT</span>
+                        <h3 id="aiInsightTitle">Match read</h3>
+                    </div>
+                    <button id="generateAiInsightButton" class="ai-insight-button" type="button">
+                        Generate insight
+                    </button>
+                </div>
+                <p id="aiInsightHeadline" class="ai-insight-headline">Request an insight when you want a fresh match read.</p>
+                <ul id="aiInsightList" class="ai-insight-list" hidden></ul>
+                <p id="aiInsightStatus" class="ai-insight-status" role="status" aria-live="polite">
+                    Generated on request, not after every delivery.
+                </p>
+            </article>
         </div>
-        <span class="ai-status">AI NOT CONNECTED</span>
     </section>
 
 
@@ -2571,8 +2892,17 @@ let matchData = null;
 let selectedTossCallerTeam = null;
 let selectedTossCall = null;
 let tossRequestBusy = false;
+let aiRefreshTimeout = null;
+let aiRefreshSignature = null;
+let aiRefreshSequence = 0;
+let aiInsightBallCount = null;
+let aiAnalyticsAvailable = null;
+let aiModelAvailable = null;
+let aiLlmAvailable = null;
+let aiModelVersion = null;
 
 initializeTossControls();
+initializeAIControls();
 
 
 if (savedMatch) {
@@ -3234,6 +3564,353 @@ function renderMatch() {
 
     updateScoringControls();
 
+    updateAIMomentum();
+
+    updateAIInsightFreshness();
+
+    scheduleAIAnalytics();
+
+}
+
+
+function initializeAIControls() {
+    document
+        .getElementById("generateAiInsightButton")
+        ?.addEventListener("click", requestAIInsight);
+}
+
+
+function setAIServiceStatus(message, unavailable = false) {
+    const status = document.getElementById("aiServiceStatus");
+    if (!status) {
+        return;
+    }
+
+    status.textContent = message;
+    status.classList.toggle("is-unavailable", unavailable);
+}
+
+
+function syncAIServiceStatus() {
+    if (matchData?.status === "COMPLETED") {
+        setAIServiceStatus("MATCH COMPLETE");
+        return;
+    }
+
+    if (matchData?.status === "TOSS_PENDING") {
+        setAIServiceStatus("AVAILABLE AFTER TOSS");
+        return;
+    }
+
+    if (
+        aiAnalyticsAvailable === false ||
+        aiModelAvailable === false ||
+        aiLlmAvailable === false
+    ) {
+        setAIServiceStatus("AI analysis temporarily unavailable", true);
+        return;
+    }
+
+    if (aiAnalyticsAvailable && aiModelAvailable) {
+        setAIServiceStatus(`LIVE DATA · MODEL ${aiModelVersion || "V1"}`);
+        return;
+    }
+
+    setAIServiceStatus("UPDATING LIVE DATA");
+}
+
+
+function updateAITeamNames() {
+    const battingName = matchData?.battingTeam || "Batting team";
+    const bowlingName = matchData?.bowlingTeam || "Bowling team";
+    document.getElementById("aiBattingTeam").textContent = battingName;
+    document.getElementById("aiBowlingTeam").textContent = bowlingName;
+}
+
+
+function clearWinPrediction(message) {
+    document.getElementById("aiBattingProbability").textContent = "—";
+    document.getElementById("aiBowlingProbability").textContent = "—";
+    document.getElementById("aiBattingProbabilityBar").style.width = "0%";
+    document.getElementById("aiBowlingProbabilityBar").style.width = "0%";
+    document.getElementById("aiModelVersion").textContent = "MODEL —";
+    document.getElementById("aiWinNote").textContent = message;
+    document.getElementById("aiProbabilityBar").setAttribute(
+        "aria-label",
+        "Win probability unavailable"
+    );
+}
+
+
+function renderWinPrediction(prediction) {
+    const battingProbability = Number(prediction?.batting_team_win_probability);
+    const bowlingProbability = Number(prediction?.bowling_team_win_probability);
+    if (
+        !Number.isFinite(battingProbability) ||
+        !Number.isFinite(bowlingProbability) ||
+        battingProbability < 0 || battingProbability > 1 ||
+        bowlingProbability < 0 || bowlingProbability > 1
+    ) {
+        aiModelAvailable = false;
+        clearWinPrediction("No trained model probability is available.");
+        return;
+    }
+
+    const battingPercent = Math.round(battingProbability * 100);
+    const bowlingPercent = Math.round(bowlingProbability * 100);
+    document.getElementById("aiBattingProbability").textContent = `${battingPercent}%`;
+    document.getElementById("aiBowlingProbability").textContent = `${bowlingPercent}%`;
+    document.getElementById("aiBattingProbabilityBar").style.width = `${battingProbability * 100}%`;
+    document.getElementById("aiBowlingProbabilityBar").style.width = `${bowlingProbability * 100}%`;
+    document.getElementById("aiModelVersion").textContent = `MODEL ${prediction.model_version || "V1"}`;
+    document.getElementById("aiWinNote").textContent = "Probabilities from the trained match model.";
+    document.getElementById("aiProbabilityBar").setAttribute(
+        "aria-label",
+        `${matchData.battingTeam}: ${battingPercent} percent; ${matchData.bowlingTeam}: ${bowlingPercent} percent`
+    );
+    aiModelVersion = prediction.model_version || "V1";
+}
+
+
+function renderMatchAnalytics(analysis) {
+    const projectedScore = analysis.projected_score;
+    document.getElementById("aiProjectedScore").textContent =
+        projectedScore === null || projectedScore === undefined
+            ? "—"
+            : String(projectedScore);
+    document.getElementById("aiProjectionNote").textContent = analysis.innings_completed
+        ? "Innings complete"
+        : projectedScore === null || projectedScore === undefined
+            ? "Projection needs a legal delivery"
+            : `At ${Number(analysis.current_run_rate).toFixed(2)} runs per over`;
+
+    const chaseAvailable = analysis.current_innings === 2 && analysis.target !== null;
+    document.getElementById("aiRunsRequired").textContent = chaseAvailable
+        ? String(analysis.runs_required)
+        : "—";
+    document.getElementById("aiBallsRemaining").textContent = chaseAvailable
+        ? String(analysis.balls_remaining)
+        : "—";
+    document.getElementById("aiRequiredRate").textContent =
+        chaseAvailable && analysis.required_run_rate !== null
+            ? Number(analysis.required_run_rate).toFixed(2)
+            : "—";
+    document.getElementById("aiRequiredNote").textContent = chaseAvailable
+        ? analysis.innings_completed
+            ? "Chase complete"
+            : "From the current target and legal balls remaining"
+        : "Available during a chase with a known target";
+}
+
+
+function aiMatchStateSignature() {
+    if (!matchData?.id) {
+        return "";
+    }
+
+    const battingTeam = matchData.battingTeam === matchData.team1
+        ? matchData.teams?.team1
+        : matchData.teams?.team2;
+
+    return [
+        matchData.id,
+        matchData.status,
+        matchData.currentInnings,
+        matchData.battingTeam,
+        battingTeam?.runs,
+        battingTeam?.wickets,
+        battingTeam?.balls,
+        matchData.target
+    ].join(":");
+}
+
+
+function scheduleAIAnalytics() {
+    if (!matchData?.id || matchData.status === "TOSS_PENDING") {
+        syncAIServiceStatus();
+        return;
+    }
+
+    const signature = aiMatchStateSignature();
+    if (signature === aiRefreshSignature) {
+        return;
+    }
+    aiRefreshSignature = signature;
+    window.clearTimeout(aiRefreshTimeout);
+    aiRefreshTimeout = window.setTimeout(
+        () => refreshAIAnalytics(signature),
+        180
+    );
+}
+
+
+async function refreshAIAnalytics(signature) {
+    if (!matchData?.id || signature !== aiMatchStateSignature()) {
+        return;
+    }
+
+    const matchId = matchData.id;
+    const requestSequence = ++aiRefreshSequence;
+    updateAITeamNames();
+
+    const analysisRequest = window.CricPulsePythonAPI
+        .analyzeMatchState(matchId)
+        .catch(() => null);
+    const predictionRequest = matchData.status === "LIVE"
+        ? window.CricPulsePythonAPI.predictMatchWin(matchId).catch(() => null)
+        : Promise.resolve(null);
+    const [analysis, prediction] = await Promise.all([
+        analysisRequest,
+        predictionRequest
+    ]);
+
+    if (
+        requestSequence !== aiRefreshSequence ||
+        matchId !== matchData?.id ||
+        signature !== aiMatchStateSignature()
+    ) {
+        return;
+    }
+
+    aiAnalyticsAvailable = Boolean(analysis);
+    if (analysis) {
+        renderMatchAnalytics(analysis);
+    } else {
+        document.getElementById("aiProjectedScore").textContent = "—";
+        document.getElementById("aiProjectionNote").textContent =
+            "AI analysis temporarily unavailable";
+        document.getElementById("aiRunsRequired").textContent = "—";
+        document.getElementById("aiBallsRemaining").textContent = "—";
+        document.getElementById("aiRequiredRate").textContent = "—";
+    }
+
+    if (matchData.status === "LIVE") {
+        aiModelAvailable = Boolean(prediction);
+        if (prediction) {
+            renderWinPrediction(prediction);
+        } else {
+            clearWinPrediction("AI analysis temporarily unavailable");
+        }
+    } else {
+        aiModelAvailable = null;
+        clearWinPrediction("Live win probabilities are available during an active innings.");
+    }
+
+    syncAIServiceStatus();
+}
+
+
+function updateAIMomentum() {
+    if (!matchData) {
+        return;
+    }
+
+    const currentInnings = Number(matchData.currentInnings);
+    const inningsDeliveries = (Array.isArray(matchData.balls) ? matchData.balls : [])
+        .filter((ball) => Number(ball.innings) === currentInnings);
+    const recentDeliveries = [];
+    let legalBalls = 0;
+
+    for (let index = inningsDeliveries.length - 1; index >= 0; index -= 1) {
+        const delivery = inningsDeliveries[index];
+        recentDeliveries.unshift(delivery);
+        if (delivery.legalDelivery !== false) {
+            legalBalls += 1;
+            if (legalBalls === 6) {
+                break;
+            }
+        }
+    }
+
+    const recentRuns = recentDeliveries.reduce(
+        (total, ball) => total + (Number(ball.runs) || 0) + (Number(ball.extras) || 0),
+        0
+    );
+    const recentWickets = recentDeliveries.reduce(
+        (total, ball) => total + (Number(ball.wickets) || 0),
+        0
+    );
+    const battingTeam = getBattingTeamData();
+    const totalBalls = Number(battingTeam?.balls) || 0;
+    const currentRate = totalBalls ? (Number(battingTeam.runs) || 0) * 6 / totalBalls : 0;
+    const recentRate = legalBalls ? recentRuns * 6 / legalBalls : 0;
+
+    let momentum = "Building";
+    if (legalBalls > 0 && recentWickets > 0) {
+        momentum = "Bowling pressure";
+    } else if (legalBalls > 0 && recentRate > currentRate) {
+        momentum = "Batting momentum";
+    } else if (legalBalls > 0 && recentRate < currentRate) {
+        momentum = "Bowling pressure";
+    } else if (legalBalls > 0) {
+        momentum = "Even pace";
+    }
+
+    document.getElementById("aiMomentumValue").textContent = momentum;
+    document.getElementById("aiMomentumDetail").textContent = legalBalls
+        ? `${recentRuns} runs and ${recentWickets} wickets in the last ${legalBalls} legal balls.`
+        : "No deliveries recorded in this innings yet.";
+}
+
+
+function updateAIInsightFreshness() {
+    if (
+        aiInsightBallCount !== null &&
+        aiInsightBallCount !== (matchData?.balls?.length || 0)
+    ) {
+        document.getElementById("aiInsightStatus").textContent =
+            "Match changed. Generate a fresh insight when needed.";
+    }
+}
+
+
+async function requestAIInsight() {
+    const button = document.getElementById("generateAiInsightButton");
+    const headline = document.getElementById("aiInsightHeadline");
+    const list = document.getElementById("aiInsightList");
+    const status = document.getElementById("aiInsightStatus");
+    if (!matchData?.id || button.disabled) {
+        return;
+    }
+
+    const matchId = matchData.id;
+    const ballCount = matchData.balls?.length || 0;
+    button.disabled = true;
+    button.textContent = "Generating…";
+    status.textContent = "Preparing an insight from the current match data.";
+
+    try {
+        const result = await window.CricPulsePythonAPI.generateMatchInsights(matchId);
+        if (matchId !== matchData?.id) {
+            return;
+        }
+        if (ballCount !== (matchData.balls?.length || 0)) {
+            status.textContent = "Match changed. Generate a fresh insight when needed.";
+            return;
+        }
+
+        headline.textContent = result.headline;
+        list.replaceChildren(...result.insights.map((insight) => {
+            const item = document.createElement("li");
+            item.textContent = insight;
+            return item;
+        }));
+        list.hidden = false;
+        aiInsightBallCount = ballCount;
+        aiLlmAvailable = true;
+        status.textContent = "Grounded in the current CricPulse match record.";
+        syncAIServiceStatus();
+    } catch (error) {
+        aiLlmAvailable = false;
+        headline.textContent = "AI analysis temporarily unavailable";
+        list.replaceChildren();
+        list.hidden = true;
+        status.textContent = "AI analysis temporarily unavailable";
+        syncAIServiceStatus();
+    } finally {
+        button.disabled = false;
+        button.textContent = "Generate insight";
+    }
 }
 
 

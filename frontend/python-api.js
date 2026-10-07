@@ -43,7 +43,16 @@
         const payload = await response.json();
 
         if (!response.ok) {
-            throw new Error(payload.message || "The match server request failed.");
+            const detail = payload.detail;
+            const detailMessage = typeof detail === "string"
+                ? detail
+                : detail?.message;
+            throw new Error(
+                payload.message ||
+                payload.error ||
+                detailMessage ||
+                "The match server request failed."
+            );
         }
 
         return payload;
@@ -73,6 +82,18 @@
         matchesFromNode: () => nodeRequest("/matches"),
         matchFromNode: (matchId) => nodeRequest(
             `/matches/${encodeURIComponent(matchId)}`
+        ),
+        analyzeMatchState: (matchId) => nodePost(
+            "/ai/analyze/match",
+            { matchId }
+        ),
+        predictMatchWin: (matchId) => nodePost(
+            "/ai/predict/win",
+            { matchId }
+        ),
+        generateMatchInsights: (matchId) => nodePost(
+            "/ai/insights",
+            { matchId }
         ),
         recordBall: (matchId, ball) => post(`/matches/${encodeURIComponent(matchId)}/balls`, ball),
         undoBall: (matchId) => post(`/matches/${encodeURIComponent(matchId)}/undo`, {}),
