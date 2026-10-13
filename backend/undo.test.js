@@ -73,7 +73,7 @@ function createLegacyMatch() {
             }
         ],
         undoStack: []
-    };
+    };       
 }
 
 test("undoes the latest delivery when a legacy match has no snapshots", () => {
