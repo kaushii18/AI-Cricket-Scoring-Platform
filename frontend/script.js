@@ -556,28 +556,21 @@ function renderDashboardMatches() {
     const activeMatches = dashboardMatches.filter(
         (match) => match.status !== "COMPLETED"
     );
-    const completedMatches = dashboardMatches.filter(
-        (match) => match.status === "COMPLETED"
-    );
     const visibleActiveMatches = showAllDashboardMatches
         ? activeMatches
         : activeMatches.slice(0, 6);
-    const visibleCompletedMatches = showAllDashboardMatches
-        ? completedMatches
-        : completedMatches.slice(0, 4);
     const groups = [
-        createMatchGroup("In progress", visibleActiveMatches),
-        createMatchGroup("Recently completed", visibleCompletedMatches)
+        createMatchGroup("In progress", visibleActiveMatches)
     ].filter(Boolean);
 
     list.replaceChildren(...groups);
     if (toggle) {
-        const hasMoreMatches = activeMatches.length > 6 || completedMatches.length > 4;
+        const hasMoreMatches = activeMatches.length > 6;
         toggle.hidden = !hasMoreMatches;
         toggle.setAttribute("aria-expanded", String(showAllDashboardMatches));
         toggle.textContent = showAllDashboardMatches
             ? "Show fewer matches"
-            : `Show all ${dashboardMatches.length} matches`;
+            : `Show all ${activeMatches.length} matches`;
     }
 
     list.querySelectorAll("[data-match-id]").forEach((button) => {
@@ -671,6 +664,11 @@ async function loadDashboardMatches() {
             showMatchListState(
                 "Your next innings starts here",
                 "No saved matches yet. Create a match to start scoring."
+            );
+        } else if (activeCount === 0) {
+            showMatchListState(
+                "No matches in progress",
+                "Create a new match to start scoring."
             );
         } else {
             renderDashboardMatches();
