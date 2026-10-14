@@ -61,6 +61,33 @@ function getPlayerNameInputs(teamKey) {
 }
 
 
+let currentSquadSize = 11;
+
+function toggleCustomOvers(val) {
+    const customInput = document.getElementById("customOversInput");
+    if (!customInput) return;
+    if (val === "custom") {
+        customInput.style.display = "block";
+        customInput.focus();
+    } else {
+        customInput.style.display = "none";
+    }
+}
+
+function updateSquadSize(size) {
+    currentSquadSize = parseInt(size, 10) || 11;
+    const team1Name = document.getElementById("team1")?.value.trim() || "Team 1";
+    const team2Name = document.getElementById("team2")?.value.trim() || "Team 2";
+
+    const count1 = document.getElementById("team1RosterCount");
+    const count2 = document.getElementById("team2RosterCount");
+    if (count1) count1.textContent = `${currentSquadSize} PLAYERS`;
+    if (count2) count2.textContent = `${currentSquadSize} PLAYERS`;
+
+    buildPlayerNameInputs("team1", team1Name);
+    buildPlayerNameInputs("team2", team2Name);
+}
+
 function buildPlayerNameInputs(teamKey, teamName) {
 
     const roster =
@@ -72,7 +99,7 @@ function buildPlayerNameInputs(teamKey, teamName) {
 
     const inputs = [];
 
-    for (let index = 0; index < 11; index += 1) {
+    for (let index = 0; index < currentSquadSize; index += 1) {
 
         const input = document.createElement("input");
         const playerNumber = String(index + 1).padStart(2, "0");
@@ -185,8 +212,11 @@ async function handleMatchSubmit(event) {
     const team2 =
         team2Input.value.trim();
 
-    const overs =
-        Number(oversInput.value);
+    let overs = Number(oversInput.value);
+    if (oversInput.value === "custom") {
+        const customInput = document.getElementById("customOversInput");
+        overs = Number(customInput?.value);
+    }
 
     const team1Captain =
         document.getElementById("team1Captain")?.value.trim() || "";
@@ -220,10 +250,10 @@ async function handleMatchSubmit(event) {
     }
 
 
-    if (![5, 10, 20, 50].includes(overs)) {
+    if (!Number.isInteger(overs) || overs < 1 || overs > 50) {
 
         alert(
-            "Please select a valid number of overs."
+            "Please select or enter a valid number of overs (1-50)."
         );
 
         return;
@@ -379,6 +409,79 @@ function initializeLiveUpdates() {
         );
     });
 
+    socket.on("matches:imported", () => {
+        window.clearTimeout(window.cricPulseDashboardRefresh);
+        window.cricPulseDashboardRefresh = window.setTimeout(
+            loadDashboardMatches,
+            250
+        );
+    });
+
+}
+
+function initializeArchiveTools() {
+    const exportButton = document.getElementById("exportArchiveButton");
+    const importButton = document.getElementById("importArchiveButton");
+    const fileInput = document.getElementById("importArchiveFile");
+    const status = document.getElementById("archiveStatus");
+
+    if (!exportButton || !importButton || !fileInput || !status) {
+        return;
+    }
+
+    exportButton.addEventListener("click", async () => {
+        exportButton.disabled = true;
+        status.textContent = "Preparing your match archive…";
+        try {
+            const archive = await window.CricPulsePythonAPI.exportMatches();
+            const downloadUrl = URL.createObjectURL(archive);
+            const downloadLink = document.createElement("a");
+            downloadLink.href = downloadUrl;
+            downloadLink.download = `cricpulse-matches-${new Date().toISOString().slice(0, 10)}.json`;
+            downloadLink.click();
+            window.setTimeout(() => URL.revokeObjectURL(downloadUrl), 1000);
+            status.textContent = "Archive downloaded. Keep a copy somewhere safe.";
+        } catch (error) {
+            console.error("Unable to export match archive:", error);
+            status.textContent = error.message || "Unable to export the match archive.";
+        } finally {
+            exportButton.disabled = false;
+        }
+    });
+
+    importButton.addEventListener("click", () => fileInput.click());
+    fileInput.addEventListener("change", async () => {
+        const file = fileInput.files?.[0];
+        if (!file) {
+            return;
+        }
+
+        importButton.disabled = true;
+        exportButton.disabled = true;
+        status.textContent = "Checking archive…";
+        try {
+            if (file.size > 10 * 1024 * 1024) {
+                throw new Error("Archive files must be 10 MB or smaller.");
+            }
+
+            const archive = JSON.parse(await file.text());
+            const matches = Array.isArray(archive) ? archive : archive?.matches;
+            if (!Array.isArray(matches)) {
+                throw new Error("The selected file is not a CricPulse match archive.");
+            }
+
+            const result = await window.CricPulsePythonAPI.importMatches(matches);
+            status.textContent = `Imported ${result.importedCount} match(es). Existing history was kept.`;
+            await loadDashboardMatches();
+        } catch (error) {
+            console.error("Unable to import match archive:", error);
+            status.textContent = error.message || "Unable to import the match archive.";
+        } finally {
+            fileInput.value = "";
+            importButton.disabled = false;
+            exportButton.disabled = false;
+        }
+    });
 }
 
 
@@ -706,6 +809,7 @@ document.addEventListener(
     function () {
         populatePlayerInputDefaults();
         initializeLiveUpdates();
+        initializeArchiveTools();
         loadDashboardMatches();
 
         const menuToggle = document.querySelector(".menu-toggle");

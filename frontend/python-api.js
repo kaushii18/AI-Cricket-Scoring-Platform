@@ -1,4 +1,5 @@
-// Scoring REST requests use FastAPI, which forwards them to the existing Node engine.
+// Match creation and scoring use the same-origin Node API. The versioned Python
+// API remains available for optional REST and analytics endpoints.
 (function () {
     const defaultApiBase = `${window.location.protocol}//${window.location.hostname}:8000/api/v1`;
     const apiBase = (window.CRICPULSE_PYTHON_API_BASE || defaultApiBase)
@@ -58,6 +59,18 @@
         return payload;
     }
 
+    async function exportMatches() {
+        const response = await fetch(`${window.location.origin}/api/matches/export`);
+        if (!response.ok) {
+            const payload = await response.json();
+            throw new Error(
+                payload.message || "Unable to export the match archive."
+            );
+        }
+
+        return response.blob();
+    }
+
     function nodePost(path, body) {
         return nodeRequest(path, {
             method: "POST",
@@ -68,9 +81,9 @@
     window.CricPulsePythonAPI = Object.freeze({
         baseUrl: apiBase,
         health: () => request("/health"),
-        matches: () => request("/matches"),
-        match: (matchId) => request(`/matches/${encodeURIComponent(matchId)}`),
-        createMatch: (match) => post("/matches", match),
+        matches: () => nodeRequest("/matches"),
+        match: (matchId) => nodeRequest(`/matches/${encodeURIComponent(matchId)}`),
+        createMatch: (match) => nodePost("/matches", match),
         tossMatch: (matchId, callerTeam, call) => nodePost(
             `/matches/${encodeURIComponent(matchId)}/toss/flip`,
             { callerTeam, call }
@@ -80,6 +93,8 @@
             { actorTeam, decision }
         ),
         matchesFromNode: () => nodeRequest("/matches"),
+        exportMatches,
+        importMatches: (matches) => nodePost("/matches/import", { matches }),
         matchFromNode: (matchId) => nodeRequest(
             `/matches/${encodeURIComponent(matchId)}`
         ),
@@ -111,11 +126,15 @@
             `/ai/prediction-history/${encodeURIComponent(matchId)}`
         ),
         tournamentAnalytics: () => nodeRequest("/ai/tournament"),
-        recordBall: (matchId, ball) => post(`/matches/${encodeURIComponent(matchId)}/balls`, ball),
-        undoBall: (matchId) => post(`/matches/${encodeURIComponent(matchId)}/undo`, {}),
-        updatePlayers: (matchId, players) => post(`/matches/${encodeURIComponent(matchId)}/players`, players),
-        resetMatch: (matchId) => post(`/matches/${encodeURIComponent(matchId)}/reset`, {}),
-        setPlayerOfMatch: (matchId, playerId) => post(`/matches/${encodeURIComponent(matchId)}/player-of-the-match`, { playerId }),
+        recordBall: (matchId, ball) => nodePost(`/matches/${encodeURIComponent(matchId)}/balls`, ball),
+        undoBall: (matchId) => nodePost(`/matches/${encodeURIComponent(matchId)}/undo`, {}),
+        swapStrike: (matchId) => nodePost(`/matches/${encodeURIComponent(matchId)}/swap-strike`, {}),
+        changeBowler: (matchId, bowlerId) => nodePost(`/matches/${encodeURIComponent(matchId)}/change-bowler`, { bowlerId }),
+        changeBatsman: (matchId, data) => nodePost(`/matches/${encodeURIComponent(matchId)}/change-batsman`, data),
+        updatePlayerName: (matchId, playerId, name) => nodeRequest(`/matches/${encodeURIComponent(matchId)}/players/${encodeURIComponent(playerId)}`, { method: "PATCH", body: JSON.stringify({ name }) }),
+        updatePlayers: (matchId, players) => nodePost(`/matches/${encodeURIComponent(matchId)}/players`, players),
+        resetMatch: (matchId) => nodePost(`/matches/${encodeURIComponent(matchId)}/reset`, {}),
+        setPlayerOfMatch: (matchId, playerId) => nodePost(`/matches/${encodeURIComponent(matchId)}/player-of-the-match`, { playerId }),
         teams: () => request("/teams"),
         createTeam: (team) => post("/teams", team),
         players: (matchId) => request(`/matches/${encodeURIComponent(matchId)}/players`),

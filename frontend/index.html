@@ -86,6 +86,15 @@
                 </div>
                 <span id="matchListUpdated" class="updated-label" aria-live="polite">Connecting to match desk…</span>
             </div>
+            <div class="archive-toolbar" aria-label="Match archive tools">
+                <p class="archive-warning">Your archive is stored on this server, not in Supabase. Export backups regularly. Imports add new matches only; conflicting IDs are rejected without overwriting history.</p>
+                <div class="archive-actions">
+                    <button id="exportArchiveButton" class="secondary-button" type="button">Export archive</button>
+                    <button id="importArchiveButton" class="secondary-button" type="button">Import archive</button>
+                    <input id="importArchiveFile" type="file" accept=".json,application/json" hidden>
+                </div>
+                <p id="archiveStatus" class="archive-status" role="status" aria-live="polite"></p>
+            </div>
             <div id="dashboardMatchList" class="live-match-list" aria-live="polite" aria-busy="true">
                 <div class="match-state-card">
                     <span class="loading-spinner" aria-hidden="true"></span>
@@ -175,11 +184,27 @@
                 <div class="form-group-row">
                     <div class="form-group">
                         <label for="overs">Overs per innings</label>
-                        <select id="overs" name="overs" required>
-                            <option value="5">5 overs</option>
-                            <option value="10">10 overs</option>
-                            <option value="20" selected>20 overs</option>
-                            <option value="50">50 overs</option>
+                        <select id="overs" name="overs" required onchange="toggleCustomOvers(this.value)">
+                            <option value="5">5 overs (Quick)</option>
+                            <option value="8">8 overs (Box cricket)</option>
+                            <option value="10">10 overs (T10)</option>
+                            <option value="12">12 overs</option>
+                            <option value="15">15 overs</option>
+                            <option value="20" selected>20 overs (T20)</option>
+                            <option value="50">50 overs (ODI)</option>
+                            <option value="custom">Custom overs...</option>
+                        </select>
+                        <input type="number" id="customOversInput" placeholder="Enter overs (1-50)" min="1" max="50" style="display:none; margin-top:8px;">
+                    </div>
+                    <div class="form-group">
+                        <label for="playersPerTeam">Players per team</label>
+                        <select id="playersPerTeam" name="playersPerTeam" onchange="updateSquadSize(this.value)">
+                            <option value="6">6 players (Box cricket)</option>
+                            <option value="7">7 players</option>
+                            <option value="8">8 players (Gully cricket)</option>
+                            <option value="9">9 players</option>
+                            <option value="10">10 players</option>
+                            <option value="11" selected>11 players (Standard)</option>
                         </select>
                     </div>
                 </div>
@@ -188,11 +213,11 @@
 
                 <div class="player-team-grid">
                     <section class="player-team-panel">
-                        <div class="player-team-header"><h3 id="team1RosterHeading">First team squad</h3><span>11 PLAYERS</span></div>
+                        <div class="player-team-header"><h3 id="team1RosterHeading">First team squad</h3><span id="team1RosterCount">11 PLAYERS</span></div>
                         <div id="team1Roster" class="player-list-grid"></div>
                     </section>
                     <section class="player-team-panel">
-                        <div class="player-team-header"><h3 id="team2RosterHeading">Second team squad</h3><span>11 PLAYERS</span></div>
+                        <div class="player-team-header"><h3 id="team2RosterHeading">Second team squad</h3><span id="team2RosterCount">11 PLAYERS</span></div>
                         <div id="team2Roster" class="player-list-grid"></div>
                     </section>
                 </div>

@@ -44,13 +44,19 @@ For development with Node's file watcher:
 npm --prefix backend run dev
 ```
 
-The Express server serves the frontend and Node API from the same origin. For the full browser match/scoring flow, also start FastAPI in a second terminal using the instructions below, then open [http://localhost:3000](http://localhost:3000). Stop each service with `Ctrl+C`.
+The Express server serves the frontend and all match creation and scoring requests from the same origin. Open [http://localhost:3000](http://localhost:3000) after starting it; the Python API is optional and is not required to create or score a match. Stop the server with `Ctrl+C`.
+
+Run the backend unit tests with:
+
+```bash
+npm --prefix backend test
+```
 
 To use a different port, set the `PORT` environment variable before starting the server.
 
 ### Start the Python API
 
-The Python service is a REST facade used by the current frontend for match setup and scoring requests. Keep the Node server running because it owns the toss, scoring calculations, match persistence, Socket.IO, and the UI routes. Start it in a second terminal from the project root:
+The optional Python service provides a versioned REST facade and derived analytics endpoints. The browser's core match setup and scoring flow uses the same-origin Node API, so this service is not needed to run the app. Keep the Node server running because it owns match persistence, tosses, scoring calculations, Socket.IO, and the UI routes. To run the Python API for its additional endpoints, start it in a second terminal from the project root:
 
 ```bash
 cd python-backend
@@ -79,7 +85,7 @@ Run FastAPI:
 python run.py
 ```
 
-The Python API is available at [http://127.0.0.1:8000](http://127.0.0.1:8000); interactive OpenAPI documentation is at [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs). The frontend's REST helper defaults to `http://127.0.0.1:8000/api/v1` and can be configured before page scripts load with `window.CRICPULSE_PYTHON_API_BASE`.
+The Python API is available at [http://127.0.0.1:8000](http://127.0.0.1:8000); interactive OpenAPI documentation is at [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs). Its REST helper defaults to `http://127.0.0.1:8000/api/v1` and can be configured before page scripts load with `window.CRICPULSE_PYTHON_API_BASE`.
 
 ## Create and Score a Match
 
@@ -96,7 +102,7 @@ Player lists accept up to 11 names per team; default player names are generated 
 
 ## Configuration
 
-Core match creation and scoring work locally without Supabase. Match data is stored in `backend/data/matches.json`, which the server creates when it saves the first match. Keep this file if you want to retain local match history; deleting it removes the locally saved matches.
+Core match creation and scoring work locally without Supabase. Match data is stored in `backend/data/matches.json`, which the server creates when it saves the first match. Keep this file if you want to retain local match history; deleting it removes the locally saved matches. Archive updates are written to a temporary file and atomically replace the archive after the write succeeds. If the archive cannot be read or is malformed, the API reports an error and refuses to continue with an empty archive, protecting existing match history from accidental replacement. The dashboard can export an archive backup or add matches from an imported JSON archive (up to 10 MB); imports reject duplicate IDs and never replace existing matches. This is server-local storage, not Supabase cloud storage, so download and keep backups on another device.
 
 Supabase is optional and is used by the team endpoints. To enable it, create `backend/.env` with:
 
@@ -106,6 +112,8 @@ SUPABASE_PUBLISHABLE_KEY=your-publishable-key
 ```
 
 `SUPABASE_ANON_KEY` is also accepted in place of `SUPABASE_PUBLISHABLE_KEY`. The Supabase `teams` table should provide the `name`, `short_name`, and `created_at` fields used by the API. Without Supabase configuration, the app can still run and score matches, but team API requests will not be backed by Supabase.
+
+The versioned migration at `database/migrations/001_create_cricpulse_matches.sql` prepares a separate, server-only match snapshot table for a future sync stage. It does not enable cloud sync or change the local JSON source of truth. Review the migration and the [Supabase match schema notes](./docs/supabase-match-schema.md) before applying it to a Supabase project. The table denies browser-role access and has no automatic deletion policy; a future sync implementation will require a server-only service-role credential and explicit conflict handling. Supabase free-tier quotas are limited and can change, so verify current limits in your project dashboard.
 
 The Node backend can optionally communicate with the independent AI service using `AI_SERVICE_URL` (default `http://127.0.0.1:8001`) and `AI_SERVICE_TIMEOUT_MS` (default `2000`). Add these settings to `backend/.env`; `backend/.env.example` contains safe defaults. `GET /api/ai/health` reports availability. The scorer uses the same-origin `/api/ai/analyze/match` and `/api/ai/predict/win` routes for numeric match metrics; Node loads the saved CricPulse record before forwarding it. `POST /api/ai/insights` invokes the LLM only when requested, with identical context cached for 120 seconds. It is not triggered by scoring or Socket.IO events. AI failures are shown as unavailable; scoring requests do not depend on the AI service.
 
@@ -121,6 +129,8 @@ All endpoints use JSON where a request body is required.
 | `POST` | `/api/ai/predict/win` | Get live win probabilities for a saved match when a trained model is available. |
 | `POST` | `/api/ai/insights` | Request cached, fact-grounded LLM insights for a saved match. |
 | `GET` | `/api/matches` | List locally saved matches. |
+| `GET` | `/api/matches/export` | Download the local match archive as JSON. |
+| `POST` | `/api/matches/import` | Add matches from `{ "matches": [...] }`; rejects invalid records and conflicting IDs without overwriting existing history. |
 | `GET` | `/api/matches/:id` | Get a match by ID. |
 | `POST` | `/api/matches` | Create a toss-pending match. Provide `team1`, `team2`, `overs`, `team1Players`, `team2Players`, and optional `team1Captain` / `team2Captain`. |
 | `POST` | `/api/matches/:id/toss/flip` | Securely flip the coin on the server. Provide `callerTeam` (`team1` or `team2`) and `call` (`heads` or `tails`). |
@@ -207,6 +217,8 @@ backend/
   package.json        Backend scripts and dependencies
   server.js           Express API, scoring logic, and Socket.IO server
   supabase.js         Optional Supabase client configuration
+database/
+  migrations/         Reviewed additive database migrations
 python-backend/
   app/api/routes/     Versioned health, match, and team routes
   app/core/           Environment-backed settings
@@ -236,7 +248,7 @@ frontend/
 
 - Backend dependencies and scripts are managed from `backend/`; the root `npm start` script is a convenience for starting the backend.
 - `backend/.env` and `node_modules/` are excluded from Git.
-- Match records are stored in a local JSON file, so they persist across server restarts on the same machine but are not shared across deployments.
+- Match records are stored in a local JSON file, so they persist across server restarts on the same machine but are not shared across deployments. Writes use atomic replacement, and unreadable or malformed archives fail closed rather than appearing empty.
 - Python is a separate REST facade used by the current frontend for match setup and scoring requests; run it alongside Node for the complete browser flow. The toss itself is handled by Express.
 - The Python AI service includes deterministic match summaries and a supervised win-model pipeline. Its current historical archive is below the minimum training threshold, so win predictions remain unavailable until more completed match data is collected.
 - The match toss is generated once with Node's cryptographic random source and cannot be rerolled after saving. The saved toss winner and decision initialize both innings; historical toss-advice routes are not part of the live match flow.
