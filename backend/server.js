@@ -2544,13 +2544,28 @@ app.use(
 // START
 // =====================================================
 
-httpServer.listen(
-    PORT,
-    () => {
+function startServer(port = Number(PORT), retries = 3) {
+    const server = httpServer.listen(
+        port,
+        "0.0.0.0",
+        () => {
+            console.log(
+                `CricPulse is running at http://localhost:${port}`
+            );
+        }
+    );
 
-        console.log(
-            `CricPulse is running at http://localhost:${PORT}`
-        );
+    server.on("error", (error) => {
+        if (error.code === "EADDRINUSE" && retries > 0) {
+            console.warn(`[CricPulse] Port ${port} is in use, trying port ${port + 1}...`);
+            startServer(port + 1, retries - 1);
+        } else {
+            console.error("[CricPulse] Server startup error:", error);
+            process.exit(1);
+        }
+    });
 
-    }
-);
+    return server;
+}
+
+startServer();

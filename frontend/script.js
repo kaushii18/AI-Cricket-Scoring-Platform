@@ -604,12 +604,19 @@ function showMatchListState(title, message, retry = false) {
     }
 
     const state = document.createElement("div");
+    state.className = "match-state-card";
+
+    const icon = document.createElement("span");
+    icon.setAttribute("aria-hidden", "true");
+    icon.style.fontSize = "2rem";
+    icon.style.marginBottom = "4px";
+    icon.textContent = retry ? "⚠️" : "🏏";
+
     const heading = document.createElement("strong");
     const copy = document.createElement("p");
-    state.className = "match-state-card";
     heading.textContent = title;
     copy.textContent = message;
-    state.append(heading, copy);
+    state.append(icon, heading, copy);
 
     if (retry) {
         const button = document.createElement("button");
@@ -617,6 +624,14 @@ function showMatchListState(title, message, retry = false) {
         button.className = "primary-button";
         button.textContent = "Try again";
         button.addEventListener("click", loadDashboardMatches);
+        state.appendChild(button);
+    } else {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "primary-button";
+        button.style.marginTop = "8px";
+        button.textContent = "+ Create New Match";
+        button.addEventListener("click", openMatchModal);
         state.appendChild(button);
     }
 

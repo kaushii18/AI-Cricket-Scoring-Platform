@@ -1,5 +1,11 @@
 {
+  "name": "cricpulse",
+  "version": "1.0.0",
+  "description": "CricPulse - Live Cricket Scoring Platform",
+  "main": "server.js",
   "scripts": {
-    "start": "npm --prefix backend start"
+    "start": "npm --prefix backend start",
+    "dev": "npm --prefix backend run dev",
+    "test": "npm --prefix backend test"
   }
 }

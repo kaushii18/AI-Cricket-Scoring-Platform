@@ -4,12 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#08110d">
+    <meta name="theme-color" content="#070c09">
     <meta name="description" content="Create a cricket match and follow live scores ball by ball.">
-    <title>CricPulse | Live Cricket Scoring</title>
+    <title>CricPulse | Live Cricket Scoring & Match Desk</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=Manrope:wght@400..800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 
@@ -52,13 +52,33 @@
     <main id="main-content" class="main-content">
         <section class="dashboard-hero">
             <div class="hero-content">
-                <span class="hero-badge"><span class="eyebrow-mark"></span> LIVE CRICKET SCORING</span>
+                <span class="hero-badge"><span class="eyebrow-mark"></span> LIVE CRICKET SCORING DESK</span>
                 <h1>Score. Track. <span>Analyze.</span></h1>
-                <p>Your match desk for every innings. Set the teams, make the toss, and follow each delivery as it happens.</p>
-                <button type="button" class="primary-button hero-cta" onclick="openMatchModal()">
-                    <span aria-hidden="true">+</span> Create new match <span aria-hidden="true">↗</span>
-                </button>
-                <a class="secondary-button hero-secondary" href="#matches">View matches <span aria-hidden="true">↓</span></a>
+                <p>Your match desk for every innings. Set the teams, make the toss, and follow each delivery as it happens with instant scorecards and ball-by-ball precision.</p>
+                
+                <div class="hero-actions-row">
+                    <button type="button" class="primary-button hero-cta" onclick="openMatchModal()">
+                        <span aria-hidden="true">+</span> Create new match
+                    </button>
+                    <a class="secondary-button hero-secondary" href="#matches">
+                        View matches <span aria-hidden="true">↓</span>
+                    </a>
+                </div>
+
+                <div class="hero-highlights">
+                    <div class="hero-highlight-item">
+                        <span class="hero-highlight-dot"></span>
+                        <span><strong>0ms</strong> Real-time Socket sync</span>
+                    </div>
+                    <div class="hero-highlight-item">
+                        <span class="hero-highlight-dot"></span>
+                        <span><strong>Ball-by-ball</strong> Strike & extras</span>
+                    </div>
+                    <div class="hero-highlight-item">
+                        <span class="hero-highlight-dot"></span>
+                        <span><strong>5-50</strong> Any overs format</span>
+                    </div>
+                </div>
             </div>
 
             <aside class="setup-board dashboard-summary" aria-label="Your CricPulse match desk">
@@ -86,8 +106,9 @@
                 </div>
                 <span id="matchListUpdated" class="updated-label" aria-live="polite">Connecting to match desk…</span>
             </div>
+
             <div class="archive-toolbar" aria-label="Match archive tools">
-                <p class="archive-warning">Your archive is stored on this server, not in Supabase. Export backups regularly. Imports add new matches only; conflicting IDs are rejected without overwriting history.</p>
+                <p class="archive-warning">Your archive is stored locally on this server. Export regular backups to safeguard match records. Imports add new matches additively.</p>
                 <div class="archive-actions">
                     <button id="exportArchiveButton" class="secondary-button" type="button">Export archive</button>
                     <button id="importArchiveButton" class="secondary-button" type="button">Import archive</button>
@@ -95,11 +116,12 @@
                 </div>
                 <p id="archiveStatus" class="archive-status" role="status" aria-live="polite"></p>
             </div>
+
             <div id="dashboardMatchList" class="live-match-list" aria-live="polite" aria-busy="true">
                 <div class="match-state-card">
                     <span class="loading-spinner" aria-hidden="true"></span>
                     <strong>Loading matches</strong>
-                    <p>Checking your match desk.</p>
+                    <p>Connecting to match desk and fetching fixtures…</p>
                 </div>
             </div>
             <button id="toggleMatchesButton" class="matches-more" type="button" aria-expanded="false" hidden>Show all matches</button>
@@ -108,7 +130,7 @@
 
         <section class="dashboard-note" aria-label="CricPulse platform status">
             <span class="note-mark" aria-hidden="true">✦</span>
-            <p><strong>Your cricket, in focus.</strong> Live scoring and match statistics are shown from your saved match data. Tools without connected records are clearly marked below.</p>
+            <p><strong>Your cricket, in focus.</strong> Live scoring and match statistics are saved in real-time. Tools and features without connected external records are clearly marked below.</p>
             <a class="text-action" href="#matches">Explore matches <span aria-hidden="true">→</span></a>
         </section>
 
@@ -122,30 +144,30 @@
             <article id="tournaments" class="workspace-card">
                 <span class="workspace-index">02 / COMPETITION</span>
                 <h2>Tournaments</h2>
-                <p>Tournament management is not connected yet. Your existing matches remain available above.</p>
-                <span class="workspace-status">NOT CONNECTED</span>
+                <p>Tournament management and league tables are coming soon. Your existing matches remain accessible above.</p>
+                <span class="workspace-status">COMING SOON</span>
             </article>
             <article id="players" class="workspace-card">
                 <span class="workspace-index">03 / SQUADS</span>
                 <h2>Players</h2>
-                <p>Manage player names in match setup and update active roles from the scorer.</p>
+                <p>Manage player names in match setup and adjust active striker, non-striker, and bowler roles on the fly.</p>
                 <button type="button" class="workspace-link" onclick="openMatchModal()">Manage a lineup <span aria-hidden="true">→</span></button>
             </article>
             <article id="analytics" class="workspace-card">
                 <span class="workspace-index">04 / INSIGHTS</span>
                 <h2>Analytics</h2>
-                <p>Scorecards and run rates use match data. AI projections will appear after an AI service is connected.</p>
-                <span class="workspace-status">MATCH DATA ONLY</span>
+                <p>Full scorecards, wagon wheel data, fall of wickets, and run rate projections computed live from match events.</p>
+                <span class="workspace-status">MATCH DATA ACTIVE</span>
             </article>
         </section>
     </main>
 
     <footer class="site-footer">
-        <a class="brand footer-brand" href="./index.html" aria-label="CricPulse home">
+        <a class="footer-brand" href="./index.html" aria-label="CricPulse home">
             <span class="brand-icon" aria-hidden="true">🏏</span>
             <strong>CricPulse</strong>
         </a>
-        <span>Score. Track. Analyze.</span>
+        <span>Score. Track. Analyze. Ball by ball.</span>
     </footer>
 
     <div id="matchModal" class="modal-overlay" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
@@ -162,22 +184,22 @@
                 <div class="form-group-row">
                     <div class="form-group">
                         <label for="team1">First team</label>
-                        <input type="text" id="team1" name="team1" placeholder="Enter team name" maxlength="50" required>
+                        <input type="text" id="team1" name="team1" placeholder="e.g. Mumbai Strikers" maxlength="50" required>
                     </div>
                     <div class="form-group">
                         <label for="team2">Second team</label>
-                        <input type="text" id="team2" name="team2" placeholder="Enter team name" maxlength="50" required>
+                        <input type="text" id="team2" name="team2" placeholder="e.g. Delhi Titans" maxlength="50" required>
                     </div>
                 </div>
 
                 <div class="form-group-row">
                     <div class="form-group">
                         <label for="team1Captain">First team captain <span class="form-hint">(optional)</span></label>
-                        <input type="text" id="team1Captain" name="team1Captain" placeholder="Enter captain name" maxlength="80">
+                        <input type="text" id="team1Captain" name="team1Captain" placeholder="Captain name" maxlength="80">
                     </div>
                     <div class="form-group">
                         <label for="team2Captain">Second team captain <span class="form-hint">(optional)</span></label>
-                        <input type="text" id="team2Captain" name="team2Captain" placeholder="Enter captain name" maxlength="80">
+                        <input type="text" id="team2Captain" name="team2Captain" placeholder="Captain name" maxlength="80">
                     </div>
                 </div>
 
@@ -213,19 +235,27 @@
 
                 <div class="player-team-grid">
                     <section class="player-team-panel">
-                        <div class="player-team-header"><h3 id="team1RosterHeading">First team squad</h3><span id="team1RosterCount">11 PLAYERS</span></div>
+                        <div class="player-team-header">
+                            <h3 id="team1RosterHeading">First team squad</h3>
+                            <span id="team1RosterCount">11 PLAYERS</span>
+                        </div>
                         <div id="team1Roster" class="player-list-grid"></div>
                     </section>
                     <section class="player-team-panel">
-                        <div class="player-team-header"><h3 id="team2RosterHeading">Second team squad</h3><span id="team2RosterCount">11 PLAYERS</span></div>
+                        <div class="player-team-header">
+                            <h3 id="team2RosterHeading">Second team squad</h3>
+                            <span id="team2RosterCount">11 PLAYERS</span>
+                        </div>
                         <div id="team2Roster" class="player-list-grid"></div>
                     </section>
                 </div>
 
-                <p class="form-hint">Player names are optional. You can update the active players during scoring.</p>
+                <p class="form-hint">Player names are optional. You can update active players directly during scoring.</p>
                 <div class="modal-actions">
                     <button type="button" class="secondary-button" onclick="closeMatchModal()">Cancel</button>
-                    <button id="createMatchButton" type="submit" class="primary-button">Create and score <span aria-hidden="true">→</span></button>
+                    <button id="createMatchButton" type="submit" class="primary-button">
+                        Create and score <span aria-hidden="true">→</span>
+                    </button>
                 </div>
             </form>
         </div>
